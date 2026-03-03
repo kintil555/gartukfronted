@@ -4,636 +4,506 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coret-Coret 🎨</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --pu1:#6a0dad;--pu2:#8b1fcf;--pu3:#a855f7;
-  --bg1:#3d0066;--bg2:#6b21a8;--bg3:#9333ea;
-  --card:#7c3aed;--card2:#6d28d9;
+  --bg1:#2d0060;--bg2:#5b1fa8;--bg3:#8b35d6;
+  --card:rgba(80,30,160,0.55);--card2:rgba(50,15,120,0.7);
   --teal:#00e5cc;--teal2:#00bfa5;
-  --yellow:#ffd600;--yellow2:#ffab00;
-  --pink:#ff4fa3;--green:#00e676;
-  --text:#fff;--muted:rgba(255,255,255,0.6);
-  --border:rgba(255,255,255,0.15);
-  --r:18px;
+  --yellow:#ffd600;--pink:#ff4fa3;--green:#00e676;
+  --orange:#ff6b35;--red:#ff3d5a;
+  --text:#fff;--muted:rgba(255,255,255,0.55);
+  --border:rgba(255,255,255,0.13);
+  --r:16px;
 }
-html,body{height:100%;font-family:'Nunito',sans-serif;overflow:hidden;background:var(--bg1)}
+html,body{height:100%;font-family:'Nunito',sans-serif;overflow:hidden}
 body{
-  background:linear-gradient(135deg,#3d0066 0%,#6b21a8 40%,#9333ea 100%);
+  background:linear-gradient(135deg,#2d0060 0%,#5b1fa8 45%,#8b35d6 100%);
   min-height:100vh;position:relative;
 }
-/* Animated purple mesh */
 body::before{
-  content:'';position:fixed;inset:0;z-index:0;
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    radial-gradient(ellipse at 10% 20%,rgba(255,79,163,0.25) 0%,transparent 50%),
-    radial-gradient(ellipse at 90% 80%,rgba(0,229,204,0.2) 0%,transparent 50%),
-    radial-gradient(ellipse at 50% 50%,rgba(168,85,247,0.3) 0%,transparent 70%);
-  animation:meshMove 8s ease-in-out infinite;
+    radial-gradient(ellipse at 15% 25%,rgba(255,79,163,0.22) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 75%,rgba(0,229,204,0.18) 0%,transparent 55%),
+    radial-gradient(ellipse at 55% 10%,rgba(255,214,0,0.1) 0%,transparent 45%);
+  animation:bgpulse 7s ease-in-out infinite;
 }
-@keyframes meshMove{0%,100%{opacity:1}50%{opacity:0.7}}
-
-/* Floating stars */
+@keyframes bgpulse{0%,100%{opacity:1}50%{opacity:0.75}}
 .stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.star{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.6);animation:starFloat linear infinite}
-@keyframes starFloat{0%{transform:translateY(100vh) rotate(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-20px) rotate(720deg);opacity:0}}
+.star{position:absolute;border-radius:50%;background:rgba(255,255,255,0.7);animation:sfloat linear infinite}
+@keyframes sfloat{0%{transform:translateY(105vh);opacity:0}10%{opacity:1}90%{opacity:.8}100%{transform:translateY(-10px);opacity:0}}
 
 .screen{display:none;width:100%;height:100vh;position:relative;z-index:1}
 .screen.active{display:flex}
 
-/* ════════════ LANDING ════════════ */
-#screen-landing{
-  flex-direction:column;align-items:center;
-  padding:0 20px 20px;overflow-y:auto;
+/* ════════════════════════════════════════
+   LANDING
+════════════════════════════════════════ */
+#screen-landing{flex-direction:column;align-items:center;padding:0 16px 16px;overflow-y:auto}
+.logo-area{text-align:center;padding:20px 0 18px;flex-shrink:0}
+.logo-txt{
+  font-family:'Fredoka One',cursive;font-size:clamp(38px,6vw,66px);color:#fff;
+  text-shadow:0 4px 0 rgba(0,0,0,0.25),0 0 40px rgba(255,79,163,0.4);
+  letter-spacing:2px;line-height:1;display:flex;align-items:center;justify-content:center;gap:10px;
 }
+.logo-em{animation:lbounce 2.2s ease-in-out infinite;display:inline-block}
+@keyframes lbounce{0%,100%{transform:rotate(-6deg) scale(1)}50%{transform:rotate(6deg) scale(1.1)}}
+.logo-sub{font-size:12px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-top:5px;text-shadow:0 0 16px rgba(0,229,204,0.5)}
 
-/* Logo */
-.logo-wrap{text-align:center;padding:24px 0 20px;flex-shrink:0}
-.logo-main{
-  font-family:'Fredoka One',cursive;font-size:clamp(42px,7vw,72px);
-  color:#fff;text-shadow:0 4px 0 rgba(0,0,0,0.3),0 0 40px rgba(255,79,163,0.5);
-  letter-spacing:2px;line-height:1;
-  display:flex;align-items:center;justify-content:center;gap:12px;
-}
-.logo-emoji{font-size:0.85em;animation:logoBounce 2s ease-in-out infinite}
-@keyframes logoBounce{0%,100%{transform:rotate(-5deg) scale(1)}50%{transform:rotate(5deg) scale(1.1)}}
-.logo-sub{
-  font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;
-  color:var(--teal);text-shadow:0 0 20px rgba(0,229,204,0.6);margin-top:6px;
-}
+.lcols{display:flex;gap:14px;width:100%;max-width:860px;align-items:flex-start}
+@media(max-width:660px){.lcols{flex-direction:column}}
 
-/* Two-column layout */
-.landing-cols{display:flex;gap:16px;width:100%;max-width:860px;align-items:flex-start}
-@media(max-width:680px){.landing-cols{flex-direction:column}}
+.lcard{
+  background:rgba(80,30,160,0.5);backdrop-filter:blur(18px);
+  border:1.5px solid rgba(255,255,255,0.14);border-radius:22px;padding:26px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.lcard-main{flex:1.4}
+.lcard-how{flex:1}
 
-/* Main card */
-.main-card{
-  flex:1.3;
-  background:rgba(124,58,237,0.5);
-  backdrop-filter:blur(20px);
-  border:2px solid rgba(255,255,255,0.15);
-  border-radius:24px;
-  padding:28px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.15);
-}
-.card-invite{
-  font-family:'Fredoka One',cursive;font-size:16px;letter-spacing:1px;
-  color:var(--teal);text-align:center;margin-bottom:20px;
-  text-shadow:0 0 16px rgba(0,229,204,0.6);
-}
+.card-ttl{font-family:'Fredoka One',cursive;font-size:15px;letter-spacing:1.5px;color:var(--teal);text-align:center;margin-bottom:18px;text-shadow:0 0 14px rgba(0,229,204,0.5)}
 
-/* Avatar selector */
-.avatar-section{display:flex;align-items:center;gap:20px;margin-bottom:24px}
-.avatar-big-wrap{
-  position:relative;width:100px;height:100px;flex-shrink:0;cursor:pointer;
-}
-.avatar-big{
-  width:100px;height:100px;border-radius:50%;
-  border:4px solid rgba(255,255,255,0.3);
-  background:rgba(255,255,255,0.1);
-  object-fit:cover;transition:transform 0.2s,border-color 0.2s;
-  display:block;
-}
-.avatar-big:hover{transform:scale(1.05)}
-.avatar-big-wrap.selected .avatar-big{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,229,204,0.3)}
-.avatar-refresh{
-  position:absolute;bottom:2px;right:2px;
-  width:28px;height:28px;border-radius:50%;
-  background:var(--teal);border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;transition:transform 0.3s;
-  box-shadow:0 2px 8px rgba(0,0,0,0.3);
-}
-.avatar-refresh:hover{transform:rotate(180deg)}
+/* Avatar */
+.ava-sect{display:flex;align-items:center;gap:18px;margin-bottom:20px}
+.ava-big-w{position:relative;width:92px;height:92px;flex-shrink:0}
+.ava-big{width:92px;height:92px;border-radius:50%;border:3.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.1);object-fit:cover;display:block;transition:transform .2s}
+.ava-big:hover{transform:scale(1.05)}
+.ava-rfsh{position:absolute;bottom:1px;right:1px;width:26px;height:26px;border-radius:50%;background:var(--teal);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:transform .35s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.ava-rfsh:hover{transform:rotate(180deg)}
+.ava-right{flex:1}
+.ava-lbl{font-family:'Fredoka One',cursive;font-size:13px;color:rgba(255,255,255,.8);margin-bottom:9px;text-align:center;letter-spacing:.5px}
+.ava-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;background:rgba(0,0,0,.2);border-radius:12px;padding:8px}
+.ava-opt{width:100%;aspect-ratio:1;border-radius:50%;border:3px solid transparent;cursor:pointer;background:rgba(255,255,255,.08);object-fit:cover;transition:all .15s}
+.ava-opt:hover{transform:scale(1.12);border-color:rgba(255,255,255,.3)}
+.ava-opt.sel{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,229,204,.35);transform:scale(1.1)}
 
-.avatar-right{flex:1}
-.avatar-label{
-  font-family:'Fredoka One',cursive;font-size:15px;letter-spacing:1px;
-  color:var(--text);margin-bottom:12px;text-align:center;
+/* Name */
+.name-sect{margin-bottom:18px}
+.name-lbl{font-family:'Fredoka One',cursive;font-size:14px;color:rgba(255,255,255,.8);text-align:center;margin-bottom:8px;letter-spacing:.5px}
+.name-inp{
+  width:100%;padding:13px 16px;background:rgba(255,255,255,.12);
+  border:2px solid rgba(255,255,255,.16);border-radius:13px;
+  color:#fff;font-size:17px;font-family:'Nunito',sans-serif;font-weight:800;
+  outline:none;text-align:center;transition:all .2s;
 }
-
-/* Avatar grid picker */
-.avatar-grid{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
-  background:rgba(0,0,0,0.2);border-radius:14px;padding:10px;
-}
-.ava-opt{
-  width:100%;aspect-ratio:1;border-radius:50%;
-  border:3px solid transparent;cursor:pointer;
-  background:rgba(255,255,255,0.1);
-  object-fit:cover;transition:all 0.15s;
-}
-.ava-opt:hover{transform:scale(1.1);border-color:rgba(255,255,255,0.4)}
-.ava-opt.selected{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,229,204,0.4);transform:scale(1.08)}
-
-/* Name input */
-.name-section{margin-bottom:20px}
-.name-lbl{
-  font-family:'Fredoka One',cursive;font-size:15px;letter-spacing:1px;
-  color:var(--text);text-align:center;margin-bottom:10px;
-}
-.name-input{
-  width:100%;padding:14px 18px;
-  background:rgba(255,255,255,0.15);
-  border:2px solid rgba(255,255,255,0.2);
-  border-radius:14px;color:#fff;
-  font-size:17px;font-family:'Nunito',sans-serif;font-weight:800;
-  outline:none;transition:all 0.2s;text-align:center;
-}
-.name-input:focus{background:rgba(255,255,255,0.2);border-color:var(--teal);box-shadow:0 0 0 4px rgba(0,229,204,0.2)}
-.name-input::placeholder{color:rgba(255,255,255,0.4)}
+.name-inp:focus{border-color:var(--teal);background:rgba(255,255,255,.18);box-shadow:0 0 0 4px rgba(0,229,204,.15)}
+.name-inp::placeholder{color:rgba(255,255,255,.3)}
 
 /* Tabs */
-.tabs{display:flex;background:rgba(0,0,0,0.25);border-radius:12px;padding:4px;gap:4px;margin-bottom:16px}
-.tab-btn{
-  flex:1;padding:10px;border:none;background:none;color:rgba(255,255,255,0.5);
-  font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;
-  border-radius:10px;cursor:pointer;transition:all 0.2s;
-}
-.tab-btn.active{background:var(--teal);color:#1a0033;box-shadow:0 3px 12px rgba(0,229,204,0.4)}
+.tabs{display:flex;background:rgba(0,0,0,.25);border-radius:11px;padding:3px;gap:3px;margin-bottom:14px}
+.tab-btn{flex:1;padding:10px;border:none;background:none;color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;border-radius:9px;cursor:pointer;transition:all .2s}
+.tab-btn.active{background:var(--teal);color:#1a0033;box-shadow:0 3px 10px rgba(0,229,204,.4)}
 .tab-pane{display:none}.tab-pane.active{display:block}
+.code-inp{
+  width:100%;padding:13px 16px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.16);
+  border-radius:13px;color:#fff;font-size:26px;font-family:'Fredoka One',cursive;
+  outline:none;text-align:center;letter-spacing:7px;text-transform:uppercase;
+  margin-bottom:12px;transition:all .2s;
+}
+.code-inp:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(0,229,204,.15)}
+.code-inp::placeholder{font-size:14px;letter-spacing:1px;color:rgba(255,255,255,.3)}
 
-.room-code-input{
-  width:100%;padding:14px 18px;
-  background:rgba(255,255,255,0.15);
-  border:2px solid rgba(255,255,255,0.2);
-  border-radius:14px;color:#fff;
-  font-size:28px;font-family:'Fredoka One',cursive;
-  outline:none;transition:all 0.2s;text-align:center;
-  letter-spacing:8px;text-transform:uppercase;
-  margin-bottom:14px;
-}
-.room-code-input:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(0,229,204,0.2)}
-.room-code-input::placeholder{font-size:16px;letter-spacing:2px;color:rgba(255,255,255,0.3)}
-
-/* Buttons */
-.btn{
-  width:100%;padding:15px 20px;border:none;border-radius:14px;
-  font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;
-  transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;
-  letter-spacing:0.5px;position:relative;overflow:hidden;
-}
-.btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background 0.15s}
-.btn:hover::after{background:rgba(255,255,255,0.1)}
-.btn:active{transform:scale(0.98)}
-.btn:disabled{opacity:0.4;cursor:not-allowed}
-.btn-join{
-  background:linear-gradient(135deg,#00e5cc,#00bfa5);color:#1a0033;
-  box-shadow:0 6px 20px rgba(0,229,204,0.4),0 2px 0 rgba(0,150,135,0.5);
-}
-.btn-join:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,229,204,0.55)}
-.btn-create{
-  background:linear-gradient(135deg,#ff4fa3,#d4006c);color:#fff;
-  box-shadow:0 6px 20px rgba(255,79,163,0.4),0 2px 0 rgba(160,0,80,0.5);
-}
-.btn-create:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,79,163,0.55)}
-.btn-green{
-  background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;
-  box-shadow:0 6px 20px rgba(0,230,118,0.4),0 2px 0 rgba(0,150,50,0.5);
-}
-.btn-green:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,230,118,0.55)}
-.btn-yellow{
-  background:linear-gradient(135deg,#ffd600,#ffab00);color:#1a0033;
-  box-shadow:0 6px 20px rgba(255,214,0,0.4),0 2px 0 rgba(180,120,0,0.5);
-}
+.btn{width:100%;padding:14px 18px;border:none;border-radius:13px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:.5px}
+.btn:active{transform:scale(.97)!important}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn-join{background:linear-gradient(135deg,#00e5cc,#00bfa5);color:#1a0033;box-shadow:0 5px 18px rgba(0,229,204,.4)}
+.btn-join:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 9px 26px rgba(0,229,204,.55)}
+.btn-create{background:linear-gradient(135deg,#ff4fa3,#d4006c);color:#fff;box-shadow:0 5px 18px rgba(255,79,163,.4)}
+.btn-create:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 9px 26px rgba(255,79,163,.55)}
+.btn-start{background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;box-shadow:0 6px 22px rgba(0,230,118,.45),0 2px 0 rgba(0,130,50,.5);font-size:20px;padding:16px 24px}
+.btn-start:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,230,118,.6)}
+.btn-yellow{background:linear-gradient(135deg,#ffd600,#ffab00);color:#1a0033;box-shadow:0 5px 18px rgba(255,214,0,.4)}
 .btn-yellow:hover:not(:disabled){transform:translateY(-2px)}
-.btn-purple{
-  background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;
-  box-shadow:0 6px 20px rgba(168,85,247,0.4);
-}
-
-.errmsg{
-  color:#ffb3c6;font-size:13px;font-weight:800;margin-top:10px;
-  display:none;padding:10px 14px;
-  background:rgba(255,79,163,0.15);border-radius:10px;
-  border-left:3px solid var(--pink);text-align:center;
-}
+.errmsg{color:#ffb3c6;font-size:13px;font-weight:800;margin-top:9px;display:none;padding:9px 13px;background:rgba(255,79,163,.15);border-radius:9px;border-left:3px solid var(--pink);text-align:center}
 .errmsg.show{display:block}
 
-/* How-to card */
-.howto-card{
-  flex:1;
-  background:rgba(124,58,237,0.45);
-  backdrop-filter:blur(20px);
-  border:2px solid rgba(255,255,255,0.12);
-  border-radius:24px;padding:24px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.3);
-}
-.howto-title{
-  font-family:'Fredoka One',cursive;font-size:18px;letter-spacing:2px;
-  color:var(--teal);text-align:center;margin-bottom:16px;
-  text-shadow:0 0 16px rgba(0,229,204,0.5);
-}
-.howto-art{text-align:center;font-size:56px;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+/* How to play */
+.how-art{text-align:center;font-size:52px;margin-bottom:10px;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.howto-steps{display:flex;flex-direction:column;gap:10px}
-.howto-step{
-  display:flex;align-items:flex-start;gap:12px;
-  padding:12px 14px;background:rgba(0,0,0,0.2);border-radius:12px;
-}
-.step-num{
-  width:28px;height:28px;border-radius:50%;
-  background:var(--teal);color:#1a0033;
-  font-family:'Fredoka One',cursive;font-size:14px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  box-shadow:0 2px 8px rgba(0,229,204,0.4);
-}
-.step-txt{font-size:13px;font-weight:700;color:rgba(255,255,255,0.9);line-height:1.4}
+.how-steps{display:flex;flex-direction:column;gap:8px}
+.how-step{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(0,0,0,.18);border-radius:11px}
+.snum{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#1a0033;font-family:'Fredoka One',cursive;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,229,204,.4)}
+.stxt{font-size:13px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.4}
 
-/* ════════════ ROOM SCREEN ════════════ */
+/* ════════════════════════════════════════
+   ROOM — shared topbar
+════════════════════════════════════════ */
 #screen-room{flex-direction:column;overflow:hidden}
-
 .topbar{
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;height:64px;flex-shrink:0;
-  background:rgba(61,0,102,0.7);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(255,255,255,0.1);
+  padding:0 18px;height:60px;flex-shrink:0;
+  background:rgba(45,0,96,.7);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.09);
 }
-.topbar-logo{
-  font-family:'Fredoka One',cursive;font-size:22px;color:#fff;
-  text-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;
-}
-.round-pill{
-  display:none;align-items:center;gap:7px;
-  background:rgba(255,79,163,0.2);border:1.5px solid rgba(255,79,163,0.4);
-  border-radius:20px;padding:6px 14px;font-size:13px;font-weight:800;color:#ff9ec8;
-}
-.rpdot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:rpp 1.5s infinite}
-@keyframes rpp{0%,100%{opacity:1}50%{opacity:0.3}}
+.tb-logo{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;display:flex;align-items:center;gap:8px;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.rnd-pill{display:none;align-items:center;gap:6px;background:rgba(255,79,163,.18);border:1.5px solid rgba(255,79,163,.35);border-radius:20px;padding:5px 13px;font-size:13px;font-weight:800;color:#ff9ec8}
+.rnd-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:pp 1.5s infinite}
+@keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
+.code-chip{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.13);border-radius:13px;padding:7px 14px;cursor:pointer;transition:all .2s}
+.code-chip:hover{background:rgba(0,229,204,.13);border-color:rgba(0,229,204,.35)}
+.chip-lbl{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.chip-val{font-family:'Fredoka One',cursive;font-size:20px;color:var(--yellow);letter-spacing:5px}
+.chip-ic{font-size:15px;opacity:.55}
+.progbar{height:4px;background:rgba(255,255,255,.07);flex-shrink:0}
+.progfill{height:100%;background:linear-gradient(90deg,var(--pink),var(--teal));transition:width .6s ease;width:0%}
 
-.code-badge{
-  display:flex;align-items:center;gap:10px;
-  background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);
-  border-radius:14px;padding:8px 16px;cursor:pointer;transition:all 0.2s;
-}
-.code-badge:hover{background:rgba(0,229,204,0.15);border-color:rgba(0,229,204,0.4)}
-.code-badge .lbl{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.code-badge .val{font-family:'Fredoka One',cursive;font-size:22px;color:var(--yellow);letter-spacing:6px}
-.code-badge .ic{font-size:16px;opacity:0.6}
+/* ════════════════════════════════════════
+   LOBBY PAGE (Gartic-style split)
+════════════════════════════════════════ */
+.lobby-page{flex:1;display:flex;overflow:hidden}
 
-.progbar{height:4px;background:rgba(255,255,255,0.08);flex-shrink:0;position:relative}
-.progfill{height:100%;background:linear-gradient(90deg,var(--pink),var(--teal));transition:width 0.6s ease;width:0%}
+/* Left: player list */
+.lob-left{
+  width:280px;flex-shrink:0;padding:20px;
+  border-right:1px solid rgba(255,255,255,.08);
+  display:flex;flex-direction:column;gap:12px;overflow-y:auto;
+}
+.lob-sec-title{font-family:'Fredoka One',cursive;font-size:17px;letter-spacing:2px;color:var(--teal);text-align:center;text-shadow:0 0 12px rgba(0,229,204,.4)}
+.lob-pitem{
+  display:flex;align-items:center;gap:11px;
+  background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:10px 14px;transition:background .15s;
+}
+.lob-pitem.me{background:rgba(0,229,204,.12);border-color:rgba(0,229,204,.25)}
+.lob-pava{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2.5px solid rgba(255,255,255,.2);flex-shrink:0}
+.lob-pitem.me .lob-pava{border-color:var(--teal)}
+.lob-pname{font-weight:800;font-size:15px;flex:1}
+.lob-host{font-family:'Fredoka One',cursive;font-size:10px;background:var(--pink);color:#fff;padding:2px 8px;border-radius:6px;letter-spacing:.5px}
+.lob-you{font-size:11px;color:var(--teal);font-weight:800}
 
-.room-body{display:flex;flex:1;overflow:hidden;min-height:0}
+/* Right: settings + start */
+.lob-right{flex:1;padding:28px 32px;display:flex;flex-direction:column;justify-content:center;gap:0}
+.lob-right-title{font-family:'Fredoka One',cursive;font-size:20px;letter-spacing:2px;color:var(--teal);text-align:center;margin-bottom:24px;text-shadow:0 0 14px rgba(0,229,204,.4)}
+.settings-list{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.setting-row{
+  display:flex;align-items:center;gap:16px;
+  background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:16px 20px;
+}
+.setting-icon{font-size:24px;flex-shrink:0;width:36px;text-align:center}
+.setting-info{flex:1}
+.setting-name{font-family:'Fredoka One',cursive;font-size:15px;letter-spacing:.5px;margin-bottom:3px}
+.setting-desc{font-size:12px;color:var(--muted);font-weight:700;line-height:1.3}
+.toggle-group{display:flex;background:rgba(0,0,0,.3);border-radius:10px;padding:3px;gap:3px;flex-shrink:0}
+.tog-btn{padding:8px 16px;border:none;background:none;color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tog-btn.active{background:#fff;color:#2d0060;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.lob-start-wrap{text-align:center}
+.lob-hint{font-size:13px;color:var(--muted);font-weight:700;margin-top:10px}
+.waiting-host{
+  text-align:center;padding:32px;
+  background:rgba(0,0,0,.15);border-radius:16px;
+}
+.waiting-host-txt{font-family:'Fredoka One',cursive;font-size:18px;color:rgba(255,255,255,.7);margin-top:12px}
+.waiting-dots{display:flex;justify-content:center;gap:6px;margin-top:12px}
+.wdot{width:9px;height:9px;border-radius:50%;background:var(--teal);animation:dotpop 1.4s ease-in-out infinite}
+.wdot:nth-child(2){animation-delay:.2s}.wdot:nth-child(3){animation-delay:.4s}
+@keyframes dotpop{0%,80%,100%{transform:scale(.6);opacity:.3}40%{transform:scale(1.1);opacity:1}}
 
-/* Sidebar */
-.sidebar{
-  width:210px;flex-shrink:0;
-  background:rgba(61,0,102,0.5);
-  border-right:1px solid rgba(255,255,255,0.08);
-  display:flex;flex-direction:column;
-}
-.sidebar-hd{
-  padding:14px 16px 10px;
-  font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1.5px;
-  color:var(--teal);text-transform:uppercase;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-  display:flex;justify-content:space-between;align-items:center;
-}
-.plist{flex:1;overflow-y:auto;padding:8px}
-.pitem{
-  display:flex;align-items:center;gap:9px;
-  padding:8px 10px;border-radius:12px;margin-bottom:4px;
-  transition:background 0.15s;
-}
-.pitem.me{background:rgba(0,229,204,0.1)}
-.pava-wrap{position:relative;flex-shrink:0}
-.pava{width:36px;height:36px;border-radius:50%;border:2px solid transparent;object-fit:cover;background:rgba(255,255,255,0.1)}
+/* ════════════════════════════════════════
+   GAME AREA (sidebar + main)
+════════════════════════════════════════ */
+.game-area{flex:1;display:none;overflow:hidden}
+.game-area.active{display:flex}
+.sidebar{width:190px;flex-shrink:0;background:rgba(45,0,96,.45);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column}
+.sb-hd{padding:12px 14px 9px;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1.5px;color:var(--teal);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between}
+.plist{flex:1;overflow-y:auto;padding:6px}
+.pitem{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:11px;margin-bottom:3px;transition:background .15s}
+.pitem.me{background:rgba(0,229,204,.1)}
+.pava{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid transparent;flex-shrink:0}
 .pitem.me .pava{border-color:var(--teal)}
 .pinfo{flex:1;min-width:0}
-.pname{font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
-.pstatus{font-size:11px;font-weight:700;margin-top:1px}
-.st-waiting{color:rgba(255,255,255,0.4)}
-.st-writing{color:var(--yellow)}
-.st-drawing{color:var(--teal)}
-.st-guessing{color:var(--green)}
-.st-done{color:var(--green)}
-.host-tag{font-family:'Fredoka One',cursive;font-size:9px;background:var(--pink);color:white;padding:2px 7px;border-radius:6px;flex-shrink:0;letter-spacing:0.5px}
+.pname{font-weight:800;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+.pstatus{font-size:10px;font-weight:700;margin-top:1px}
+.st-waiting{color:rgba(255,255,255,.4)}.st-writing{color:var(--yellow)}.st-drawing{color:var(--teal)}.st-guessing{color:var(--green)}.st-done{color:var(--green)}
+.host-tag{font-family:'Fredoka One',cursive;font-size:9px;background:var(--pink);color:#fff;padding:2px 6px;border-radius:5px;flex-shrink:0}
 
-/* Main area */
-.room-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.room-content{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
-.room-foot{padding:14px 20px;background:rgba(61,0,102,0.6);border-top:1px solid rgba(255,255,255,0.08);flex-shrink:0;display:none}
+.gmain{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.gcontent{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.gfoot{padding:12px 18px;background:rgba(45,0,96,.55);border-top:1px solid rgba(255,255,255,.07);flex-shrink:0;display:none}
 
-/* ── LOBBY ── */
-.lobby-box{text-align:center;max-width:460px;width:100%}
-.lobby-big{font-size:72px;animation:float 3s ease-in-out infinite;display:block;margin-bottom:12px}
-.lobby-title{font-family:'Fredoka One',cursive;font-size:28px;color:#fff;margin-bottom:6px;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
-.lobby-sub{color:var(--muted);font-size:15px;font-weight:700;margin-bottom:24px}
-.pcount{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);
-  border-radius:20px;padding:8px 20px;font-weight:800;font-size:14px;margin-bottom:20px;
+/* ════════════════════════════════════════
+   TIMER
+════════════════════════════════════════ */
+.timer-wrap{
+  position:relative;width:56px;height:56px;flex-shrink:0;
 }
+.timer-svg{transform:rotate(-90deg);width:56px;height:56px}
+.timer-bg{fill:none;stroke:rgba(255,255,255,.12);stroke-width:5}
+.timer-arc{fill:none;stroke:var(--teal);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .9s linear,stroke .3s}
+.timer-num{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka One',cursive;font-size:16px;color:#fff;
+}
+.timer-wrap.warn .timer-arc{stroke:var(--orange)}
+.timer-wrap.urgent .timer-arc{stroke:var(--red);animation:timerPulse .5s ease-in-out infinite}
+@keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.5}}
 
-/* ── WAITING ── */
-.wait-box{text-align:center;max-width:340px}
-.wait-big{font-size:64px;display:block;animation:float 2s ease-in-out infinite;margin-bottom:16px}
-.wait-title{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:8px}
-.wait-sub{color:var(--muted);font-weight:700;font-size:14px}
-.dots{display:flex;justify-content:center;gap:6px;margin-top:16px}
-.dot{width:9px;height:9px;border-radius:50%;background:var(--teal);animation:dotpop 1.4s ease-in-out infinite}
-.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
-@keyframes dotpop{0%,80%,100%{transform:scale(0.6);opacity:0.3}40%{transform:scale(1.1);opacity:1}}
-
-/* ── TASK ── */
+/* ════════════════════════════════════════
+   TASK VIEWS
+════════════════════════════════════════ */
 .task-wrap{width:100%;max-width:720px}
-.task-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.tbadge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 16px;border-radius:20px;
-  font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:0.5px;
-}
-.tb-init{background:rgba(168,85,247,0.25);color:#d8b4fe;border:1.5px solid rgba(168,85,247,0.4)}
-.tb-write{background:rgba(255,214,0,0.2);color:var(--yellow);border:1.5px solid rgba(255,214,0,0.35)}
-.tb-draw{background:rgba(0,229,204,0.2);color:var(--teal);border:1.5px solid rgba(0,229,204,0.35)}
-.tb-guess{background:rgba(0,230,118,0.2);color:var(--green);border:1.5px solid rgba(0,230,118,0.35)}
 
-.prompt-box{
-  background:rgba(0,0,0,0.25);
-  border:1.5px solid rgba(255,255,255,0.1);
-  border-radius:18px;padding:20px 24px;margin-bottom:14px;
+/* Full-screen write-initial like Gartic */
+.wi-fullscreen{
+  width:100%;max-width:680px;text-align:center;
 }
-.prompt-lbl{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
-.prompt-val{font-family:'Fredoka One',cursive;font-size:26px;color:var(--yellow);word-break:break-word;line-height:1.3;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
-.prompt-hint{font-size:15px;font-weight:700;color:rgba(255,255,255,0.6);line-height:1.5}
-.prompt-img{max-width:100%;border-radius:14px;display:block;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.wi-mascot{font-size:80px;display:block;margin-bottom:12px;animation:float 2.5s ease-in-out infinite}
+.wi-title{font-family:'Fredoka One',cursive;font-size:clamp(24px,4vw,36px);color:var(--teal);letter-spacing:2px;text-shadow:0 0 20px rgba(0,229,204,.5);margin-bottom:20px}
+.wi-inputrow{display:flex;gap:10px;align-items:center;max-width:600px;margin:0 auto}
+.wi-inp{
+  flex:1;padding:16px 20px;
+  background:rgba(255,255,255,.15);border:2.5px solid rgba(255,255,255,.2);
+  border-radius:16px;color:#fff;font-size:18px;font-family:'Nunito',sans-serif;font-weight:800;
+  outline:none;transition:all .2s;
+}
+.wi-inp:focus{border-color:var(--teal);background:rgba(255,255,255,.22);box-shadow:0 0 0 4px rgba(0,229,204,.18)}
+.wi-inp::placeholder{color:rgba(255,255,255,.35)}
+.btn-done{
+  padding:16px 22px;border:none;border-radius:14px;cursor:pointer;
+  background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;
+  font-family:'Fredoka One',cursive;font-size:16px;white-space:nowrap;
+  transition:all .2s;box-shadow:0 5px 18px rgba(0,230,118,.45);
+  display:flex;align-items:center;gap:8px;
+}
+.btn-done:hover{transform:translateY(-2px);box-shadow:0 9px 26px rgba(0,230,118,.6)}
+.btn-done:active{transform:scale(.97)}
+.task-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.tbadge{display:inline-flex;align-items:center;gap:5px;padding:6px 15px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:.5px}
+.tb-w{background:rgba(255,214,0,.2);color:var(--yellow);border:1.5px solid rgba(255,214,0,.3)}
+.tb-d{background:rgba(0,229,204,.18);color:var(--teal);border:1.5px solid rgba(0,229,204,.3)}
+.tb-g{background:rgba(0,230,118,.18);color:var(--green);border:1.5px solid rgba(0,230,118,.3)}
+.prompt-box{background:rgba(0,0,0,.22);border:1.5px solid rgba(255,255,255,.09);border-radius:16px;padding:18px 22px;margin-bottom:13px}
+.prompt-lbl{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:7px}
+.prompt-val{font-family:'Fredoka One',cursive;font-size:24px;color:var(--yellow);word-break:break-word;line-height:1.3;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.prompt-img{max-width:100%;border-radius:13px;display:block;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+textarea{width:100%;padding:14px 16px;min-height:78px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.14);border-radius:13px;color:#fff;font-size:17px;font-family:'Nunito',sans-serif;font-weight:800;resize:none;outline:none;transition:all .2s}
+textarea:focus{border-color:var(--teal);background:rgba(255,255,255,.16);box-shadow:0 0 0 4px rgba(0,229,204,.13)}
+textarea::placeholder{color:rgba(255,255,255,.28)}
+.char-c{text-align:right;font-size:12px;color:var(--muted);margin-top:5px;font-weight:700}
 
-textarea{
-  width:100%;padding:16px 18px;min-height:82px;
-  background:rgba(255,255,255,0.12);
-  border:2px solid rgba(255,255,255,0.15);
-  border-radius:14px;color:#fff;
-  font-size:18px;font-family:'Nunito',sans-serif;font-weight:800;
-  resize:none;outline:none;transition:all 0.2s;
-}
-textarea:focus{border-color:var(--teal);background:rgba(255,255,255,0.18);box-shadow:0 0 0 4px rgba(0,229,204,0.15)}
-textarea::placeholder{color:rgba(255,255,255,0.3)}
-.char-c{text-align:right;font-size:12px;color:var(--muted);margin-top:6px;font-weight:700}
-
-/* ── CANVAS ── */
-.cv-toolbar{
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-  background:rgba(0,0,0,0.3);border:1.5px solid rgba(255,255,255,0.1);
-  border-radius:14px;padding:10px 14px;margin-bottom:10px;
-}
-.tg{display:flex;align-items:center;gap:5px}
-.tsep{width:1px;height:26px;background:rgba(255,255,255,0.12);margin:0 4px;flex-shrink:0}
-.colo{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;flex-shrink:0;transition:all 0.15s}
+/* Canvas */
+.cv-tb{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:rgba(0,0,0,.28);border:1.5px solid rgba(255,255,255,.09);border-radius:13px;padding:9px 13px;margin-bottom:8px}
+.tg{display:flex;align-items:center;gap:4px}
+.tsep{width:1px;height:24px;background:rgba(255,255,255,.1);margin:0 3px;flex-shrink:0}
+.colo{width:24px;height:24px;border-radius:50%;cursor:pointer;border:3px solid transparent;flex-shrink:0;transition:all .15s}
 .colo:hover{transform:scale(1.15)}
-.colo.on{border-color:white;transform:scale(1.25);box-shadow:0 0 8px rgba(255,255,255,0.4)}
-.bsl{-webkit-appearance:none;height:4px;width:80px;border-radius:2px;background:rgba(255,255,255,0.15);accent-color:var(--teal);cursor:pointer}
-.tbtn{
-  padding:6px 12px;background:rgba(255,255,255,0.1);
-  border:1.5px solid rgba(255,255,255,0.12);
-  border-radius:9px;color:#fff;font-size:12px;font-weight:800;
-  cursor:pointer;transition:all 0.15s;font-family:'Nunito',sans-serif;white-space:nowrap;
-}
-.tbtn:hover{background:rgba(255,255,255,0.2)}
+.colo.on{border-color:white;transform:scale(1.22);box-shadow:0 0 7px rgba(255,255,255,.4)}
+.bsl{-webkit-appearance:none;height:4px;width:75px;border-radius:2px;background:rgba(255,255,255,.13);accent-color:var(--teal);cursor:pointer}
+.tbtn{padding:5px 11px;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.11);border-radius:8px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;transition:all .15s;font-family:'Nunito',sans-serif;white-space:nowrap}
+.tbtn:hover{background:rgba(255,255,255,.18)}
 .tbtn.on{background:var(--pink);border-color:var(--pink)}
-#drawing-canvas{
-  background:white;border-radius:14px;cursor:crosshair;display:block;
-  touch-action:none;
-  box-shadow:0 8px 40px rgba(0,0,0,0.5);max-width:100%;
-}
+#drawing-canvas{background:white;border-radius:13px;cursor:crosshair;display:block;touch-action:none;box-shadow:0 8px 36px rgba(0,0,0,.5);max-width:100%}
 
-/* ════════════ RESULTS ════════════ */
+/* Wait */
+.wait-box{text-align:center;max-width:320px}
+.wait-em{font-size:60px;display:block;animation:float 2s ease-in-out infinite;margin-bottom:14px}
+.wait-title{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:8px}
+.wait-sub{color:var(--muted);font-size:14px;font-weight:700}
+.wdots{display:flex;justify-content:center;gap:6px;margin-top:14px}
+
+/* ════════════════════════════════════════
+   RESULTS
+════════════════════════════════════════ */
 #screen-results{flex-direction:column;overflow:hidden}
-.res-top{
-  text-align:center;padding:20px 24px 16px;flex-shrink:0;
-  background:rgba(61,0,102,0.7);backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
-.res-title{
-  font-family:'Fredoka One',cursive;font-size:32px;
-  background:linear-gradient(90deg,#ff4fa3,#ffd600,#00e5cc);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.res-sub{color:var(--muted);font-size:14px;margin-top:4px;font-weight:700}
-.res-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:18px}
-.res-foot{padding:14px 24px;background:rgba(61,0,102,0.6);border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:center;gap:12px;flex-shrink:0}
-.res-foot .btn{width:auto;padding:13px 32px}
-
-.rchain{
-  background:rgba(124,58,237,0.3);backdrop-filter:blur(10px);
-  border:1.5px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;
-}
-.rchain-top{
-  display:flex;align-items:center;gap:12px;
-  padding:14px 20px;background:rgba(0,0,0,0.2);
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
-.rchain-ava{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2)}
-.rchain-name{font-family:'Fredoka One',cursive;font-size:15px}
-.rchain-scroll{display:flex;overflow-x:auto;padding:16px 20px;gap:10px;align-items:flex-start}
+.res-top{text-align:center;padding:18px 22px 14px;flex-shrink:0;background:rgba(45,0,96,.7);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07)}
+.res-title{font-family:'Fredoka One',cursive;font-size:30px;background:linear-gradient(90deg,#ff4fa3,#ffd600,#00e5cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.res-sub{color:var(--muted);font-size:14px;margin-top:3px;font-weight:700}
+.res-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:16px}
+.res-foot{padding:13px 22px;background:rgba(45,0,96,.6);border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:center;gap:12px;flex-shrink:0}
+.res-foot .btn{width:auto;padding:12px 30px}
+.rchain{background:rgba(80,30,160,.35);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.09);border-radius:18px;overflow:hidden}
+.rchain-top{display:flex;align-items:center;gap:11px;padding:13px 18px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.07)}
+.rchain-ava{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.18)}
+.rchain-name{font-family:'Fredoka One',cursive;font-size:14px}
+.rchain-scroll{display:flex;overflow-x:auto;padding:14px 18px;gap:9px;align-items:flex-start}
 .rchain-scroll::-webkit-scrollbar{height:4px}
-.rchain-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,0.04);border-radius:2px}
-.rchain-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:2px}
+.rchain-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.03)}
+.rchain-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.13);border-radius:2px}
 .rcitem-wrap{display:flex;align-items:center;flex-shrink:0}
-.rcitem{
-  background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);
-  border-radius:14px;padding:14px;width:165px;flex-shrink:0;
-}
+.rcitem{background:rgba(0,0,0,.22);border:1.5px solid rgba(255,255,255,.09);border-radius:13px;padding:13px;width:158px;flex-shrink:0}
 .rci-type{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px}
-.rci-auth{font-size:11px;color:var(--muted);margin-bottom:7px;font-weight:700}
-.rci-txt{font-family:'Fredoka One',cursive;font-size:15px;word-break:break-word;line-height:1.3}
+.rci-auth{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700}
+.rci-txt{font-family:'Fredoka One',cursive;font-size:14px;word-break:break-word;line-height:1.3}
 .rci-img{width:100%;border-radius:8px;display:block}
-.t-word .rci-type{color:#d8b4fe}
-.t-draw .rci-type{color:var(--teal)}
-.t-guess .rci-type,.t-write .rci-type{color:var(--green)}
-.rarrow{font-size:18px;color:rgba(255,255,255,0.2);padding:0 6px;flex-shrink:0}
+.t-word .rci-type{color:#d8b4fe}.t-draw .rci-type{color:var(--teal)}.t-guess .rci-type,.t-write .rci-type{color:var(--green)}
+.rarrow{font-size:17px;color:rgba(255,255,255,.18);padding:0 5px;flex-shrink:0}
 
-/* ── Toast ── */
-#toast{
-  position:fixed;bottom:20px;left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:rgba(61,0,102,0.95);backdrop-filter:blur(16px);
-  border:1.5px solid rgba(255,255,255,0.15);
-  border-radius:14px;padding:12px 22px;
-  font-weight:800;font-size:14px;z-index:9999;
-  transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.5);
-}
+/* Toast */
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(45,0,96,.95);backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,.13);border-radius:13px;padding:11px 20px;font-weight:800;font-size:14px;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5)}
 #toast.show{transform:translateX(-50%) translateY(0)}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:3px}
-#cfg{position:fixed;top:0;left:0;right:0;background:var(--pink);color:white;text-align:center;padding:10px;font-weight:800;font-size:13px;z-index:10000;display:none}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px}
+#cfg{position:fixed;top:0;left:0;right:0;background:var(--pink);color:#fff;text-align:center;padding:9px;font-weight:800;font-size:13px;z-index:10000;display:none}
 </style>
 </head>
 <body>
-
-<!-- Floating stars -->
 <div class="stars" id="stars"></div>
 <div id="cfg">⚠️ Ubah <code>BACKEND_URL</code> di script dulu!</div>
 
-<!-- ══════════════ LANDING ══════════════ -->
+<!-- ══════════ LANDING ══════════ -->
 <div id="screen-landing" class="screen active">
-  <div class="logo-wrap">
-    <div class="logo-main"><span class="logo-emoji">🎨</span> Coret-Coret</div>
+  <div class="logo-area">
+    <div class="logo-txt"><span class="logo-em">🎨</span>Coret-Coret</div>
     <div class="logo-sub">The Drawing Telephone Game</div>
   </div>
-
-  <div class="landing-cols">
-    <!-- Main card -->
-    <div class="main-card">
-      <div class="card-invite" id="card-title">PILIH AVATAR & NAMA KAMU</div>
-
-      <!-- Avatar section -->
-      <div class="avatar-section">
-        <div class="avatar-big-wrap selected" id="ava-big-wrap">
-          <img id="ava-big" class="avatar-big" src="" alt="Avatar">
-          <button class="avatar-refresh" onclick="randomAvatar()" title="Acak avatar">🔄</button>
+  <div class="lcols">
+    <div class="lcard lcard-main">
+      <div class="card-ttl">PILIH AVATAR & NAMA KAMU</div>
+      <div class="ava-sect">
+        <div class="ava-big-w">
+          <img id="ava-big" class="ava-big" src="" alt="Avatar">
+          <button class="ava-rfsh" onclick="randomAva()" title="Acak">🔄</button>
         </div>
-        <div class="avatar-right">
-          <div class="avatar-label">Pilih Avatar</div>
-          <div class="avatar-grid" id="ava-grid"></div>
+        <div class="ava-right">
+          <div class="ava-lbl">Pilih Avatar</div>
+          <div class="ava-grid" id="ava-grid"></div>
         </div>
       </div>
-
-      <!-- Name -->
-      <div class="name-section">
+      <div class="name-sect">
         <div class="name-lbl">NAMA KAMU</div>
-        <input id="nname" class="name-input" type="text" placeholder="Masukkan nama..." maxlength="16">
+        <input id="nname" class="name-inp" type="text" placeholder="Masukkan nama..." maxlength="16">
       </div>
-
-      <!-- Tabs -->
       <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('create')">🏠 Buat Room</button>
         <button class="tab-btn" onclick="switchTab('join')">🚪 Join Room</button>
       </div>
-
       <div id="tab-create" class="tab-pane active">
         <button class="btn btn-create" onclick="createRoom()">🎮 Buat Room Baru</button>
         <div id="ce" class="errmsg"></div>
       </div>
       <div id="tab-join" class="tab-pane">
-        <input id="jc" class="room-code-input" type="text" placeholder="Masukkan kode room..." maxlength="4">
+        <input id="jc" class="code-inp" type="text" placeholder="Kode Room..." maxlength="4">
         <button class="btn btn-join" onclick="joinRoom()">▶ JOIN</button>
         <div id="je" class="errmsg"></div>
       </div>
     </div>
-
-    <!-- How to play card -->
-    <div class="howto-card">
-      <div class="howto-art">🎲</div>
-      <div class="howto-title">CARA BERMAIN</div>
-      <div class="howto-steps">
-        <div class="howto-step">
-          <div class="step-num">1</div>
-          <div class="step-txt">Buat atau join room dengan kode 4 huruf</div>
-        </div>
-        <div class="howto-step">
-          <div class="step-num">2</div>
-          <div class="step-txt">Setiap pemain tulis kata atau kalimat bebas</div>
-        </div>
-        <div class="howto-step">
-          <div class="step-num">3</div>
-          <div class="step-txt">Pemain lain menggambar kata tersebut di canvas</div>
-        </div>
-        <div class="howto-step">
-          <div class="step-num">4</div>
-          <div class="step-txt">Pemain berikutnya menebak gambarnya</div>
-        </div>
-        <div class="howto-step">
-          <div class="step-num">5</div>
-          <div class="step-txt">Lihat hasil akhir yang kocak! 😂</div>
-        </div>
+    <div class="lcard lcard-how">
+      <div class="how-art">🎲</div>
+      <div class="card-ttl">CARA BERMAIN</div>
+      <div class="how-steps">
+        <div class="how-step"><div class="snum">1</div><div class="stxt">Buat atau join room dengan kode 4 huruf</div></div>
+        <div class="how-step"><div class="snum">2</div><div class="stxt">Setiap pemain tulis kata atau kalimat bebas</div></div>
+        <div class="how-step"><div class="snum">3</div><div class="stxt">Pemain lain menggambar kata tersebut di canvas</div></div>
+        <div class="how-step"><div class="snum">4</div><div class="stxt">Pemain berikutnya menebak dari gambar itu</div></div>
+        <div class="how-step"><div class="snum">5</div><div class="stxt">Lihat hasil akhir yang kocak! 😂</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════ ROOM ══════════════ -->
+<!-- ══════════ ROOM ══════════ -->
 <div id="screen-room" class="screen">
   <div class="topbar">
-    <div class="topbar-left" style="display:flex;align-items:center;gap:12px">
-      <div class="topbar-logo">🎨 Coret-Coret</div>
-      <div id="round-pill" class="round-pill">
-        <div class="rpdot"></div>
-        <span id="round-txt">Ronde 1</span>
-      </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="tb-logo">🎨 Coret-Coret</div>
+      <div id="rnd-pill" class="rnd-pill"><div class="rnd-dot"></div><span id="rnd-txt">Ronde 1</span></div>
     </div>
-    <div class="code-badge" onclick="copyCode()">
-      <div>
-        <div class="lbl">Kode Room</div>
-        <div class="val" id="hcode">----</div>
-      </div>
-      <span class="ic">📋</span>
+    <div class="code-chip" onclick="copyCode()">
+      <div><div class="chip-lbl">Kode Room</div><div class="chip-val" id="hcode">----</div></div>
+      <span class="chip-ic">📋</span>
     </div>
   </div>
   <div class="progbar"><div class="progfill" id="progfill"></div></div>
 
-  <div class="room-body">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-hd">
-        <span>Pemain</span>
-        <span style="color:rgba(255,255,255,0.5);font-size:12px" id="pcnt">0/8</span>
+  <!-- Lobby page (Gartic style) -->
+  <div class="lobby-page" id="lobby-page">
+    <div class="lob-left">
+      <div class="lob-sec-title">PLAYERS</div>
+      <div id="lob-plist"></div>
+    </div>
+    <div class="lob-right">
+      <div class="lob-right-title">PENGATURAN ALBUM</div>
+      <div class="settings-list">
+        <div class="setting-row">
+          <div class="setting-icon">⏱️</div>
+          <div class="setting-info">
+            <div class="setting-name">WAKTU PER RONDE</div>
+            <div class="setting-desc">Batas waktu untuk setiap tugas menulis/menggambar/menebak</div>
+          </div>
+          <div class="toggle-group" id="tg-time">
+            <button class="tog-btn" data-val="60" onclick="setSetting('time',60,this)">60s</button>
+            <button class="tog-btn active" data-val="90" onclick="setSetting('time',90,this)">90s</button>
+            <button class="tog-btn" data-val="120" onclick="setSetting('time',120,this)">120s</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-icon">🎨</div>
+          <div class="setting-info">
+            <div class="setting-name">MODE CANVAS</div>
+            <div class="setting-desc">Ukuran canvas untuk menggambar</div>
+          </div>
+          <div class="toggle-group" id="tg-canvas">
+            <button class="tog-btn active" data-val="normal" onclick="setSetting('canvas','normal',this)">Normal</button>
+            <button class="tog-btn" data-val="large" onclick="setSetting('canvas','large',this)">Besar</button>
+          </div>
+        </div>
       </div>
+      <!-- Host: START button. Non-host: waiting msg -->
+      <div class="lob-start-wrap" id="lob-start-wrap">
+        <button id="start-btn" class="btn btn-start" onclick="startGame()" disabled style="display:none">▶ MULAI GAME</button>
+        <div class="lob-hint" id="lob-hint">Menunggu host memulai...</div>
+        <div class="waiting-host" id="waiting-host" style="display:none">
+          <div style="font-size:48px">🎮</div>
+          <div class="waiting-host-txt">Menunggu host memulai game...</div>
+          <div class="waiting-dots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game area (sidebar + tasks) -->
+  <div class="game-area" id="game-area">
+    <div class="sidebar">
+      <div class="sb-hd"><span>Pemain</span><span id="pcnt" style="color:rgba(255,255,255,.4);font-size:11px">0/8</span></div>
       <div class="plist" id="plist"></div>
     </div>
+    <div class="gmain">
+      <div class="gcontent" id="gcontent">
 
-    <!-- Main -->
-    <div class="room-main">
-      <div class="room-content" id="rcontent">
-
-        <!-- LOBBY -->
-        <div id="v-lobby" class="lobby-box">
-          <span class="lobby-big">🎲</span>
-          <div class="lobby-title">Menunggu Pemain...</div>
-          <div class="lobby-sub">Bagikan kode room ke teman-temanmu!</div>
-          <div class="pcount">👥 <span id="lobby-cnt">1 pemain</span></div>
-          <button id="start-btn" class="btn btn-green" onclick="startGame()" disabled style="display:none">🎮 Mulai Game!</button>
-          <div class="char-c" id="start-hint" style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.5)">Menunggu host memulai...</div>
-        </div>
-
-        <!-- WAITING -->
+        <!-- WAIT -->
         <div id="v-wait" style="display:none" class="wait-box">
-          <span class="wait-big">⏳</span>
+          <span class="wait-em">⏳</span>
           <div class="wait-title">Menunggu yang lain...</div>
           <div class="wait-sub">Pemain lain sedang mengerjakan tugasnya</div>
-          <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
         </div>
 
-        <!-- WRITE INITIAL -->
-        <div id="v-wi" style="display:none" class="task-wrap">
-          <div class="task-hd"><div class="tbadge tb-init">✨ Tulis Kata Awal</div></div>
-          <div class="prompt-box">
-            <div class="prompt-lbl">Tulis kata atau kalimat bebas</div>
-            <div class="prompt-hint">Contoh: "kucing loncat di atas piano" atau "astronot makan bakso"<br>Kata ini akan digambar oleh pemain lain! 🎨</div>
+        <!-- WRITE INITIAL (Gartic-style full screen) -->
+        <div id="v-wi" style="display:none" class="wi-fullscreen">
+          <span class="wi-mascot">🐦</span>
+          <div class="wi-title">TULIS SEBUAH KALIMAT</div>
+          <div class="wi-inputrow">
+            <input id="wi-in" class="wi-inp" type="text" placeholder="Contoh: kucing loncat di atas piano..." maxlength="80">
+            <button class="btn-done" onclick="submitTask()">
+              <span style="font-size:20px">✅</span> DONE!
+            </button>
           </div>
-          <textarea id="wi-in" placeholder="Tulis kata atau kalimatmu..." rows="3" maxlength="80"></textarea>
-          <div class="char-c" id="wi-c">0/80</div>
+          <div class="char-c" id="wi-c" style="max-width:600px;margin:6px auto 0">0/80</div>
         </div>
 
-        <!-- WRITE (describe) -->
+        <!-- WRITE describe -->
         <div id="v-w" style="display:none" class="task-wrap">
-          <div class="task-hd"><div class="tbadge tb-write">✏️ Deskripsikan</div></div>
-          <div class="prompt-box">
-            <div class="prompt-lbl">Deskripsikan dengan kalimatmu sendiri</div>
-            <div class="prompt-val" id="w-word"></div>
+          <div class="task-hd">
+            <div class="tbadge tb-w">✏️ Deskripsikan</div>
+            <div class="timer-wrap" id="timer-w"><svg class="timer-svg" viewBox="0 0 56 56"><circle class="timer-bg" cx="28" cy="28" r="23"/><circle class="timer-arc" id="tarc-w" cx="28" cy="28" r="23"/></svg><div class="timer-num" id="tnum-w">90</div></div>
           </div>
+          <div class="prompt-box"><div class="prompt-lbl">Deskripsikan kata ini</div><div class="prompt-val" id="w-word"></div></div>
           <textarea id="w-in" placeholder="Tulis deskripsimu..." rows="3" maxlength="120"></textarea>
           <div class="char-c" id="w-c">0/120</div>
         </div>
 
         <!-- DRAW -->
         <div id="v-d" style="display:none" class="task-wrap">
-          <div class="task-hd"><div class="tbadge tb-draw">🎨 Gambar Ini!</div></div>
-          <div class="prompt-box">
-            <div class="prompt-lbl">Gambar tanpa menggunakan teks</div>
-            <div class="prompt-val" id="d-word"></div>
+          <div class="task-hd">
+            <div class="tbadge tb-d">🎨 Gambar Ini!</div>
+            <div class="timer-wrap" id="timer-d"><svg class="timer-svg" viewBox="0 0 56 56"><circle class="timer-bg" cx="28" cy="28" r="23"/><circle class="timer-arc" id="tarc-d" cx="28" cy="28" r="23"/></svg><div class="timer-num" id="tnum-d">90</div></div>
           </div>
-          <div class="cv-toolbar">
+          <div class="prompt-box"><div class="prompt-lbl">Gambar tanpa teks!</div><div class="prompt-val" id="d-word"></div></div>
+          <div class="cv-tb">
             <div class="tg" id="colorpal"></div>
             <div class="tsep"></div>
-            <div class="tg">
-              <span style="font-size:11px;color:var(--muted)">🖌️</span>
-              <input type="range" class="bsl" id="brushsz" min="2" max="40" value="6">
-            </div>
+            <div class="tg"><span style="font-size:11px;color:var(--muted)">🖌️</span><input type="range" class="bsl" id="brushsz" min="2" max="40" value="6"></div>
             <div class="tsep"></div>
             <div class="tg">
               <button class="tbtn on" id="btn-pen" onclick="setTool('pen')">✏️ Pen</button>
@@ -646,145 +516,124 @@ textarea::placeholder{color:rgba(255,255,255,0.3)}
 
         <!-- GUESS -->
         <div id="v-g" style="display:none" class="task-wrap">
-          <div class="task-hd"><div class="tbadge tb-guess">🔍 Tebak Gambar!</div></div>
-          <div class="prompt-box">
-            <div class="prompt-lbl">Menurutmu ini gambar apa?</div>
-            <img id="g-img" src="" alt="Gambar" class="prompt-img">
+          <div class="task-hd">
+            <div class="tbadge tb-g">🔍 Tebak!</div>
+            <div class="timer-wrap" id="timer-g"><svg class="timer-svg" viewBox="0 0 56 56"><circle class="timer-bg" cx="28" cy="28" r="23"/><circle class="timer-arc" id="tarc-g" cx="28" cy="28" r="23"/></svg><div class="timer-num" id="tnum-g">90</div></div>
           </div>
+          <div class="prompt-box"><div class="prompt-lbl">Ini gambar apa?</div><img id="g-img" src="" alt="Gambar" class="prompt-img"></div>
           <textarea id="g-in" placeholder="Tulis tebakanmu..." rows="2" maxlength="80"></textarea>
           <div class="char-c" id="g-c">0/80</div>
         </div>
 
       </div>
-      <div class="room-foot" id="rfoot">
-        <button class="btn btn-join" id="sub-btn" onclick="submitTask()">✓ Selesai!</button>
+      <!-- Footer submit (hidden for write_initial - has its own button) -->
+      <div class="gfoot" id="gfoot">
+        <button class="btn btn-join" onclick="submitTask()">✓ Selesai!</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════ RESULTS ══════════════ -->
+<!-- ══════════ RESULTS ══════════ -->
 <div id="screen-results" class="screen">
-  <div class="res-top">
-    <div class="res-title">🎉 Hasil Akhir!</div>
-    <div class="res-sub">Lihat betapa lucunya perjalanan kata-kata ini 😂</div>
-  </div>
+  <div class="res-top"><div class="res-title">🎉 Hasil Akhir!</div><div class="res-sub">Lihat betapa lucunya perjalanan ini 😂</div></div>
   <div class="res-body" id="res-body"></div>
-  <div class="res-foot" id="res-foot">
-    <button class="btn btn-yellow" onclick="playAgain()">🔄 Main Lagi</button>
-  </div>
+  <div class="res-foot" id="res-foot"><button class="btn btn-yellow" onclick="playAgain()">🔄 Main Lagi</button></div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-// ════════════════════════════════════════════════
-// ⚙️ CONFIG — Ganti dengan URL Worker setelah deploy!
+// ═══════════════════════════════════════════
+// ⚙️ CONFIG
 const BACKEND_URL = 'https://gartukbackend.secret5.workers.dev';
-// ════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 
-// Avatar list (dari Gartic Phone CDN)
-const AVATARS = [49,30,26,1,45,38,37,44,31,18,5,12,17,22,28,33,41,50,3,7];
-let selAvatar = AVATARS[0];
-let myId=null,myName='',myAvatarIdx=0,roomCode='';
+const AVATARS=[49,30,26,1,45,38,37,44,31,18,5,12,17,22,28,33,41,50,3,7];
+const PALETTE=['#222222','#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e91e8c','#ffffff','#95a5a6'];
+
+let ws=null,myId=null,myName='',selAvatar=AVATARS[0],roomCode='';
 let roomState=null,isHost=false,curTask=null;
 let curTool='pen',curColor='#222222',brushSz=6,drawing=false,lastX=0,lastY=0,ctx=null;
-let ws=null;
+let timerInterval=null,timerSecs=90,settings={time:90,canvas:'normal'};
 
-// Config check
-if(!BACKEND_URL||BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')document.getElementById('cfg').style.display='block';
+if(!BACKEND_URL||BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU') document.getElementById('cfg').style.display='block';
 
-// ── Stars ─────────────────────────────────────────
-(function(){
-  const c=document.getElementById('stars');
-  for(let i=0;i<25;i++){
-    const s=document.createElement('div');s.className='star';
-    s.style.cssText=`left:${Math.random()*100}%;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px;animation-duration:${6+Math.random()*8}s;animation-delay:${Math.random()*8}s`;
-    c.appendChild(s);
-  }
-})();
+// ── Stars ─────────────────────────────────
+(()=>{const c=document.getElementById('stars');for(let i=0;i<20;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px;animation-duration:${7+Math.random()*9}s;animation-delay:${Math.random()*8}s`;c.appendChild(s)}})();
 
-// ── Avatar system ─────────────────────────────────
-function avatarUrl(id){return `https://garticphone.com/images/avatar/${id}.svg`}
+// ── Avatar ────────────────────────────────
+function avaUrl(id){return`https://garticphone.com/images/avatar/${id}.svg`}
+function fallbackAva(){return`data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23a855f7"/><text x="50" y="65" font-size="40" text-anchor="middle">😊</text></svg>`}
 
 function buildAvaGrid(){
-  const grid=document.getElementById('ava-grid');grid.innerHTML='';
+  const g=document.getElementById('ava-grid');g.innerHTML='';
   AVATARS.slice(0,10).forEach((id,i)=>{
     const img=document.createElement('img');
-    img.src=avatarUrl(id);img.className='ava-opt'+(i===0?' selected':'');
-    img.alt='Avatar '+id;img.title='Avatar '+id;
-    img.onerror=()=>{img.src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23a855f7"/><text x="50" y="65" font-size="40" text-anchor="middle">😊</text></svg>'};
-    img.onclick=()=>selectAvatar(id,img);
-    grid.appendChild(img);
+    img.src=avaUrl(id);img.className='ava-opt'+(i===0?' sel':'');
+    img.onerror=()=>img.src=fallbackAva();
+    img.onclick=()=>{selAvatar=id;document.querySelectorAll('.ava-opt').forEach(x=>x.classList.remove('sel'));img.classList.add('sel');document.getElementById('ava-big').src=avaUrl(id)};
+    g.appendChild(img);
   });
-  updateBigAvatar(AVATARS[0]);
+  document.getElementById('ava-big').src=avaUrl(AVATARS[0]);
+  document.getElementById('ava-big').onerror=function(){this.src=fallbackAva()};
 }
 
-function selectAvatar(id,el){
-  selAvatar=id;
-  document.querySelectorAll('.ava-opt').forEach(x=>x.classList.remove('selected'));
-  el.classList.add('selected');
-  updateBigAvatar(id);
+function randomAva(){
+  const btn=document.querySelector('.ava-rfsh');
+  btn.style.transform='rotate(360deg)';setTimeout(()=>btn.style.transform='',400);
+  selAvatar=AVATARS[Math.floor(Math.random()*AVATARS.length)];
+  document.querySelectorAll('.ava-opt').forEach(x=>x.classList.remove('sel'));
+  const big=document.getElementById('ava-big');big.src=avaUrl(selAvatar);big.onerror=()=>big.src=fallbackAva();
 }
 
-function updateBigAvatar(id){
-  const big=document.getElementById('ava-big');
-  big.src=avatarUrl(id);
-  big.onerror=()=>{big.src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23a855f7"/><text x="50" y="65" font-size="40" text-anchor="middle">😊</text></svg>'};
+// ── Settings ──────────────────────────────
+function setSetting(key,val,btn){
+  settings[key]=val;
+  const grp=btn.closest('.toggle-group');
+  grp.querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(key==='time')timerSecs=val;
 }
 
-function randomAvatar(){
-  const btn=document.querySelector('.avatar-refresh');
-  btn.style.transform='rotate(360deg)';
-  setTimeout(()=>btn.style.transform='',400);
-  const rid=AVATARS[Math.floor(Math.random()*AVATARS.length)];
-  selAvatar=rid;
-  document.querySelectorAll('.ava-opt').forEach(x=>x.classList.remove('selected'));
-  updateBigAvatar(rid);
-}
-
-// ── WebSocket ─────────────────────────────────────
-function wsUrl(code,name,ava){
-  const base=BACKEND_URL.replace(/^http/,'ws');
-  return `${base}/ws/${code}?name=${encodeURIComponent(name)}&avatar=${ava}`;
-}
+// ── WS ────────────────────────────────────
+function wsUrl(code,name,ava){const base=BACKEND_URL.replace(/^http/,'ws');return`${base}/ws/${code}?name=${encodeURIComponent(name)}&avatar=${ava}`}
 function connectWS(code,name,ava){
   if(ws)ws.close();
   ws=new WebSocket(wsUrl(code,name,ava));
   ws.onopen=()=>{};
   ws.onclose=()=>showToast('⚠️ Koneksi terputus');
-  ws.onerror=()=>{showToast('❌ Gagal konek ke server');showErr('ce','Gagal konek. Cek URL backend!');showErr('je','Gagal konek. Cek URL backend!')};
+  ws.onerror=()=>{showToast('❌ Gagal konek');showErr('ce','Gagal konek. Cek URL!');showErr('je','Gagal konek. Cek URL!')};
   ws.onmessage=e=>{try{handle(JSON.parse(e.data))}catch(err){}};
 }
 function send(d){if(ws&&ws.readyState===1)ws.send(JSON.stringify(d))}
 
-// ── Message handler ───────────────────────────────
+// ── Handler ───────────────────────────────
 function handle(m){
   switch(m.type){
     case 'welcome':
       myId=m.playerId;isHost=m.isHost;roomState=m.roomState;
-      showScreen('room');updateRoom(m.roomState);showLobby();
-      const sb=document.getElementById('start-btn');
-      sb.style.display=isHost?'flex':'none';
-      if(!isHost)document.getElementById('start-hint').textContent='Menunggu host memulai...';
+      showScreen('room');updateLobby(m.roomState);showLobbyPage();
       break;
     case 'room_update':
       roomState=m.roomState;isHost=m.roomState?.hostId===myId;
-      updateRoom(m.roomState);
-      if(isHost&&m.roomState?.gameState==='lobby')document.getElementById('start-btn').style.display='flex';
+      if(m.roomState?.gameState==='lobby'||m.roomState?.gameState==='writing_phase'){
+        updateLobby(m.roomState);
+      } else {
+        updateSidebar(m.roomState);updateProg(m.roomState);
+      }
       break;
-    case 'player_joined': showToast('👋 '+m.name+' bergabung!'); break;
-    case 'player_left':   showToast('😢 '+m.name+' keluar'); break;
-    case 'game_started':  roomState=m.roomState;showRoundPill(m.roomState); break;
-    case 'your_task':     curTask=m;showTask(m); break;
-    case 'game_over':     roomState=m.roomState;showResults(m.results,m.roomState); break;
+    case 'player_joined': showToast('👋 '+m.name+' bergabung!');break;
+    case 'player_left':   showToast('😢 '+m.name+' keluar');break;
+    case 'game_started':  roomState=m.roomState;switchToGame();break;
+    case 'your_task':     curTask=m;showTask(m);break;
+    case 'game_over':     roomState=m.roomState;stopTimer();showResults(m.results,m.roomState);break;
     case 'back_to_lobby':
       roomState=m.roomState;isHost=m.roomState?.hostId===myId;curTask=null;
-      document.getElementById('round-pill').style.display='none';
+      stopTimer();
+      document.getElementById('rnd-pill').style.display='none';
       document.getElementById('progfill').style.width='0%';
-      showScreen('room');updateRoom(m.roomState);showLobby();
-      const sb2=document.getElementById('start-btn');
-      sb2.style.display=isHost?'flex':'none';
+      updateLobby(m.roomState);showLobbyPage();
       break;
     case 'error':
       showToast('❌ '+m.message);
@@ -794,10 +643,9 @@ function handle(m){
   }
 }
 
-// ── Actions ───────────────────────────────────────
+// ── Actions ───────────────────────────────
 function createRoom(){
-  const n=document.getElementById('nname').value.trim();
-  clearErr();
+  const n=document.getElementById('nname').value.trim();clearErr();
   if(!n)return showErr('ce','Masukkan nama dulu!');
   if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('ce','URL backend belum diatur!');
   roomCode=genCode();myName=n;
@@ -806,124 +654,185 @@ function createRoom(){
 }
 function joinRoom(){
   const n=document.getElementById('nname').value.trim();
-  const c=document.getElementById('jc').value.trim().toUpperCase();
-  clearErr();
+  const c=document.getElementById('jc').value.trim().toUpperCase();clearErr();
   if(!n)return showErr('je','Masukkan nama dulu!');
   if(!c||c.length!==4)return showErr('je','Kode room harus 4 karakter!');
   if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('je','URL backend belum diatur!');
   roomCode=c;myName=n;connectWS(c,n,selAvatar);
 }
-function startGame(){send({type:'start_game'})}
+function startGame(){send({type:'start_game',settings})}
 function playAgain(){send({type:'play_again'})}
 
 function submitTask(){
   if(!curTask)return;
+  stopTimer();
   let content='',type=curTask.taskType;
-  if(type==='write_initial'||type==='write'||type==='guess'){
-    const ids={write_initial:'wi-in',write:'w-in',guess:'g-in'};
-    const el=document.getElementById(ids[type]);
-    content=el.value.trim();
-    if(!content)return showToast('⚠️ Isi dulu sebelum submit!');
+  if(type==='write_initial'){
+    content=document.getElementById('wi-in').value.trim();
+    if(!content)return showToast('⚠️ Tulis kalimat dulu!');
+  } else if(type==='write'){
+    content=document.getElementById('w-in').value.trim();
+    if(!content)return showToast('⚠️ Tulis deskripsi dulu!');
   } else if(type==='draw'){
     content=document.getElementById('drawing-canvas').toDataURL('image/png');
+  } else if(type==='guess'){
+    content=document.getElementById('g-in').value.trim();
+    if(!content)return showToast('⚠️ Tulis tebakan dulu!');
   }
   send({type:'submit_task',taskType:type,content});
   showWait();
 }
+function copyCode(){navigator.clipboard.writeText(roomCode).then(()=>{const el=document.getElementById('chip-val')||document.getElementById('hcode');el.style.color='var(--teal)';showToast('✅ Kode disalin: '+roomCode);setTimeout(()=>el.style.color='',1500)})}
 
-function copyCode(){
-  navigator.clipboard.writeText(roomCode).then(()=>{
-    const el=document.getElementById('hcode');
-    el.style.color='var(--teal)';
-    showToast('✅ Kode disalin: '+roomCode);
-    setTimeout(()=>el.style.color='',1500);
-  });
-}
-
-// ── UI helpers ────────────────────────────────────
+// ── UI ────────────────────────────────────
 function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active')}
-function switchTab(t){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-  document.querySelector(`.tab-btn:nth-child(${t==='create'?1:2})`).classList.add('active');
-  document.getElementById('tab-'+t).classList.add('active');
+function switchTab(t){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));document.querySelector(`.tab-btn:nth-child(${t==='create'?1:2})`).classList.add('active');document.getElementById('tab-'+t).classList.add('active')}
+
+function showLobbyPage(){
+  document.getElementById('lobby-page').style.display='flex';
+  document.getElementById('game-area').classList.remove('active');
+  document.getElementById('rnd-pill').style.display='none';
 }
 
-function updateRoom(rs){
+function switchToGame(){
+  document.getElementById('lobby-page').style.display='none';
+  document.getElementById('game-area').classList.add('active');
+  document.getElementById('rnd-pill').style.display='flex';
+}
+
+function updateLobby(rs){
   if(!rs)return;
   document.getElementById('hcode').textContent=rs.code;
-  document.getElementById('pcnt').textContent=`${rs.players.length}/8`;
-  document.getElementById('lobby-cnt').textContent=`${rs.players.length} pemain`;
+  const pl=document.getElementById('lob-plist');pl.innerHTML='';
+  rs.players.forEach(p=>{
+    const ava=p.avatar||1;
+    pl.innerHTML+=`<div class="lob-pitem ${p.id===myId?'me':''}">
+      <img class="lob-pava" src="${avaUrl(ava)}" onerror="this.src='${fallbackAva()}'" alt="">
+      <span class="lob-pname">${esc(p.name)}</span>
+      ${p.id===myId?'<span class="lob-you">YOU</span>':''}
+      ${p.isHost?'<span class="lob-host">HOST</span>':''}
+    </div>`;
+  });
 
+  // Show/hide host controls
+  const sb=document.getElementById('start-btn');
+  const hint=document.getElementById('lob-hint');
+  const wh=document.getElementById('waiting-host');
+  if(rs.hostId===myId){
+    sb.style.display='flex';
+    sb.disabled=rs.players.length<2;
+    hint.style.display='block';
+    hint.textContent=rs.players.length<2?'Butuh minimal 2 pemain':'Semua siap! 🎉';
+    wh.style.display='none';
+  } else {
+    sb.style.display='none';
+    hint.style.display='none';
+    wh.style.display='block';
+  }
+  // Settings visible only for host
+  document.querySelector('.settings-list').style.opacity=rs.hostId===myId?'1':'0.5';
+  document.querySelector('.settings-list').style.pointerEvents=rs.hostId===myId?'auto':'none';
+}
+
+function updateSidebar(rs){
+  if(!rs)return;
+  document.getElementById('pcnt').textContent=`${rs.players.length}/8`;
   const list=document.getElementById('plist');list.innerHTML='';
   rs.players.forEach(p=>{
     const ava=p.avatar||1;
     const stlbl={waiting:'Menunggu',writing:'Menulis...',drawing:'Menggambar...',guessing:'Menebak...',done:'Selesai ✓'}[p.status]||p.status;
     list.innerHTML+=`<div class="pitem ${p.id===myId?'me':''}">
-      <div class="pava-wrap">
-        <img class="pava" src="${avatarUrl(ava)}" alt="${esc(p.name)}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23a855f7%22/><text x=%2250%22 y=%2265%22 font-size=%2240%22 text-anchor=%22middle%22>😊</text></svg>'">
-      </div>
-      <div class="pinfo">
-        <div class="pname">${esc(p.name)}${p.id===myId?' 👈':''}</div>
-        <div class="pstatus st-${p.status}">${stlbl}</div>
-      </div>
+      <img class="pava" src="${avaUrl(ava)}" onerror="this.src='${fallbackAva()}'" alt="">
+      <div class="pinfo"><div class="pname">${esc(p.name)}${p.id===myId?' 👈':''}</div><div class="pstatus st-${p.status}">${stlbl}</div></div>
       ${p.isHost?'<span class="host-tag">HOST</span>':''}
     </div>`;
   });
-
-  if(isHost&&rs.gameState==='lobby'){
-    const sb=document.getElementById('start-btn');
-    sb.disabled=rs.players.length<2;
-    document.getElementById('start-hint').textContent=rs.players.length<2?'Butuh minimal 2 pemain':'Semua siap! 🎉';
-  }
-  if(rs.gameState==='playing'&&rs.totalRounds>0){
-    const pct=((rs.round-1)/rs.totalRounds)*100;
-    document.getElementById('progfill').style.width=pct+'%';
-    document.getElementById('round-txt').textContent=`Ronde ${rs.round}/${rs.totalRounds}`;
-  }
 }
 
-function showRoundPill(rs){
-  const el=document.getElementById('round-pill');el.style.display='flex';
-  document.getElementById('round-txt').textContent=`Ronde ${rs.round}/${rs.totalRounds}`;
+function updateProg(rs){
+  if(!rs||!rs.totalRounds)return;
+  const pct=((rs.round-1)/rs.totalRounds)*100;
+  document.getElementById('progfill').style.width=pct+'%';
+  document.getElementById('rnd-txt').textContent=`Ronde ${rs.round}/${rs.totalRounds}`;
 }
 
-const VIEWS=['v-lobby','v-wait','v-wi','v-w','v-d','v-g'];
-function hideAll(){VIEWS.forEach(id=>document.getElementById(id).style.display='none')}
-function showLobby(){hideAll();document.getElementById('v-lobby').style.display='';document.getElementById('rfoot').style.display='none'}
-function showWait(){hideAll();document.getElementById('v-wait').style.display='';document.getElementById('rfoot').style.display='none';curTask=null}
+const VIEWS=['v-wait','v-wi','v-w','v-d','v-g'];
+function hideAllViews(){VIEWS.forEach(id=>document.getElementById(id).style.display='none')}
+function showWait(){stopTimer();hideAllViews();document.getElementById('v-wait').style.display='';document.getElementById('gfoot').style.display='none';curTask=null}
 
 function showTask(t){
-  hideAll();
-  document.getElementById('rfoot').style.display='block';
-  document.getElementById('round-pill').style.display='flex';
-  if(t.totalRounds>0)document.getElementById('round-txt').textContent=`Ronde ${t.round}/${t.totalRounds}`;
+  hideAllViews();
+  document.getElementById('rnd-txt').textContent=`Ronde ${t.round}/${t.totalRounds}`;
+  updateSidebar(roomState);updateProg(roomState);
 
   if(t.taskType==='write_initial'){
     document.getElementById('v-wi').style.display='';
-    document.getElementById('wi-in').value='';document.getElementById('wi-c').textContent='0/80';
+    document.getElementById('gfoot').style.display='none';
+    document.getElementById('wi-in').value='';
+    document.getElementById('wi-c').textContent='0/80';
+    document.getElementById('wi-in').focus();
+    startTimer('wi',settings.time);
   } else if(t.taskType==='write'){
     document.getElementById('v-w').style.display='';
+    document.getElementById('gfoot').style.display='block';
     document.getElementById('w-word').textContent=t.content;
     document.getElementById('w-in').value='';document.getElementById('w-c').textContent='0/120';
+    startTimer('w',settings.time);
   } else if(t.taskType==='draw'){
     document.getElementById('v-d').style.display='';
+    document.getElementById('gfoot').style.display='block';
     document.getElementById('d-word').textContent=t.content;
     initCv();clearCv();
+    startTimer('d',settings.time);
   } else if(t.taskType==='guess'){
     document.getElementById('v-g').style.display='';
+    document.getElementById('gfoot').style.display='block';
     document.getElementById('g-img').src=t.content;
     document.getElementById('g-in').value='';document.getElementById('g-c').textContent='0/80';
+    startTimer('g',settings.time);
   }
 }
 
-// ── Canvas ────────────────────────────────────────
-const PALETTE=['#222222','#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e91e8c','#ffffff','#95a5a6'];
+// ── Timer ─────────────────────────────────
+const CIRC=2*Math.PI*23; // circumference of r=23
+
+function startTimer(view,secs){
+  stopTimer();
+  let remaining=secs;
+  const arcEl=document.getElementById('tarc-'+view);
+  const numEl=document.getElementById('tnum-'+view);
+  const wrapEl=document.getElementById('timer-'+view);
+  if(!arcEl||!numEl)return;
+
+  arcEl.style.strokeDasharray=CIRC;
+  arcEl.style.strokeDashoffset=0;
+  numEl.textContent=remaining;
+  wrapEl.classList.remove('warn','urgent');
+
+  timerInterval=setInterval(()=>{
+    remaining--;
+    if(remaining<=0){
+      stopTimer();
+      submitTask(); // auto-submit when time runs out
+      return;
+    }
+    const offset=CIRC*(1-remaining/secs);
+    arcEl.style.strokeDashoffset=offset;
+    numEl.textContent=remaining;
+    wrapEl.classList.toggle('warn',remaining<=30&&remaining>10);
+    wrapEl.classList.toggle('urgent',remaining<=10);
+  },1000);
+}
+
+function stopTimer(){clearInterval(timerInterval);timerInterval=null}
+
+// ── Canvas ────────────────────────────────
 function initCv(){
   const cv=document.getElementById('drawing-canvas');
   const wrap=cv.parentElement;
-  cv.width=Math.min(wrap.offsetWidth-4,660);
-  cv.height=Math.min(window.innerHeight-430,290);
+  const large=settings.canvas==='large';
+  cv.width=Math.min(wrap.offsetWidth-4,large?760:660);
+  cv.height=Math.min(window.innerHeight-(large?380:420),large?360:290);
   ctx=cv.getContext('2d');ctx.lineCap='round';ctx.lineJoin='round';
   cv.onmousedown=sDr;cv.onmousemove=doDr;cv.onmouseup=eDr;cv.onmouseleave=eDr;
   cv.ontouchstart=e=>{e.preventDefault();sDr(e.touches[0])};
@@ -942,48 +851,47 @@ function buildPal(){
   PALETTE.forEach(c=>{
     const b=document.createElement('div');b.className='colo'+(c===curColor?' on':'');
     b.style.background=c;
-    if(c==='#ffffff')b.style.boxShadow='inset 0 0 0 1px rgba(255,255,255,0.3)';
+    if(c==='#ffffff')b.style.boxShadow='inset 0 0 0 1px rgba(255,255,255,.3)';
     b.onclick=()=>{curColor=c;setTool('pen');document.querySelectorAll('.colo').forEach(x=>x.classList.remove('on'));b.classList.add('on')};
     pal.appendChild(b);
   });
   document.getElementById('brushsz').addEventListener('input',e=>brushSz=+e.target.value);
 }
 
-// ── Results ───────────────────────────────────────
+// ── Results ───────────────────────────────
 function showResults(results,rs){
   showScreen('results');
   const body=document.getElementById('res-body');body.innerHTML='';
-  results.forEach((chain)=>{
+  results.forEach(chain=>{
     const ava=chain.ownerAvatar||1;
-    let itemsHtml='';
+    let html='';
     chain.chain.forEach((item,idx)=>{
       const tl={word:'📝 Kata Awal',write:'✏️ Deskripsi',draw:'🎨 Gambar',guess:'🔍 Tebakan'}[item.type]||item.type;
-      const cv=item.type==='draw'?`<img src="${item.content}" class="rci-img" alt="drawing">` :`<div class="rci-txt">${esc(item.content)}</div>`;
-      itemsHtml+=`<div class="rcitem-wrap"><div class="rcitem t-${item.type}"><div class="rci-type">${tl}</div><div class="rci-auth">oleh ${esc(item.authorName||'?')}</div>${cv}</div>${idx<chain.chain.length-1?'<div class="rarrow">→</div>':''}</div>`;
+      const cv=item.type==='draw'?`<img src="${item.content}" class="rci-img" alt="draw">`:`<div class="rci-txt">${esc(item.content)}</div>`;
+      html+=`<div class="rcitem-wrap"><div class="rcitem t-${item.type}"><div class="rci-type">${tl}</div><div class="rci-auth">oleh ${esc(item.authorName||'?')}</div>${cv}</div>${idx<chain.chain.length-1?'<div class="rarrow">→</div>':''}</div>`;
     });
-    body.innerHTML+=`<div class="rchain"><div class="rchain-top"><img class="rchain-ava" src="${avatarUrl(ava)}" alt="${esc(chain.ownerName||'?')}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23a855f7%22/><text x=%2250%22 y=%2265%22 font-size=%2240%22 text-anchor=%22middle%22>😊</text></svg>'"><div class="rchain-name">Rantai milik ${esc(chain.ownerName||'?')}</div></div><div class="rchain-scroll">${itemsHtml}</div></div>`;
+    body.innerHTML+=`<div class="rchain"><div class="rchain-top"><img class="rchain-ava" src="${avaUrl(ava)}" onerror="this.src='${fallbackAva()}'" alt=""><div class="rchain-name">Rantai milik ${esc(chain.ownerName||'?')}</div></div><div class="rchain-scroll">${html}</div></div>`;
   });
-  const rf=document.getElementById('res-foot');
-  rf.style.display=rs?.hostId===myId?'flex':'none';
+  document.getElementById('res-foot').style.display=rs?.hostId===myId?'flex':'none';
 }
 
-// ── Helpers ───────────────────────────────────────
+// ── Helpers ───────────────────────────────
 function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('')}
 function showErr(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show')}}
 function clearErr(){document.querySelectorAll('.errmsg').forEach(e=>{e.textContent='';e.classList.remove('show')})}
 let tt;function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2500)}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-// ── Textarea counters ─────────────────────────────
+// ── Listeners ─────────────────────────────
 document.getElementById('wi-in').addEventListener('input',function(){document.getElementById('wi-c').textContent=`${this.value.length}/80`});
+document.getElementById('wi-in').addEventListener('keydown',e=>{if(e.key==='Enter')submitTask()});
 document.getElementById('w-in').addEventListener('input',function(){document.getElementById('w-c').textContent=`${this.value.length}/120`});
 document.getElementById('g-in').addEventListener('input',function(){document.getElementById('g-c').textContent=`${this.value.length}/80`});
 document.getElementById('jc').addEventListener('input',function(){this.value=this.value.toUpperCase()});
 document.getElementById('jc').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom()});
 document.getElementById('nname').addEventListener('keydown',e=>{if(e.key==='Enter'){const t=document.querySelector('.tab-pane.active');if(t.id==='tab-join')joinRoom();else createRoom()}});
 
-buildPal();
-buildAvaGrid();
+buildPal();buildAvaGrid();
 </script>
 </body>
 </html>
