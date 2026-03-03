@@ -3,323 +3,661 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎨 Coret-Coret — Drawing Telephone</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<title>Coret-Coret 🎨</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Base ─────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg: #0f0e17;
-  --surface: #1a1826;
-  --card: #231f35;
-  --border: #312d4a;
-  --accent: #ff6b6b;
-  --accent2: #ffd93d;
-  --accent3: #6bcb77;
-  --accent4: #4d96ff;
-  --text: #fffffe;
-  --muted: #9b96b8;
-  --radius: 16px;
-  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pu1:#6a0dad;--pu2:#8b1fcf;--pu3:#a855f7;
+  --bg1:#3d0066;--bg2:#6b21a8;--bg3:#9333ea;
+  --card:#7c3aed;--card2:#6d28d9;
+  --teal:#00e5cc;--teal2:#00bfa5;
+  --yellow:#ffd600;--yellow2:#ffab00;
+  --pink:#ff4fa3;--green:#00e676;
+  --text:#fff;--muted:rgba(255,255,255,0.6);
+  --border:rgba(255,255,255,0.15);
+  --r:18px;
 }
-html, body { height: 100%; overflow: hidden; }
-body {
-  font-family: 'Nunito', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+html,body{height:100%;font-family:'Nunito',sans-serif;overflow:hidden;background:var(--bg1)}
+body{
+  background:linear-gradient(135deg,#3d0066 0%,#6b21a8 40%,#9333ea 100%);
+  min-height:100vh;position:relative;
 }
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 9999; opacity: 0.6;
+/* Animated purple mesh */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 10% 20%,rgba(255,79,163,0.25) 0%,transparent 50%),
+    radial-gradient(ellipse at 90% 80%,rgba(0,229,204,0.2) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(168,85,247,0.3) 0%,transparent 70%);
+  animation:meshMove 8s ease-in-out infinite;
 }
-.blob { position: fixed; border-radius: 50%; filter: blur(80px); animation: blobFloat 8s ease-in-out infinite; pointer-events: none; z-index: 0; }
-.blob1 { width: 400px; height: 400px; background: rgba(255,107,107,0.12); top:-100px; left:-100px; }
-.blob2 { width: 300px; height: 300px; background: rgba(77,150,255,0.1); bottom:-80px; right:-80px; animation-delay:3s; }
-.blob3 { width: 250px; height: 250px; background: rgba(255,217,61,0.08); top:50%; left:60%; animation-delay:5s; }
-@keyframes blobFloat { 0%,100% { transform:translate(0,0) scale(1); } 50% { transform:translate(30px,-20px) scale(1.05); } }
+@keyframes meshMove{0%,100%{opacity:1}50%{opacity:0.7}}
 
-.screen { display: none; width: 100%; height: 100vh; position: relative; z-index: 1; }
-.screen.active { display: flex; }
+/* Floating stars */
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.6);animation:starFloat linear infinite}
+@keyframes starFloat{0%{transform:translateY(100vh) rotate(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-20px) rotate(720deg);opacity:0}}
 
-/* ── LANDING ────────────────────────────────────────────── */
-#screen-landing { flex-direction:column; align-items:center; justify-content:center; padding:24px; }
-.logo { font-family:'Fredoka One',cursive; font-size:clamp(48px,8vw,80px); background:linear-gradient(135deg,#ff6b6b,#ffd93d,#4d96ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:6px; animation:logoGlow 3s ease-in-out infinite; }
-@keyframes logoGlow { 0%,100% { filter:drop-shadow(0 0 20px rgba(255,107,107,0.3)); } 50% { filter:drop-shadow(0 0 40px rgba(77,150,255,0.4)); } }
-.tagline { color:var(--muted); font-size:16px; margin-bottom:48px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
-.card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:32px; width:100%; max-width:440px; box-shadow:var(--shadow); }
-.card-tabs { display:flex; background:var(--surface); border-radius:12px; padding:4px; margin-bottom:28px; }
-.tab-btn { flex:1; padding:10px; border:none; background:none; color:var(--muted); font-family:'Nunito',sans-serif; font-weight:700; font-size:14px; border-radius:10px; cursor:pointer; transition:all 0.2s; }
-.tab-btn.active { background:var(--accent); color:white; }
-.tab-pane { display:none; }
-.tab-pane.active { display:block; }
-.input-group { margin-bottom:16px; }
-.input-group label { display:block; font-size:13px; font-weight:700; color:var(--muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px; }
-.input-group input { width:100%; padding:14px 16px; background:var(--surface); border:2px solid var(--border); border-radius:12px; color:var(--text); font-size:16px; font-family:'Nunito',sans-serif; font-weight:600; transition:border-color 0.2s; outline:none; }
-.input-group input:focus { border-color:var(--accent4); }
-.input-group input::placeholder { color:var(--muted); }
-.btn { width:100%; padding:14px; border:none; border-radius:12px; font-family:'Fredoka One',cursive; font-size:18px; cursor:pointer; transition:all 0.2s; letter-spacing:0.5px; }
-.btn-primary { background:var(--accent); color:white; }
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(255,107,107,0.4); }
-.btn-secondary { background:var(--accent4); color:white; }
-.btn-secondary:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(77,150,255,0.4); }
-.btn-green { background:var(--accent3); color:#0f0e17; }
-.btn-green:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(107,203,119,0.4); }
-.btn-yellow { background:var(--accent2); color:#0f0e17; }
-.btn-yellow:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(255,217,61,0.4); }
-.btn:active { transform:translateY(0); }
-.btn:disabled { opacity:0.4; cursor:not-allowed; transform:none !important; }
-.error-msg { color:var(--accent); font-size:13px; font-weight:700; margin-top:8px; display:none; }
-.error-msg.show { display:block; }
+.screen{display:none;width:100%;height:100vh;position:relative;z-index:1}
+.screen.active{display:flex}
 
-/* ── ROOM ───────────────────────────────────────────────── */
-#screen-room { flex-direction:column; padding:0; overflow:hidden; }
-.room-header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
-.room-title { font-family:'Fredoka One',cursive; font-size:22px; }
-.room-code-badge { display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 14px; cursor:pointer; transition:border-color 0.2s; }
-.room-code-badge:hover { border-color:var(--accent4); }
-.room-code-badge .label { font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; }
-.room-code-badge .code { font-family:'Fredoka One',cursive; font-size:20px; color:var(--accent2); letter-spacing:3px; }
-.room-body { display:flex; flex:1; overflow:hidden; }
-.player-sidebar { width:220px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; }
-.sidebar-title { padding:16px; font-size:12px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); }
-.player-list { flex:1; overflow-y:auto; padding:8px; }
-.player-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; margin-bottom:4px; }
-.player-item.me { background:rgba(77,150,255,0.12); }
-.player-avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:14px; flex-shrink:0; }
-.player-info { flex:1; min-width:0; }
-.player-name { font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.player-status { font-size:11px; font-weight:600; }
-.status-waiting { color:var(--muted); }
-.status-writing { color:var(--accent2); }
-.status-drawing { color:var(--accent4); }
-.status-guessing { color:var(--accent3); }
-.status-done { color:var(--accent3); }
-.host-badge { font-size:10px; background:var(--accent); color:white; padding:2px 6px; border-radius:6px; font-weight:800; }
-.room-main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-.room-content { flex:1; display:flex; align-items:center; justify-content:center; padding:24px; overflow:auto; }
-.room-footer { padding:16px 24px; background:var(--surface); border-top:1px solid var(--border); flex-shrink:0; }
+/* ════════════ LANDING ════════════ */
+#screen-landing{
+  flex-direction:column;align-items:center;
+  padding:0 20px 20px;overflow-y:auto;
+}
 
-/* ── Lobby ──────────────────────────────────────────────── */
-.lobby-box { text-align:center; max-width:400px; width:100%; }
-.lobby-icon { font-size:64px; margin-bottom:16px; animation:bounce 2s infinite; }
-@keyframes bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
-.lobby-title { font-family:'Fredoka One',cursive; font-size:28px; margin-bottom:8px; }
-.lobby-subtitle { color:var(--muted); font-size:15px; margin-bottom:24px; }
-.player-count-badge { display:inline-flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:6px 16px; font-weight:700; margin-bottom:20px; }
-.min-players-note { font-size:13px; color:var(--muted); margin-top:10px; }
+/* Logo */
+.logo-wrap{text-align:center;padding:24px 0 20px;flex-shrink:0}
+.logo-main{
+  font-family:'Fredoka One',cursive;font-size:clamp(42px,7vw,72px);
+  color:#fff;text-shadow:0 4px 0 rgba(0,0,0,0.3),0 0 40px rgba(255,79,163,0.5);
+  letter-spacing:2px;line-height:1;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+}
+.logo-emoji{font-size:0.85em;animation:logoBounce 2s ease-in-out infinite}
+@keyframes logoBounce{0%,100%{transform:rotate(-5deg) scale(1)}50%{transform:rotate(5deg) scale(1.1)}}
+.logo-sub{
+  font-size:13px;font-weight:800;letter-spacing:4px;text-transform:uppercase;
+  color:var(--teal);text-shadow:0 0 20px rgba(0,229,204,0.6);margin-top:6px;
+}
 
-/* ── Task views ─────────────────────────────────────────── */
-.waiting-box { text-align:center; max-width:360px; }
-.waiting-spinner { width:48px; height:48px; border:4px solid var(--border); border-top-color:var(--accent4); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 16px; }
-@keyframes spin { to { transform:rotate(360deg); } }
-.task-box { width:100%; max-width:680px; }
-.task-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:8px; }
-.task-prompt { background:var(--card); border:2px solid var(--border); border-radius:var(--radius); padding:20px 24px; margin-bottom:16px; }
-.task-prompt .from-label { font-size:11px; color:var(--muted); margin-bottom:6px; font-weight:700; }
-.task-prompt .content { font-family:'Fredoka One',cursive; font-size:22px; color:var(--accent2); }
-.task-prompt img { max-width:100%; border-radius:8px; }
-textarea { width:100%; min-height:80px; padding:14px 16px; background:var(--surface); border:2px solid var(--border); border-radius:12px; color:var(--text); font-size:16px; font-family:'Nunito',sans-serif; font-weight:600; resize:vertical; outline:none; transition:border-color 0.2s; }
-textarea:focus { border-color:var(--accent4); }
-.progress-bar { height:4px; background:var(--border); border-radius:2px; margin-bottom:16px; overflow:hidden; }
-.progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent4)); border-radius:2px; transition:width 0.5s; }
-.round-badge { display:flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:6px 14px; font-size:13px; font-weight:700; }
-.round-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); animation:pulse 1.5s infinite; }
-@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+/* Two-column layout */
+.landing-cols{display:flex;gap:16px;width:100%;max-width:860px;align-items:flex-start}
+@media(max-width:680px){.landing-cols{flex-direction:column}}
 
-/* ── Canvas ─────────────────────────────────────────────── */
-#drawing-canvas { background:white; border-radius:12px; cursor:crosshair; display:block; touch-action:none; box-shadow:0 4px 24px rgba(0,0,0,0.4); }
-.canvas-tools { display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:10px 16px; margin-bottom:12px; flex-wrap:wrap; }
-.tool-group { display:flex; align-items:center; gap:6px; }
-.tool-sep { width:1px; height:28px; background:var(--border); margin:0 4px; }
-.color-btn { width:28px; height:28px; border-radius:50%; border:3px solid transparent; cursor:pointer; transition:transform 0.15s,border-color 0.15s; flex-shrink:0; }
-.color-btn.active { border-color:white; transform:scale(1.2); }
-.brush-slider { -webkit-appearance:none; height:4px; border-radius:2px; background:var(--border); width:80px; accent-color:var(--accent4); }
-.tool-icon-btn { padding:6px 12px; background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; font-family:'Nunito',sans-serif; }
-.tool-icon-btn:hover { background:var(--border); }
-.tool-icon-btn.active { background:var(--accent); border-color:var(--accent); }
+/* Main card */
+.main-card{
+  flex:1.3;
+  background:rgba(124,58,237,0.5);
+  backdrop-filter:blur(20px);
+  border:2px solid rgba(255,255,255,0.15);
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.card-invite{
+  font-family:'Fredoka One',cursive;font-size:16px;letter-spacing:1px;
+  color:var(--teal);text-align:center;margin-bottom:20px;
+  text-shadow:0 0 16px rgba(0,229,204,0.6);
+}
 
-/* ── Results ────────────────────────────────────────────── */
-#screen-results { flex-direction:column; overflow:hidden; }
-.results-header { text-align:center; padding:24px 24px 16px; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
-.results-title { font-family:'Fredoka One',cursive; font-size:32px; background:linear-gradient(135deg,#ff6b6b,#ffd93d); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.results-body { flex:1; overflow-y:auto; padding:24px; }
-.chain-block { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:24px; overflow:hidden; }
-.chain-header { display:flex; align-items:center; gap:12px; padding:16px 20px; background:var(--surface); border-bottom:1px solid var(--border); }
-.chain-header .avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:15px; }
-.chain-header .name { font-weight:800; }
-.chain-items { display:flex; overflow-x:auto; padding:20px; gap:0; }
-.chain-item { display:flex; align-items:center; flex-shrink:0; }
-.chain-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; width:180px; flex-shrink:0; }
-.chain-card .step-type { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
-.step-word .step-type { color:var(--accent2); }
-.step-draw .step-type { color:var(--accent4); }
-.step-guess .step-type { color:var(--accent3); }
-.chain-card .author { font-size:11px; color:var(--muted); margin-bottom:6px; }
-.chain-card .chain-text { font-family:'Fredoka One',cursive; font-size:16px; word-break:break-word; }
-.chain-card img { width:100%; border-radius:8px; }
-.chain-arrow { font-size:24px; color:var(--muted); padding:0 12px; flex-shrink:0; }
-.results-footer { padding:20px 24px; background:var(--surface); border-top:1px solid var(--border); display:flex; justify-content:center; gap:12px; flex-shrink:0; }
-.results-footer .btn { width:auto; padding:14px 32px; }
+/* Avatar selector */
+.avatar-section{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+.avatar-big-wrap{
+  position:relative;width:100px;height:100px;flex-shrink:0;cursor:pointer;
+}
+.avatar-big{
+  width:100px;height:100px;border-radius:50%;
+  border:4px solid rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.1);
+  object-fit:cover;transition:transform 0.2s,border-color 0.2s;
+  display:block;
+}
+.avatar-big:hover{transform:scale(1.05)}
+.avatar-big-wrap.selected .avatar-big{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,229,204,0.3)}
+.avatar-refresh{
+  position:absolute;bottom:2px;right:2px;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--teal);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:transform 0.3s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+.avatar-refresh:hover{transform:rotate(180deg)}
 
-/* ── Toast & Misc ───────────────────────────────────────── */
-#toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 20px; font-weight:700; font-size:14px; z-index:9998; transition:transform 0.3s; white-space:nowrap; }
-#toast.show { transform:translateX(-50%) translateY(0); }
-.copied { color:var(--accent3) !important; }
-::-webkit-scrollbar { width:6px; height:6px; }
-::-webkit-scrollbar-track { background:var(--surface); }
-::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+.avatar-right{flex:1}
+.avatar-label{
+  font-family:'Fredoka One',cursive;font-size:15px;letter-spacing:1px;
+  color:var(--text);margin-bottom:12px;text-align:center;
+}
 
-/* ── Config banner ──────────────────────────────────────── */
-#config-banner { position:fixed; top:0; left:0; right:0; background:#ff6b6b; color:white; text-align:center; padding:10px; font-weight:700; font-size:14px; z-index:10000; display:none; }
-#config-banner a { color:white; text-decoration:underline; cursor:pointer; }
+/* Avatar grid picker */
+.avatar-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+  background:rgba(0,0,0,0.2);border-radius:14px;padding:10px;
+}
+.ava-opt{
+  width:100%;aspect-ratio:1;border-radius:50%;
+  border:3px solid transparent;cursor:pointer;
+  background:rgba(255,255,255,0.1);
+  object-fit:cover;transition:all 0.15s;
+}
+.ava-opt:hover{transform:scale(1.1);border-color:rgba(255,255,255,0.4)}
+.ava-opt.selected{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,229,204,0.4);transform:scale(1.08)}
+
+/* Name input */
+.name-section{margin-bottom:20px}
+.name-lbl{
+  font-family:'Fredoka One',cursive;font-size:15px;letter-spacing:1px;
+  color:var(--text);text-align:center;margin-bottom:10px;
+}
+.name-input{
+  width:100%;padding:14px 18px;
+  background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.2);
+  border-radius:14px;color:#fff;
+  font-size:17px;font-family:'Nunito',sans-serif;font-weight:800;
+  outline:none;transition:all 0.2s;text-align:center;
+}
+.name-input:focus{background:rgba(255,255,255,0.2);border-color:var(--teal);box-shadow:0 0 0 4px rgba(0,229,204,0.2)}
+.name-input::placeholder{color:rgba(255,255,255,0.4)}
+
+/* Tabs */
+.tabs{display:flex;background:rgba(0,0,0,0.25);border-radius:12px;padding:4px;gap:4px;margin-bottom:16px}
+.tab-btn{
+  flex:1;padding:10px;border:none;background:none;color:rgba(255,255,255,0.5);
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;
+  border-radius:10px;cursor:pointer;transition:all 0.2s;
+}
+.tab-btn.active{background:var(--teal);color:#1a0033;box-shadow:0 3px 12px rgba(0,229,204,0.4)}
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+.room-code-input{
+  width:100%;padding:14px 18px;
+  background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.2);
+  border-radius:14px;color:#fff;
+  font-size:28px;font-family:'Fredoka One',cursive;
+  outline:none;transition:all 0.2s;text-align:center;
+  letter-spacing:8px;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.room-code-input:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(0,229,204,0.2)}
+.room-code-input::placeholder{font-size:16px;letter-spacing:2px;color:rgba(255,255,255,0.3)}
+
+/* Buttons */
+.btn{
+  width:100%;padding:15px 20px;border:none;border-radius:14px;
+  font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;
+  transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;
+  letter-spacing:0.5px;position:relative;overflow:hidden;
+}
+.btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background 0.15s}
+.btn:hover::after{background:rgba(255,255,255,0.1)}
+.btn:active{transform:scale(0.98)}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+.btn-join{
+  background:linear-gradient(135deg,#00e5cc,#00bfa5);color:#1a0033;
+  box-shadow:0 6px 20px rgba(0,229,204,0.4),0 2px 0 rgba(0,150,135,0.5);
+}
+.btn-join:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,229,204,0.55)}
+.btn-create{
+  background:linear-gradient(135deg,#ff4fa3,#d4006c);color:#fff;
+  box-shadow:0 6px 20px rgba(255,79,163,0.4),0 2px 0 rgba(160,0,80,0.5);
+}
+.btn-create:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,79,163,0.55)}
+.btn-green{
+  background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;
+  box-shadow:0 6px 20px rgba(0,230,118,0.4),0 2px 0 rgba(0,150,50,0.5);
+}
+.btn-green:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,230,118,0.55)}
+.btn-yellow{
+  background:linear-gradient(135deg,#ffd600,#ffab00);color:#1a0033;
+  box-shadow:0 6px 20px rgba(255,214,0,0.4),0 2px 0 rgba(180,120,0,0.5);
+}
+.btn-yellow:hover:not(:disabled){transform:translateY(-2px)}
+.btn-purple{
+  background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;
+  box-shadow:0 6px 20px rgba(168,85,247,0.4);
+}
+
+.errmsg{
+  color:#ffb3c6;font-size:13px;font-weight:800;margin-top:10px;
+  display:none;padding:10px 14px;
+  background:rgba(255,79,163,0.15);border-radius:10px;
+  border-left:3px solid var(--pink);text-align:center;
+}
+.errmsg.show{display:block}
+
+/* How-to card */
+.howto-card{
+  flex:1;
+  background:rgba(124,58,237,0.45);
+  backdrop-filter:blur(20px);
+  border:2px solid rgba(255,255,255,0.12);
+  border-radius:24px;padding:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+}
+.howto-title{
+  font-family:'Fredoka One',cursive;font-size:18px;letter-spacing:2px;
+  color:var(--teal);text-align:center;margin-bottom:16px;
+  text-shadow:0 0 16px rgba(0,229,204,0.5);
+}
+.howto-art{text-align:center;font-size:56px;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.howto-steps{display:flex;flex-direction:column;gap:10px}
+.howto-step{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 14px;background:rgba(0,0,0,0.2);border-radius:12px;
+}
+.step-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--teal);color:#1a0033;
+  font-family:'Fredoka One',cursive;font-size:14px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(0,229,204,0.4);
+}
+.step-txt{font-size:13px;font-weight:700;color:rgba(255,255,255,0.9);line-height:1.4}
+
+/* ════════════ ROOM SCREEN ════════════ */
+#screen-room{flex-direction:column;overflow:hidden}
+
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:64px;flex-shrink:0;
+  background:rgba(61,0,102,0.7);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.topbar-logo{
+  font-family:'Fredoka One',cursive;font-size:22px;color:#fff;
+  text-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;
+}
+.round-pill{
+  display:none;align-items:center;gap:7px;
+  background:rgba(255,79,163,0.2);border:1.5px solid rgba(255,79,163,0.4);
+  border-radius:20px;padding:6px 14px;font-size:13px;font-weight:800;color:#ff9ec8;
+}
+.rpdot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:rpp 1.5s infinite}
+@keyframes rpp{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.code-badge{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:14px;padding:8px 16px;cursor:pointer;transition:all 0.2s;
+}
+.code-badge:hover{background:rgba(0,229,204,0.15);border-color:rgba(0,229,204,0.4)}
+.code-badge .lbl{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.code-badge .val{font-family:'Fredoka One',cursive;font-size:22px;color:var(--yellow);letter-spacing:6px}
+.code-badge .ic{font-size:16px;opacity:0.6}
+
+.progbar{height:4px;background:rgba(255,255,255,0.08);flex-shrink:0;position:relative}
+.progfill{height:100%;background:linear-gradient(90deg,var(--pink),var(--teal));transition:width 0.6s ease;width:0%}
+
+.room-body{display:flex;flex:1;overflow:hidden;min-height:0}
+
+/* Sidebar */
+.sidebar{
+  width:210px;flex-shrink:0;
+  background:rgba(61,0,102,0.5);
+  border-right:1px solid rgba(255,255,255,0.08);
+  display:flex;flex-direction:column;
+}
+.sidebar-hd{
+  padding:14px 16px 10px;
+  font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1.5px;
+  color:var(--teal);text-transform:uppercase;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.plist{flex:1;overflow-y:auto;padding:8px}
+.pitem{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px;border-radius:12px;margin-bottom:4px;
+  transition:background 0.15s;
+}
+.pitem.me{background:rgba(0,229,204,0.1)}
+.pava-wrap{position:relative;flex-shrink:0}
+.pava{width:36px;height:36px;border-radius:50%;border:2px solid transparent;object-fit:cover;background:rgba(255,255,255,0.1)}
+.pitem.me .pava{border-color:var(--teal)}
+.pinfo{flex:1;min-width:0}
+.pname{font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+.pstatus{font-size:11px;font-weight:700;margin-top:1px}
+.st-waiting{color:rgba(255,255,255,0.4)}
+.st-writing{color:var(--yellow)}
+.st-drawing{color:var(--teal)}
+.st-guessing{color:var(--green)}
+.st-done{color:var(--green)}
+.host-tag{font-family:'Fredoka One',cursive;font-size:9px;background:var(--pink);color:white;padding:2px 7px;border-radius:6px;flex-shrink:0;letter-spacing:0.5px}
+
+/* Main area */
+.room-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.room-content{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+.room-foot{padding:14px 20px;background:rgba(61,0,102,0.6);border-top:1px solid rgba(255,255,255,0.08);flex-shrink:0;display:none}
+
+/* ── LOBBY ── */
+.lobby-box{text-align:center;max-width:460px;width:100%}
+.lobby-big{font-size:72px;animation:float 3s ease-in-out infinite;display:block;margin-bottom:12px}
+.lobby-title{font-family:'Fredoka One',cursive;font-size:28px;color:#fff;margin-bottom:6px;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.lobby-sub{color:var(--muted);font-size:15px;font-weight:700;margin-bottom:24px}
+.pcount{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:20px;padding:8px 20px;font-weight:800;font-size:14px;margin-bottom:20px;
+}
+
+/* ── WAITING ── */
+.wait-box{text-align:center;max-width:340px}
+.wait-big{font-size:64px;display:block;animation:float 2s ease-in-out infinite;margin-bottom:16px}
+.wait-title{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:8px}
+.wait-sub{color:var(--muted);font-weight:700;font-size:14px}
+.dots{display:flex;justify-content:center;gap:6px;margin-top:16px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--teal);animation:dotpop 1.4s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes dotpop{0%,80%,100%{transform:scale(0.6);opacity:0.3}40%{transform:scale(1.1);opacity:1}}
+
+/* ── TASK ── */
+.task-wrap{width:100%;max-width:720px}
+.task-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.tbadge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 16px;border-radius:20px;
+  font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:0.5px;
+}
+.tb-init{background:rgba(168,85,247,0.25);color:#d8b4fe;border:1.5px solid rgba(168,85,247,0.4)}
+.tb-write{background:rgba(255,214,0,0.2);color:var(--yellow);border:1.5px solid rgba(255,214,0,0.35)}
+.tb-draw{background:rgba(0,229,204,0.2);color:var(--teal);border:1.5px solid rgba(0,229,204,0.35)}
+.tb-guess{background:rgba(0,230,118,0.2);color:var(--green);border:1.5px solid rgba(0,230,118,0.35)}
+
+.prompt-box{
+  background:rgba(0,0,0,0.25);
+  border:1.5px solid rgba(255,255,255,0.1);
+  border-radius:18px;padding:20px 24px;margin-bottom:14px;
+}
+.prompt-lbl{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.prompt-val{font-family:'Fredoka One',cursive;font-size:26px;color:var(--yellow);word-break:break-word;line-height:1.3;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.prompt-hint{font-size:15px;font-weight:700;color:rgba(255,255,255,0.6);line-height:1.5}
+.prompt-img{max-width:100%;border-radius:14px;display:block;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+
+textarea{
+  width:100%;padding:16px 18px;min-height:82px;
+  background:rgba(255,255,255,0.12);
+  border:2px solid rgba(255,255,255,0.15);
+  border-radius:14px;color:#fff;
+  font-size:18px;font-family:'Nunito',sans-serif;font-weight:800;
+  resize:none;outline:none;transition:all 0.2s;
+}
+textarea:focus{border-color:var(--teal);background:rgba(255,255,255,0.18);box-shadow:0 0 0 4px rgba(0,229,204,0.15)}
+textarea::placeholder{color:rgba(255,255,255,0.3)}
+.char-c{text-align:right;font-size:12px;color:var(--muted);margin-top:6px;font-weight:700}
+
+/* ── CANVAS ── */
+.cv-toolbar{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  background:rgba(0,0,0,0.3);border:1.5px solid rgba(255,255,255,0.1);
+  border-radius:14px;padding:10px 14px;margin-bottom:10px;
+}
+.tg{display:flex;align-items:center;gap:5px}
+.tsep{width:1px;height:26px;background:rgba(255,255,255,0.12);margin:0 4px;flex-shrink:0}
+.colo{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;flex-shrink:0;transition:all 0.15s}
+.colo:hover{transform:scale(1.15)}
+.colo.on{border-color:white;transform:scale(1.25);box-shadow:0 0 8px rgba(255,255,255,0.4)}
+.bsl{-webkit-appearance:none;height:4px;width:80px;border-radius:2px;background:rgba(255,255,255,0.15);accent-color:var(--teal);cursor:pointer}
+.tbtn{
+  padding:6px 12px;background:rgba(255,255,255,0.1);
+  border:1.5px solid rgba(255,255,255,0.12);
+  border-radius:9px;color:#fff;font-size:12px;font-weight:800;
+  cursor:pointer;transition:all 0.15s;font-family:'Nunito',sans-serif;white-space:nowrap;
+}
+.tbtn:hover{background:rgba(255,255,255,0.2)}
+.tbtn.on{background:var(--pink);border-color:var(--pink)}
+#drawing-canvas{
+  background:white;border-radius:14px;cursor:crosshair;display:block;
+  touch-action:none;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);max-width:100%;
+}
+
+/* ════════════ RESULTS ════════════ */
+#screen-results{flex-direction:column;overflow:hidden}
+.res-top{
+  text-align:center;padding:20px 24px 16px;flex-shrink:0;
+  background:rgba(61,0,102,0.7);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.res-title{
+  font-family:'Fredoka One',cursive;font-size:32px;
+  background:linear-gradient(90deg,#ff4fa3,#ffd600,#00e5cc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.res-sub{color:var(--muted);font-size:14px;margin-top:4px;font-weight:700}
+.res-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:18px}
+.res-foot{padding:14px 24px;background:rgba(61,0,102,0.6);border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:center;gap:12px;flex-shrink:0}
+.res-foot .btn{width:auto;padding:13px 32px}
+
+.rchain{
+  background:rgba(124,58,237,0.3);backdrop-filter:blur(10px);
+  border:1.5px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;
+}
+.rchain-top{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 20px;background:rgba(0,0,0,0.2);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.rchain-ava{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2)}
+.rchain-name{font-family:'Fredoka One',cursive;font-size:15px}
+.rchain-scroll{display:flex;overflow-x:auto;padding:16px 20px;gap:10px;align-items:flex-start}
+.rchain-scroll::-webkit-scrollbar{height:4px}
+.rchain-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,0.04);border-radius:2px}
+.rchain-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:2px}
+.rcitem-wrap{display:flex;align-items:center;flex-shrink:0}
+.rcitem{
+  background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);
+  border-radius:14px;padding:14px;width:165px;flex-shrink:0;
+}
+.rci-type{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px}
+.rci-auth{font-size:11px;color:var(--muted);margin-bottom:7px;font-weight:700}
+.rci-txt{font-family:'Fredoka One',cursive;font-size:15px;word-break:break-word;line-height:1.3}
+.rci-img{width:100%;border-radius:8px;display:block}
+.t-word .rci-type{color:#d8b4fe}
+.t-draw .rci-type{color:var(--teal)}
+.t-guess .rci-type,.t-write .rci-type{color:var(--green)}
+.rarrow{font-size:18px;color:rgba(255,255,255,0.2);padding:0 6px;flex-shrink:0}
+
+/* ── Toast ── */
+#toast{
+  position:fixed;bottom:20px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:rgba(61,0,102,0.95);backdrop-filter:blur(16px);
+  border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:14px;padding:12px 22px;
+  font-weight:800;font-size:14px;z-index:9999;
+  transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:3px}
+#cfg{position:fixed;top:0;left:0;right:0;background:var(--pink);color:white;text-align:center;padding:10px;font-weight:800;font-size:13px;z-index:10000;display:none}
 </style>
 </head>
 <body>
 
-<!-- Config warning banner -->
-<div id="config-banner">
-  ⚠️ URL backend belum diatur! Buka <code>index.html</code> dan ubah <code>BACKEND_URL</code>. 
-  <a onclick="document.getElementById('config-banner').style.display='none'">✕</a>
-</div>
-
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-<div class="blob blob3"></div>
+<!-- Floating stars -->
+<div class="stars" id="stars"></div>
+<div id="cfg">⚠️ Ubah <code>BACKEND_URL</code> di script dulu!</div>
 
 <!-- ══════════════ LANDING ══════════════ -->
 <div id="screen-landing" class="screen active">
-  <div class="logo">🎨 Coret-Coret</div>
-  <div class="tagline">Drawing Telephone • Multiplayer</div>
-  <div class="card">
-    <div class="card-tabs">
-      <button class="tab-btn active" onclick="switchTab('create')">Buat Room</button>
-      <button class="tab-btn" onclick="switchTab('join')">Join Room</button>
+  <div class="logo-wrap">
+    <div class="logo-main"><span class="logo-emoji">🎨</span> Coret-Coret</div>
+    <div class="logo-sub">The Drawing Telephone Game</div>
+  </div>
+
+  <div class="landing-cols">
+    <!-- Main card -->
+    <div class="main-card">
+      <div class="card-invite" id="card-title">PILIH AVATAR & NAMA KAMU</div>
+
+      <!-- Avatar section -->
+      <div class="avatar-section">
+        <div class="avatar-big-wrap selected" id="ava-big-wrap">
+          <img id="ava-big" class="avatar-big" src="" alt="Avatar">
+          <button class="avatar-refresh" onclick="randomAvatar()" title="Acak avatar">🔄</button>
+        </div>
+        <div class="avatar-right">
+          <div class="avatar-label">Pilih Avatar</div>
+          <div class="avatar-grid" id="ava-grid"></div>
+        </div>
+      </div>
+
+      <!-- Name -->
+      <div class="name-section">
+        <div class="name-lbl">NAMA KAMU</div>
+        <input id="nname" class="name-input" type="text" placeholder="Masukkan nama..." maxlength="16">
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('create')">🏠 Buat Room</button>
+        <button class="tab-btn" onclick="switchTab('join')">🚪 Join Room</button>
+      </div>
+
+      <div id="tab-create" class="tab-pane active">
+        <button class="btn btn-create" onclick="createRoom()">🎮 Buat Room Baru</button>
+        <div id="ce" class="errmsg"></div>
+      </div>
+      <div id="tab-join" class="tab-pane">
+        <input id="jc" class="room-code-input" type="text" placeholder="Masukkan kode room..." maxlength="4">
+        <button class="btn btn-join" onclick="joinRoom()">▶ JOIN</button>
+        <div id="je" class="errmsg"></div>
+      </div>
     </div>
-    <div id="tab-create" class="tab-pane active">
-      <div class="input-group">
-        <label>Nama Kamu</label>
-        <input type="text" id="create-name" placeholder="Masukkan nama..." maxlength="16">
+
+    <!-- How to play card -->
+    <div class="howto-card">
+      <div class="howto-art">🎲</div>
+      <div class="howto-title">CARA BERMAIN</div>
+      <div class="howto-steps">
+        <div class="howto-step">
+          <div class="step-num">1</div>
+          <div class="step-txt">Buat atau join room dengan kode 4 huruf</div>
+        </div>
+        <div class="howto-step">
+          <div class="step-num">2</div>
+          <div class="step-txt">Setiap pemain tulis kata atau kalimat bebas</div>
+        </div>
+        <div class="howto-step">
+          <div class="step-num">3</div>
+          <div class="step-txt">Pemain lain menggambar kata tersebut di canvas</div>
+        </div>
+        <div class="howto-step">
+          <div class="step-num">4</div>
+          <div class="step-txt">Pemain berikutnya menebak gambarnya</div>
+        </div>
+        <div class="howto-step">
+          <div class="step-num">5</div>
+          <div class="step-txt">Lihat hasil akhir yang kocak! 😂</div>
+        </div>
       </div>
-      <button class="btn btn-primary" onclick="createRoom()">Buat Room Baru 🏠</button>
-      <div id="create-error" class="error-msg"></div>
-    </div>
-    <div id="tab-join" class="tab-pane">
-      <div class="input-group">
-        <label>Nama Kamu</label>
-        <input type="text" id="join-name" placeholder="Masukkan nama..." maxlength="16">
-      </div>
-      <div class="input-group">
-        <label>Kode Room</label>
-        <input type="text" id="join-code" placeholder="Contoh: AB3X" maxlength="4" style="text-transform:uppercase;letter-spacing:4px;font-size:22px;font-family:'Fredoka One',cursive">
-      </div>
-      <button class="btn btn-secondary" onclick="joinRoom()">Masuk Room 🚪</button>
-      <div id="join-error" class="error-msg"></div>
     </div>
   </div>
 </div>
 
 <!-- ══════════════ ROOM ══════════════ -->
 <div id="screen-room" class="screen">
-  <div class="room-header">
-    <div style="display:flex;align-items:center;gap:12px">
-      <div class="room-title">🎨 Coret-Coret</div>
-      <div id="round-indicator" class="round-badge" style="display:none">
-        <div class="round-dot"></div>
-        <span id="round-text">Ronde 1</span>
+  <div class="topbar">
+    <div class="topbar-left" style="display:flex;align-items:center;gap:12px">
+      <div class="topbar-logo">🎨 Coret-Coret</div>
+      <div id="round-pill" class="round-pill">
+        <div class="rpdot"></div>
+        <span id="round-txt">Ronde 1</span>
       </div>
     </div>
-    <div class="room-code-badge" onclick="copyCode()" title="Klik untuk copy">
+    <div class="code-badge" onclick="copyCode()">
       <div>
-        <div class="label">Kode Room</div>
-        <div class="code" id="header-code">----</div>
+        <div class="lbl">Kode Room</div>
+        <div class="val" id="hcode">----</div>
       </div>
-      <span style="color:var(--muted);font-size:18px">📋</span>
+      <span class="ic">📋</span>
     </div>
   </div>
+  <div class="progbar"><div class="progfill" id="progfill"></div></div>
+
   <div class="room-body">
-    <div class="player-sidebar">
-      <div class="sidebar-title">👥 Pemain <span id="player-count-small">0/8</span></div>
-      <div class="player-list" id="player-list"></div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-hd">
+        <span>Pemain</span>
+        <span style="color:rgba(255,255,255,0.5);font-size:12px" id="pcnt">0/8</span>
+      </div>
+      <div class="plist" id="plist"></div>
     </div>
+
+    <!-- Main -->
     <div class="room-main">
-      <div class="room-content" id="main-content">
+      <div class="room-content" id="rcontent">
 
-        <!-- Lobby -->
-        <div id="view-lobby" class="lobby-box">
-          <div class="lobby-icon">🎲</div>
-          <div class="lobby-title">Menunggu Pemain</div>
-          <div class="lobby-subtitle">Bagikan kode room ke temanmu!</div>
-          <div class="player-count-badge"><span>👥</span><span id="lobby-count">1 pemain</span></div>
-          <button id="start-btn" class="btn btn-green" onclick="startGame()" disabled>Mulai Game 🎮</button>
-          <div class="min-players-note" id="start-hint">Butuh minimal 2 pemain untuk mulai</div>
+        <!-- LOBBY -->
+        <div id="v-lobby" class="lobby-box">
+          <span class="lobby-big">🎲</span>
+          <div class="lobby-title">Menunggu Pemain...</div>
+          <div class="lobby-sub">Bagikan kode room ke teman-temanmu!</div>
+          <div class="pcount">👥 <span id="lobby-cnt">1 pemain</span></div>
+          <button id="start-btn" class="btn btn-green" onclick="startGame()" disabled style="display:none">🎮 Mulai Game!</button>
+          <div class="char-c" id="start-hint" style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.5)">Menunggu host memulai...</div>
         </div>
 
-        <!-- Waiting -->
-        <div id="view-waiting" style="display:none" class="waiting-box">
-          <div class="waiting-spinner"></div>
-          <div class="lobby-title" style="font-size:22px">Menunggu pemain lain...</div>
-          <div class="lobby-subtitle">Semua pemain perlu selesai dulu</div>
+        <!-- WAITING -->
+        <div id="v-wait" style="display:none" class="wait-box">
+          <span class="wait-big">⏳</span>
+          <div class="wait-title">Menunggu yang lain...</div>
+          <div class="wait-sub">Pemain lain sedang mengerjakan tugasnya</div>
+          <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
         </div>
 
-        <!-- Write -->
-        <div id="view-write" style="display:none" class="task-box">
-          <div class="progress-bar"><div class="progress-fill" id="write-progress-fill" style="width:0%"></div></div>
-          <div class="task-label">✏️ Tahap Menulis</div>
-          <div class="task-prompt">
-            <div class="from-label">Kata yang harus kamu deskripsikan:</div>
-            <div class="content" id="write-word"></div>
+        <!-- WRITE INITIAL -->
+        <div id="v-wi" style="display:none" class="task-wrap">
+          <div class="task-hd"><div class="tbadge tb-init">✨ Tulis Kata Awal</div></div>
+          <div class="prompt-box">
+            <div class="prompt-lbl">Tulis kata atau kalimat bebas</div>
+            <div class="prompt-hint">Contoh: "kucing loncat di atas piano" atau "astronot makan bakso"<br>Kata ini akan digambar oleh pemain lain! 🎨</div>
           </div>
-          <textarea id="write-input" placeholder="Tulis deskripsimu di sini..." rows="3" maxlength="120"></textarea>
-          <div style="text-align:right;color:var(--muted);font-size:12px;margin-top:4px" id="write-count">0/120</div>
+          <textarea id="wi-in" placeholder="Tulis kata atau kalimatmu..." rows="3" maxlength="80"></textarea>
+          <div class="char-c" id="wi-c">0/80</div>
         </div>
 
-        <!-- Draw -->
-        <div id="view-draw" style="display:none" class="task-box">
-          <div class="progress-bar"><div class="progress-fill" id="draw-progress-fill" style="width:0%"></div></div>
-          <div class="task-label">🎨 Tahap Menggambar</div>
-          <div class="task-prompt">
-            <div class="from-label">Gambar ini:</div>
-            <div class="content" id="draw-word"></div>
+        <!-- WRITE (describe) -->
+        <div id="v-w" style="display:none" class="task-wrap">
+          <div class="task-hd"><div class="tbadge tb-write">✏️ Deskripsikan</div></div>
+          <div class="prompt-box">
+            <div class="prompt-lbl">Deskripsikan dengan kalimatmu sendiri</div>
+            <div class="prompt-val" id="w-word"></div>
           </div>
-          <div class="canvas-tools">
-            <div class="tool-group" id="color-palette"></div>
-            <div class="tool-sep"></div>
-            <div class="tool-group">
-              <span style="font-size:12px;color:var(--muted)">🖌️</span>
-              <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
+          <textarea id="w-in" placeholder="Tulis deskripsimu..." rows="3" maxlength="120"></textarea>
+          <div class="char-c" id="w-c">0/120</div>
+        </div>
+
+        <!-- DRAW -->
+        <div id="v-d" style="display:none" class="task-wrap">
+          <div class="task-hd"><div class="tbadge tb-draw">🎨 Gambar Ini!</div></div>
+          <div class="prompt-box">
+            <div class="prompt-lbl">Gambar tanpa menggunakan teks</div>
+            <div class="prompt-val" id="d-word"></div>
+          </div>
+          <div class="cv-toolbar">
+            <div class="tg" id="colorpal"></div>
+            <div class="tsep"></div>
+            <div class="tg">
+              <span style="font-size:11px;color:var(--muted)">🖌️</span>
+              <input type="range" class="bsl" id="brushsz" min="2" max="40" value="6">
             </div>
-            <div class="tool-sep"></div>
-            <div class="tool-group">
-              <button class="tool-icon-btn active" id="btn-pen" onclick="setTool('pen')">✏️ Pen</button>
-              <button class="tool-icon-btn" id="btn-eraser" onclick="setTool('eraser')">🧹 Hapus</button>
-              <button class="tool-icon-btn" onclick="clearCanvas()">🗑️ Bersihkan</button>
+            <div class="tsep"></div>
+            <div class="tg">
+              <button class="tbtn on" id="btn-pen" onclick="setTool('pen')">✏️ Pen</button>
+              <button class="tbtn" id="btn-er" onclick="setTool('eraser')">🧹 Eraser</button>
+              <button class="tbtn" onclick="clearCv()">🗑️ Clear</button>
             </div>
           </div>
           <canvas id="drawing-canvas"></canvas>
         </div>
 
-        <!-- Guess -->
-        <div id="view-guess" style="display:none" class="task-box">
-          <div class="progress-bar"><div class="progress-fill" id="guess-progress-fill" style="width:0%"></div></div>
-          <div class="task-label">🔍 Tahap Menebak</div>
-          <div class="task-prompt">
-            <div class="from-label">Tebak apa yang digambar ini:</div>
-            <img id="guess-image" src="" alt="Gambar untuk ditebak">
+        <!-- GUESS -->
+        <div id="v-g" style="display:none" class="task-wrap">
+          <div class="task-hd"><div class="tbadge tb-guess">🔍 Tebak Gambar!</div></div>
+          <div class="prompt-box">
+            <div class="prompt-lbl">Menurutmu ini gambar apa?</div>
+            <img id="g-img" src="" alt="Gambar" class="prompt-img">
           </div>
-          <textarea id="guess-input" placeholder="Menurutmu ini gambar apa?" rows="2" maxlength="80"></textarea>
-          <div style="text-align:right;color:var(--muted);font-size:12px;margin-top:4px" id="guess-count">0/80</div>
+          <textarea id="g-in" placeholder="Tulis tebakanmu..." rows="2" maxlength="80"></textarea>
+          <div class="char-c" id="g-c">0/80</div>
         </div>
 
       </div>
-      <div class="room-footer" id="room-footer" style="display:none">
-        <button class="btn btn-green" id="submit-btn" onclick="submitTask()">Selesai ✓</button>
+      <div class="room-foot" id="rfoot">
+        <button class="btn btn-join" id="sub-btn" onclick="submitTask()">✓ Selesai!</button>
       </div>
     </div>
   </div>
@@ -327,12 +665,12 @@ textarea:focus { border-color:var(--accent4); }
 
 <!-- ══════════════ RESULTS ══════════════ -->
 <div id="screen-results" class="screen">
-  <div class="results-header">
-    <div class="results-title">🎉 Hasil Akhir!</div>
-    <div style="color:var(--muted);margin-top:4px">Lihat perjalanan kata-kata dan gambar...</div>
+  <div class="res-top">
+    <div class="res-title">🎉 Hasil Akhir!</div>
+    <div class="res-sub">Lihat betapa lucunya perjalanan kata-kata ini 😂</div>
   </div>
-  <div class="results-body" id="results-body"></div>
-  <div class="results-footer" id="results-footer" style="display:none">
+  <div class="res-body" id="res-body"></div>
+  <div class="res-foot" id="res-foot">
     <button class="btn btn-yellow" onclick="playAgain()">🔄 Main Lagi</button>
   </div>
 </div>
@@ -340,385 +678,312 @@ textarea:focus { border-color:var(--accent4); }
 <div id="toast"></div>
 
 <script>
-// ════════════════════════════════════════════════════════════════
-// ⚙️  KONFIGURASI — Ganti dengan URL Worker kamu setelah deploy!
-// Contoh: 'https://coret-coret-backend.namakamu.workers.dev'
-// ════════════════════════════════════════════════════════════════
-const BACKEND_URL = 'https://gartukbackend.secret5.workers.dev';
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════
+// ⚙️ CONFIG — Ganti dengan URL Worker setelah deploy!
+const BACKEND_URL = 'GANTI_DENGAN_URL_WORKER_KAMU';
+// ════════════════════════════════════════════════
 
-// Convert https -> wss
-function getWsUrl(roomCode, playerName) {
-  const base = BACKEND_URL.replace(/^https?/, BACKEND_URL.startsWith('https') ? 'wss' : 'ws');
-  return `${base}/ws/${roomCode}?name=${encodeURIComponent(playerName)}`;
-}
+// Avatar list (dari Gartic Phone CDN)
+const AVATARS = [49,30,26,1,45,38,37,44,31,18,5,12,17,22,28,33,41,50,3,7];
+let selAvatar = AVATARS[0];
+let myId=null,myName='',myAvatarIdx=0,roomCode='';
+let roomState=null,isHost=false,curTask=null;
+let curTool='pen',curColor='#222222',brushSz=6,drawing=false,lastX=0,lastY=0,ctx=null;
+let ws=null;
 
-// ── State ────────────────────────────────────────────────────────
-let ws = null;
-let myId = null;
-let myName = '';
-let roomCode = '';
-let roomState = null;
-let isHost = false;
-let currentTask = null;
-let currentTool = 'pen';
-let currentColor = '#222222';
-let brushSize = 6;
-let isDrawing = false;
-let lastX = 0, lastY = 0;
-let ctx = null;
+// Config check
+if(!BACKEND_URL||BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')document.getElementById('cfg').style.display='block';
 
-const AVATAR_COLORS = ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ff9f43','#a29bfe','#fd79a8','#00cec9'];
-const PALETTE = ['#222222','#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899','#ffffff','#6b7280'];
-
-// ── Config check ─────────────────────────────────────────────────
-if (!BACKEND_URL || BACKEND_URL === 'GANTI_DENGAN_URL_WORKER_KAMU') {
-  document.getElementById('config-banner').style.display = 'block';
-}
-
-// ── WebSocket connection ─────────────────────────────────────────
-function connectWS(code, name) {
-  if (ws) ws.close();
-  ws = new WebSocket(getWsUrl(code, name));
-
-  ws.onopen = () => console.log('[WS] Connected');
-  ws.onclose = () => {
-    showToast('⚠️ Koneksi terputus');
-    console.log('[WS] Disconnected');
-  };
-  ws.onerror = (e) => {
-    showToast('❌ Gagal konek ke server');
-    showError('create-error', 'Gagal konek ke server. Cek URL backend!');
-    showError('join-error', 'Gagal konek ke server. Cek URL backend!');
-  };
-  ws.onmessage = (event) => {
-    try {
-      const msg = JSON.parse(event.data);
-      handleMessage(msg);
-    } catch(e) { console.error('Parse error:', e); }
-  };
-}
-
-function send(data) {
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify(data));
+// ── Stars ─────────────────────────────────────────
+(function(){
+  const c=document.getElementById('stars');
+  for(let i=0;i<25;i++){
+    const s=document.createElement('div');s.className='star';
+    s.style.cssText=`left:${Math.random()*100}%;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px;animation-duration:${6+Math.random()*8}s;animation-delay:${Math.random()*8}s`;
+    c.appendChild(s);
   }
+})();
+
+// ── Avatar system ─────────────────────────────────
+function avatarUrl(id){return `https://garticphone.com/images/avatar/${id}.svg`}
+
+function buildAvaGrid(){
+  const grid=document.getElementById('ava-grid');grid.innerHTML='';
+  AVATARS.slice(0,10).forEach((id,i)=>{
+    const img=document.createElement('img');
+    img.src=avatarUrl(id);img.className='ava-opt'+(i===0?' selected':'');
+    img.alt='Avatar '+id;img.title='Avatar '+id;
+    img.onerror=()=>{img.src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23a855f7"/><text x="50" y="65" font-size="40" text-anchor="middle">😊</text></svg>'};
+    img.onclick=()=>selectAvatar(id,img);
+    grid.appendChild(img);
+  });
+  updateBigAvatar(AVATARS[0]);
 }
 
-// ── Message Handler ──────────────────────────────────────────────
-function handleMessage(msg) {
-  switch (msg.type) {
+function selectAvatar(id,el){
+  selAvatar=id;
+  document.querySelectorAll('.ava-opt').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  updateBigAvatar(id);
+}
+
+function updateBigAvatar(id){
+  const big=document.getElementById('ava-big');
+  big.src=avatarUrl(id);
+  big.onerror=()=>{big.src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="%23a855f7"/><text x="50" y="65" font-size="40" text-anchor="middle">😊</text></svg>'};
+}
+
+function randomAvatar(){
+  const btn=document.querySelector('.avatar-refresh');
+  btn.style.transform='rotate(360deg)';
+  setTimeout(()=>btn.style.transform='',400);
+  const rid=AVATARS[Math.floor(Math.random()*AVATARS.length)];
+  selAvatar=rid;
+  document.querySelectorAll('.ava-opt').forEach(x=>x.classList.remove('selected'));
+  updateBigAvatar(rid);
+}
+
+// ── WebSocket ─────────────────────────────────────
+function wsUrl(code,name,ava){
+  const base=BACKEND_URL.replace(/^http/,'ws');
+  return `${base}/ws/${code}?name=${encodeURIComponent(name)}&avatar=${ava}`;
+}
+function connectWS(code,name,ava){
+  if(ws)ws.close();
+  ws=new WebSocket(wsUrl(code,name,ava));
+  ws.onopen=()=>{};
+  ws.onclose=()=>showToast('⚠️ Koneksi terputus');
+  ws.onerror=()=>{showToast('❌ Gagal konek ke server');showErr('ce','Gagal konek. Cek URL backend!');showErr('je','Gagal konek. Cek URL backend!')};
+  ws.onmessage=e=>{try{handle(JSON.parse(e.data))}catch(err){}};
+}
+function send(d){if(ws&&ws.readyState===1)ws.send(JSON.stringify(d))}
+
+// ── Message handler ───────────────────────────────
+function handle(m){
+  switch(m.type){
     case 'welcome':
-      myId = msg.playerId;
-      isHost = msg.isHost;
-      roomState = msg.roomState;
-      showScreen('room');
-      updateRoomUI(msg.roomState);
-      showLobbyView();
-      if (!isHost) document.getElementById('start-btn').style.display = 'none';
+      myId=m.playerId;isHost=m.isHost;roomState=m.roomState;
+      showScreen('room');updateRoom(m.roomState);showLobby();
+      const sb=document.getElementById('start-btn');
+      sb.style.display=isHost?'flex':'none';
+      if(!isHost)document.getElementById('start-hint').textContent='Menunggu host memulai...';
       break;
-
     case 'room_update':
-      roomState = msg.roomState;
-      isHost = msg.roomState?.hostId === myId;
-      updateRoomUI(msg.roomState);
-      if (isHost && msg.roomState?.gameState === 'lobby') {
-        document.getElementById('start-btn').style.display = '';
-      }
+      roomState=m.roomState;isHost=m.roomState?.hostId===myId;
+      updateRoom(m.roomState);
+      if(isHost&&m.roomState?.gameState==='lobby')document.getElementById('start-btn').style.display='flex';
       break;
-
-    case 'player_joined':
-      showToast(`👋 ${msg.name} bergabung!`);
-      break;
-
-    case 'player_left':
-      showToast(`👋 ${msg.name} keluar`);
-      break;
-
-    case 'game_started':
-      roomState = msg.roomState;
-      showRoundBadge(msg.roomState);
-      break;
-
-    case 'your_task':
-      currentTask = msg;
-      showTask(msg);
-      break;
-
-    case 'game_over':
-      roomState = msg.roomState;
-      showResults(msg.results, msg.roomState);
-      break;
-
+    case 'player_joined': showToast('👋 '+m.name+' bergabung!'); break;
+    case 'player_left':   showToast('😢 '+m.name+' keluar'); break;
+    case 'game_started':  roomState=m.roomState;showRoundPill(m.roomState); break;
+    case 'your_task':     curTask=m;showTask(m); break;
+    case 'game_over':     roomState=m.roomState;showResults(m.results,m.roomState); break;
     case 'back_to_lobby':
-      roomState = msg.roomState;
-      isHost = msg.roomState?.hostId === myId;
-      currentTask = null;
-      document.getElementById('round-indicator').style.display = 'none';
-      showScreen('room');
-      updateRoomUI(msg.roomState);
-      showLobbyView();
-      if (isHost) document.getElementById('start-btn').style.display = '';
-      else document.getElementById('start-btn').style.display = 'none';
+      roomState=m.roomState;isHost=m.roomState?.hostId===myId;curTask=null;
+      document.getElementById('round-pill').style.display='none';
+      document.getElementById('progfill').style.width='0%';
+      showScreen('room');updateRoom(m.roomState);showLobby();
+      const sb2=document.getElementById('start-btn');
+      sb2.style.display=isHost?'flex':'none';
       break;
-
     case 'error':
-      showToast('❌ ' + msg.message);
-      const pane = document.querySelector('.tab-pane.active');
-      if (pane) {
-        const err = pane.querySelector('.error-msg');
-        if (err) { err.textContent = msg.message; err.classList.add('show'); }
-      }
+      showToast('❌ '+m.message);
+      const p=document.querySelector('.tab-pane.active');
+      if(p){const e=p.querySelector('.errmsg');if(e){e.textContent=m.message;e.classList.add('show')}}
       break;
   }
 }
 
-// ── Actions ──────────────────────────────────────────────────────
-function createRoom() {
-  const name = document.getElementById('create-name').value.trim();
-  clearErrors();
-  if (!name) return showError('create-error', 'Masukkan nama dulu!');
-  if (BACKEND_URL === 'GANTI_DENGAN_URL_WORKER_KAMU') return showError('create-error', 'URL backend belum diatur!');
-
-  // Generate a room code client-side, server will use it as DO name
-  roomCode = generateCode();
-  myName = name;
-  document.getElementById('header-code').textContent = roomCode;
-  connectWS(roomCode, name);
+// ── Actions ───────────────────────────────────────
+function createRoom(){
+  const n=document.getElementById('nname').value.trim();
+  clearErr();
+  if(!n)return showErr('ce','Masukkan nama dulu!');
+  if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('ce','URL backend belum diatur!');
+  roomCode=genCode();myName=n;
+  document.getElementById('hcode').textContent=roomCode;
+  connectWS(roomCode,n,selAvatar);
 }
-
-function joinRoom() {
-  const name = document.getElementById('join-name').value.trim();
-  const code = document.getElementById('join-code').value.trim().toUpperCase();
-  clearErrors();
-  if (!name) return showError('join-error', 'Masukkan nama dulu!');
-  if (!code || code.length !== 4) return showError('join-error', 'Masukkan kode room 4 karakter!');
-  if (BACKEND_URL === 'GANTI_DENGAN_URL_WORKER_KAMU') return showError('join-error', 'URL backend belum diatur!');
-
-  roomCode = code;
-  myName = name;
-  connectWS(code, name);
+function joinRoom(){
+  const n=document.getElementById('nname').value.trim();
+  const c=document.getElementById('jc').value.trim().toUpperCase();
+  clearErr();
+  if(!n)return showErr('je','Masukkan nama dulu!');
+  if(!c||c.length!==4)return showErr('je','Kode room harus 4 karakter!');
+  if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('je','URL backend belum diatur!');
+  roomCode=c;myName=n;connectWS(c,n,selAvatar);
 }
+function startGame(){send({type:'start_game'})}
+function playAgain(){send({type:'play_again'})}
 
-function startGame() { send({ type: 'start_game' }); }
-function playAgain() { send({ type: 'play_again' }); }
-
-function submitTask() {
-  if (!currentTask) return;
-  let content = '';
-  const type = currentTask.taskType;
-
-  if (type === 'write') {
-    content = document.getElementById('write-input').value.trim();
-    if (!content) return showToast('⚠️ Tulis sesuatu dulu!');
-  } else if (type === 'draw') {
-    content = document.getElementById('drawing-canvas').toDataURL('image/png');
-  } else if (type === 'guess') {
-    content = document.getElementById('guess-input').value.trim();
-    if (!content) return showToast('⚠️ Tulis tebakanmu dulu!');
+function submitTask(){
+  if(!curTask)return;
+  let content='',type=curTask.taskType;
+  if(type==='write_initial'||type==='write'||type==='guess'){
+    const ids={write_initial:'wi-in',write:'w-in',guess:'g-in'};
+    const el=document.getElementById(ids[type]);
+    content=el.value.trim();
+    if(!content)return showToast('⚠️ Isi dulu sebelum submit!');
+  } else if(type==='draw'){
+    content=document.getElementById('drawing-canvas').toDataURL('image/png');
   }
-
-  send({ type: 'submit_task', taskType: type, content });
-  showWaiting();
+  send({type:'submit_task',taskType:type,content});
+  showWait();
 }
 
-function copyCode() {
-  navigator.clipboard.writeText(roomCode).then(() => {
-    document.getElementById('header-code').classList.add('copied');
-    showToast('✅ Kode disalin!');
-    setTimeout(() => document.getElementById('header-code').classList.remove('copied'), 1500);
+function copyCode(){
+  navigator.clipboard.writeText(roomCode).then(()=>{
+    const el=document.getElementById('hcode');
+    el.style.color='var(--teal)';
+    showToast('✅ Kode disalin: '+roomCode);
+    setTimeout(()=>el.style.color='',1500);
   });
 }
 
-// ── UI ───────────────────────────────────────────────────────────
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
+// ── UI helpers ────────────────────────────────────
+function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active')}
+function switchTab(t){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelector(`.tab-btn:nth-child(${t==='create'?1:2})`).classList.add('active');
+  document.getElementById('tab-'+t).classList.add('active');
 }
 
-function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.querySelector(`.tab-btn:nth-child(${tab==='create'?1:2})`).classList.add('active');
-  document.getElementById('tab-' + tab).classList.add('active');
-}
+function updateRoom(rs){
+  if(!rs)return;
+  document.getElementById('hcode').textContent=rs.code;
+  document.getElementById('pcnt').textContent=`${rs.players.length}/8`;
+  document.getElementById('lobby-cnt').textContent=`${rs.players.length} pemain`;
 
-function updateRoomUI(rs) {
-  if (!rs) return;
-  document.getElementById('header-code').textContent = rs.code;
-  document.getElementById('player-count-small').textContent = `${rs.players.length}/8`;
-  document.getElementById('lobby-count').textContent = `${rs.players.length} pemain`;
-
-  const list = document.getElementById('player-list');
-  list.innerHTML = '';
-  rs.players.forEach((p, i) => {
-    const color = AVATAR_COLORS[i % AVATAR_COLORS.length];
-    const statusLabel = { waiting:'Menunggu', writing:'Menulis...', drawing:'Menggambar...', guessing:'Menebak...', done:'Selesai ✓' }[p.status] || p.status;
-    list.innerHTML += `
-      <div class="player-item ${p.id === myId ? 'me' : ''}">
-        <div class="player-avatar" style="background:${color}20;color:${color}">${p.name[0].toUpperCase()}</div>
-        <div class="player-info">
-          <div class="player-name">${escHtml(p.name)}${p.id===myId?' (Kamu)':''}</div>
-          <div class="player-status status-${p.status}">${statusLabel}</div>
-        </div>
-        ${p.isHost ? '<span class="host-badge">HOST</span>' : ''}
-      </div>`;
+  const list=document.getElementById('plist');list.innerHTML='';
+  rs.players.forEach(p=>{
+    const ava=p.avatar||1;
+    const stlbl={waiting:'Menunggu',writing:'Menulis...',drawing:'Menggambar...',guessing:'Menebak...',done:'Selesai ✓'}[p.status]||p.status;
+    list.innerHTML+=`<div class="pitem ${p.id===myId?'me':''}">
+      <div class="pava-wrap">
+        <img class="pava" src="${avatarUrl(ava)}" alt="${esc(p.name)}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23a855f7%22/><text x=%2250%22 y=%2265%22 font-size=%2240%22 text-anchor=%22middle%22>😊</text></svg>'">
+      </div>
+      <div class="pinfo">
+        <div class="pname">${esc(p.name)}${p.id===myId?' 👈':''}</div>
+        <div class="pstatus st-${p.status}">${stlbl}</div>
+      </div>
+      ${p.isHost?'<span class="host-tag">HOST</span>':''}
+    </div>`;
   });
 
-  const startBtn = document.getElementById('start-btn');
-  if (isHost && rs.gameState === 'lobby') {
-    startBtn.disabled = rs.players.length < 2;
-    document.getElementById('start-hint').textContent =
-      rs.players.length < 2 ? 'Butuh minimal 2 pemain untuk mulai' : 'Semua pemain siap!';
+  if(isHost&&rs.gameState==='lobby'){
+    const sb=document.getElementById('start-btn');
+    sb.disabled=rs.players.length<2;
+    document.getElementById('start-hint').textContent=rs.players.length<2?'Butuh minimal 2 pemain':'Semua siap! 🎉';
   }
-
-  if (rs.gameState === 'playing' && rs.totalRounds > 0) {
-    const pct = ((rs.round - 1) / rs.totalRounds) * 100;
-    document.querySelectorAll('.progress-fill').forEach(f => f.style.width = pct + '%');
-    document.getElementById('round-text').textContent = `Ronde ${rs.round}/${rs.totalRounds}`;
+  if(rs.gameState==='playing'&&rs.totalRounds>0){
+    const pct=((rs.round-1)/rs.totalRounds)*100;
+    document.getElementById('progfill').style.width=pct+'%';
+    document.getElementById('round-txt').textContent=`Ronde ${rs.round}/${rs.totalRounds}`;
   }
 }
 
-function showRoundBadge(rs) {
-  document.getElementById('round-indicator').style.display = 'flex';
-  document.getElementById('round-text').textContent = `Ronde ${rs.round}/${rs.totalRounds}`;
+function showRoundPill(rs){
+  const el=document.getElementById('round-pill');el.style.display='flex';
+  document.getElementById('round-txt').textContent=`Ronde ${rs.round}/${rs.totalRounds}`;
 }
 
-function showLobbyView() {
-  ['view-lobby','view-waiting','view-write','view-draw','view-guess'].forEach(id =>
-    document.getElementById(id).style.display = id === 'view-lobby' ? '' : 'none');
-  document.getElementById('room-footer').style.display = 'none';
-}
+const VIEWS=['v-lobby','v-wait','v-wi','v-w','v-d','v-g'];
+function hideAll(){VIEWS.forEach(id=>document.getElementById(id).style.display='none')}
+function showLobby(){hideAll();document.getElementById('v-lobby').style.display='';document.getElementById('rfoot').style.display='none'}
+function showWait(){hideAll();document.getElementById('v-wait').style.display='';document.getElementById('rfoot').style.display='none';curTask=null}
 
-function showWaiting() {
-  ['view-lobby','view-write','view-draw','view-guess'].forEach(id =>
-    document.getElementById(id).style.display = 'none');
-  document.getElementById('view-waiting').style.display = '';
-  document.getElementById('room-footer').style.display = 'none';
-  currentTask = null;
-}
+function showTask(t){
+  hideAll();
+  document.getElementById('rfoot').style.display='block';
+  document.getElementById('round-pill').style.display='flex';
+  if(t.totalRounds>0)document.getElementById('round-txt').textContent=`Ronde ${t.round}/${t.totalRounds}`;
 
-function showTask(task) {
-  ['view-lobby','view-waiting','view-write','view-draw','view-guess'].forEach(id =>
-    document.getElementById(id).style.display = 'none');
-  document.getElementById('room-footer').style.display = 'block';
-  document.getElementById('round-indicator').style.display = 'flex';
-  document.getElementById('round-text').textContent = `Ronde ${task.round}/${task.totalRounds}`;
-
-  if (task.taskType === 'write') {
-    document.getElementById('view-write').style.display = '';
-    document.getElementById('write-word').textContent = task.content;
-    document.getElementById('write-input').value = '';
-    document.getElementById('write-count').textContent = '0/120';
-  } else if (task.taskType === 'draw') {
-    document.getElementById('view-draw').style.display = '';
-    document.getElementById('draw-word').textContent = task.content;
-    initCanvas(); clearCanvas();
-  } else if (task.taskType === 'guess') {
-    document.getElementById('view-guess').style.display = '';
-    document.getElementById('guess-image').src = task.content;
-    document.getElementById('guess-input').value = '';
-    document.getElementById('guess-count').textContent = '0/80';
+  if(t.taskType==='write_initial'){
+    document.getElementById('v-wi').style.display='';
+    document.getElementById('wi-in').value='';document.getElementById('wi-c').textContent='0/80';
+  } else if(t.taskType==='write'){
+    document.getElementById('v-w').style.display='';
+    document.getElementById('w-word').textContent=t.content;
+    document.getElementById('w-in').value='';document.getElementById('w-c').textContent='0/120';
+  } else if(t.taskType==='draw'){
+    document.getElementById('v-d').style.display='';
+    document.getElementById('d-word').textContent=t.content;
+    initCv();clearCv();
+  } else if(t.taskType==='guess'){
+    document.getElementById('v-g').style.display='';
+    document.getElementById('g-img').src=t.content;
+    document.getElementById('g-in').value='';document.getElementById('g-c').textContent='0/80';
   }
 }
 
-// ── Canvas ───────────────────────────────────────────────────────
-function initCanvas() {
-  const canvas = document.getElementById('drawing-canvas');
-  const wrap = canvas.parentElement;
-  canvas.width = Math.min(wrap.offsetWidth - 32, 640);
-  canvas.height = Math.min(window.innerHeight - 400, 320);
-  ctx = canvas.getContext('2d');
-  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  canvas.onmousedown = startDraw; canvas.onmousemove = draw; canvas.onmouseup = stopDraw; canvas.onmouseleave = stopDraw;
-  canvas.ontouchstart = e => { e.preventDefault(); startDraw(e.touches[0]); };
-  canvas.ontouchmove = e => { e.preventDefault(); draw(e.touches[0]); };
-  canvas.ontouchend = stopDraw; canvas.ontouchcancel = stopDraw;
+// ── Canvas ────────────────────────────────────────
+const PALETTE=['#222222','#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e91e8c','#ffffff','#95a5a6'];
+function initCv(){
+  const cv=document.getElementById('drawing-canvas');
+  const wrap=cv.parentElement;
+  cv.width=Math.min(wrap.offsetWidth-4,660);
+  cv.height=Math.min(window.innerHeight-430,290);
+  ctx=cv.getContext('2d');ctx.lineCap='round';ctx.lineJoin='round';
+  cv.onmousedown=sDr;cv.onmousemove=doDr;cv.onmouseup=eDr;cv.onmouseleave=eDr;
+  cv.ontouchstart=e=>{e.preventDefault();sDr(e.touches[0])};
+  cv.ontouchmove=e=>{e.preventDefault();doDr(e.touches[0])};
+  cv.ontouchend=eDr;cv.ontouchcancel=eDr;
 }
+function gpos(e){const cv=document.getElementById('drawing-canvas');const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*(cv.width/r.width),y:(e.clientY-r.top)*(cv.height/r.height)}}
+function sDr(e){drawing=true;const p=gpos(e);lastX=p.x;lastY=p.y;ctx.beginPath();ctx.arc(lastX,lastY,(curTool==='eraser'?brushSz*2:brushSz)/2,0,Math.PI*2);ctx.fillStyle=curTool==='eraser'?'white':curColor;ctx.fill()}
+function doDr(e){if(!drawing)return;const p=gpos(e);ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);ctx.strokeStyle=curTool==='eraser'?'white':curColor;ctx.lineWidth=curTool==='eraser'?brushSz*2.5:brushSz;ctx.stroke();lastX=p.x;lastY=p.y}
+function eDr(){drawing=false}
+function clearCv(){if(!ctx)return;const cv=document.getElementById('drawing-canvas');ctx.fillStyle='white';ctx.fillRect(0,0,cv.width,cv.height)}
+function setTool(t){curTool=t;document.getElementById('btn-pen').classList.toggle('on',t==='pen');document.getElementById('btn-er').classList.toggle('on',t==='eraser')}
 
-function getPos(e) {
-  const canvas = document.getElementById('drawing-canvas');
-  const rect = canvas.getBoundingClientRect();
-  return { x: (e.clientX - rect.left) * (canvas.width / rect.width), y: (e.clientY - rect.top) * (canvas.height / rect.height) };
-}
-
-function startDraw(e) {
-  isDrawing = true;
-  const p = getPos(e); lastX = p.x; lastY = p.y;
-  ctx.beginPath();
-  ctx.arc(lastX, lastY, (currentTool==='eraser' ? brushSize*2 : brushSize)/2, 0, Math.PI*2);
-  ctx.fillStyle = currentTool==='eraser' ? 'white' : currentColor;
-  ctx.fill();
-}
-function draw(e) {
-  if (!isDrawing) return;
-  const p = getPos(e);
-  ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y);
-  ctx.strokeStyle = currentTool==='eraser' ? 'white' : currentColor;
-  ctx.lineWidth = currentTool==='eraser' ? brushSize*2.5 : brushSize;
-  ctx.stroke(); lastX = p.x; lastY = p.y;
-}
-function stopDraw() { isDrawing = false; }
-function clearCanvas() { if (!ctx) return; const c = document.getElementById('drawing-canvas'); ctx.fillStyle='white'; ctx.fillRect(0,0,c.width,c.height); }
-function setTool(t) { currentTool=t; document.getElementById('btn-pen').classList.toggle('active',t==='pen'); document.getElementById('btn-eraser').classList.toggle('active',t==='eraser'); }
-
-function buildPalette() {
-  const pal = document.getElementById('color-palette');
-  pal.innerHTML = '';
-  PALETTE.forEach(c => {
-    const btn = document.createElement('div');
-    btn.className = 'color-btn' + (c===currentColor?' active':'');
-    btn.style.background = c;
-    if (c==='#ffffff') btn.style.border='3px solid #444';
-    btn.onclick = () => {
-      currentColor=c; setTool('pen');
-      document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-    };
-    pal.appendChild(btn);
+function buildPal(){
+  const pal=document.getElementById('colorpal');pal.innerHTML='';
+  PALETTE.forEach(c=>{
+    const b=document.createElement('div');b.className='colo'+(c===curColor?' on':'');
+    b.style.background=c;
+    if(c==='#ffffff')b.style.boxShadow='inset 0 0 0 1px rgba(255,255,255,0.3)';
+    b.onclick=()=>{curColor=c;setTool('pen');document.querySelectorAll('.colo').forEach(x=>x.classList.remove('on'));b.classList.add('on')};
+    pal.appendChild(b);
   });
-  document.getElementById('brush-size').addEventListener('input', e => brushSize = +e.target.value);
+  document.getElementById('brushsz').addEventListener('input',e=>brushSz=+e.target.value);
 }
 
-// ── Results ──────────────────────────────────────────────────────
-function showResults(results, rs) {
+// ── Results ───────────────────────────────────────
+function showResults(results,rs){
   showScreen('results');
-  const body = document.getElementById('results-body');
-  body.innerHTML = '';
-  results.forEach((chain, ci) => {
-    const color = AVATAR_COLORS[ci % AVATAR_COLORS.length];
-    let itemsHtml = '';
-    chain.chain.forEach((item, idx) => {
-      const typeLabel = { word:'📝 Kata Awal', write:'✏️ Deskripsi', draw:'🎨 Gambar', guess:'🔍 Tebakan' }[item.type] || item.type;
-      const typeClass = item.type==='draw' ? 'step-draw' : item.type==='guess' ? 'step-guess' : 'step-word';
-      const contentHtml = item.type==='draw' ? `<img src="${item.content}" alt="Drawing">` : `<div class="chain-text">${escHtml(item.content)}</div>`;
-      itemsHtml += `<div class="chain-item"><div class="chain-card ${typeClass}"><div class="step-type">${typeLabel}</div><div class="author">oleh ${escHtml(item.authorName||'?')}</div>${contentHtml}</div>${idx<chain.chain.length-1?'<div class="chain-arrow">→</div>':''}</div>`;
+  const body=document.getElementById('res-body');body.innerHTML='';
+  results.forEach((chain)=>{
+    const ava=chain.ownerAvatar||1;
+    let itemsHtml='';
+    chain.chain.forEach((item,idx)=>{
+      const tl={word:'📝 Kata Awal',write:'✏️ Deskripsi',draw:'🎨 Gambar',guess:'🔍 Tebakan'}[item.type]||item.type;
+      const cv=item.type==='draw'?`<img src="${item.content}" class="rci-img" alt="drawing">` :`<div class="rci-txt">${esc(item.content)}</div>`;
+      itemsHtml+=`<div class="rcitem-wrap"><div class="rcitem t-${item.type}"><div class="rci-type">${tl}</div><div class="rci-auth">oleh ${esc(item.authorName||'?')}</div>${cv}</div>${idx<chain.chain.length-1?'<div class="rarrow">→</div>':''}</div>`;
     });
-    body.innerHTML += `<div class="chain-block"><div class="chain-header"><div class="avatar" style="background:${color}20;color:${color}">${(chain.ownerName||'?')[0].toUpperCase()}</div><div class="name">Rantai milik ${escHtml(chain.ownerName||'?')}</div></div><div class="chain-items">${itemsHtml}</div></div>`;
+    body.innerHTML+=`<div class="rchain"><div class="rchain-top"><img class="rchain-ava" src="${avatarUrl(ava)}" alt="${esc(chain.ownerName||'?')}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23a855f7%22/><text x=%2250%22 y=%2265%22 font-size=%2240%22 text-anchor=%22middle%22>😊</text></svg>'"><div class="rchain-name">Rantai milik ${esc(chain.ownerName||'?')}</div></div><div class="rchain-scroll">${itemsHtml}</div></div>`;
   });
-  document.getElementById('results-footer').style.display = rs?.hostId === myId ? 'flex' : 'none';
+  const rf=document.getElementById('res-foot');
+  rf.style.display=rs?.hostId===myId?'flex':'none';
 }
 
-// ── Helpers ──────────────────────────────────────────────────────
-function generateCode() {
-  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('');
-}
-function showError(id, msg) { const el=document.getElementById(id); if(el){el.textContent=msg;el.classList.add('show');} }
-function clearErrors() { document.querySelectorAll('.error-msg').forEach(e=>{e.textContent='';e.classList.remove('show');}); }
-let toastTimer;
-function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2500); }
-function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+// ── Helpers ───────────────────────────────────────
+function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('')}
+function showErr(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show')}}
+function clearErr(){document.querySelectorAll('.errmsg').forEach(e=>{e.textContent='';e.classList.remove('show')})}
+let tt;function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2500)}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-// ── Event listeners ───────────────────────────────────────────────
-document.getElementById('write-input').addEventListener('input', function() { document.getElementById('write-count').textContent=`${this.value.length}/120`; });
-document.getElementById('guess-input').addEventListener('input', function() { document.getElementById('guess-count').textContent=`${this.value.length}/80`; });
-document.getElementById('create-name').addEventListener('keydown', e => { if(e.key==='Enter') createRoom(); });
-document.getElementById('join-name').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('join-code').focus(); });
-document.getElementById('join-code').addEventListener('keydown', e => { if(e.key==='Enter') joinRoom(); });
-document.getElementById('join-code').addEventListener('input', function() { this.value=this.value.toUpperCase(); });
+// ── Textarea counters ─────────────────────────────
+document.getElementById('wi-in').addEventListener('input',function(){document.getElementById('wi-c').textContent=`${this.value.length}/80`});
+document.getElementById('w-in').addEventListener('input',function(){document.getElementById('w-c').textContent=`${this.value.length}/120`});
+document.getElementById('g-in').addEventListener('input',function(){document.getElementById('g-c').textContent=`${this.value.length}/80`});
+document.getElementById('jc').addEventListener('input',function(){this.value=this.value.toUpperCase()});
+document.getElementById('jc').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom()});
+document.getElementById('nname').addEventListener('keydown',e=>{if(e.key==='Enter'){const t=document.querySelector('.tab-pane.active');if(t.id==='tab-join')joinRoom();else createRoom()}});
 
-buildPalette();
+buildPal();
+buildAvaGrid();
 </script>
 </body>
 </html>
