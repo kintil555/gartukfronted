@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎨 Coret-Coret — Drawing Telephone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0f0e17;
+  --surface: #1a1826;
+  --card: #231f35;
+  --border: #312d4a;
+  --accent: #ff6b6b;
+  --accent2: #ffd93d;
+  --accent3: #6bcb77;
+  --accent4: #4d96ff;
+  --text: #fffffe;
+  --muted: #9b96b8;
+  --radius: 16px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: 0.6;
+}
+.blob { position: fixed; border-radius: 50%; filter: blur(80px); animation: blobFloat 8s ease-in-out infinite; pointer-events: none; z-index: 0; }
+.blob1 { width: 400px; height: 400px; background: rgba(255,107,107,0.12); top:-100px; left:-100px; }
+.blob2 { width: 300px; height: 300px; background: rgba(77,150,255,0.1); bottom:-80px; right:-80px; animation-delay:3s; }
+.blob3 { width: 250px; height: 250px; background: rgba(255,217,61,0.08); top:50%; left:60%; animation-delay:5s; }
+@keyframes blobFloat { 0%,100% { transform:translate(0,0) scale(1); } 50% { transform:translate(30px,-20px) scale(1.05); } }
+
+.screen { display: none; width: 100%; height: 100vh; position: relative; z-index: 1; }
+.screen.active { display: flex; }
+
+/* ── LANDING ────────────────────────────────────────────── */
+#screen-landing { flex-direction:column; align-items:center; justify-content:center; padding:24px; }
+.logo { font-family:'Fredoka One',cursive; font-size:clamp(48px,8vw,80px); background:linear-gradient(135deg,#ff6b6b,#ffd93d,#4d96ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:6px; animation:logoGlow 3s ease-in-out infinite; }
+@keyframes logoGlow { 0%,100% { filter:drop-shadow(0 0 20px rgba(255,107,107,0.3)); } 50% { filter:drop-shadow(0 0 40px rgba(77,150,255,0.4)); } }
+.tagline { color:var(--muted); font-size:16px; margin-bottom:48px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:32px; width:100%; max-width:440px; box-shadow:var(--shadow); }
+.card-tabs { display:flex; background:var(--surface); border-radius:12px; padding:4px; margin-bottom:28px; }
+.tab-btn { flex:1; padding:10px; border:none; background:none; color:var(--muted); font-family:'Nunito',sans-serif; font-weight:700; font-size:14px; border-radius:10px; cursor:pointer; transition:all 0.2s; }
+.tab-btn.active { background:var(--accent); color:white; }
+.tab-pane { display:none; }
+.tab-pane.active { display:block; }
+.input-group { margin-bottom:16px; }
+.input-group label { display:block; font-size:13px; font-weight:700; color:var(--muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px; }
+.input-group input { width:100%; padding:14px 16px; background:var(--surface); border:2px solid var(--border); border-radius:12px; color:var(--text); font-size:16px; font-family:'Nunito',sans-serif; font-weight:600; transition:border-color 0.2s; outline:none; }
+.input-group input:focus { border-color:var(--accent4); }
+.input-group input::placeholder { color:var(--muted); }
+.btn { width:100%; padding:14px; border:none; border-radius:12px; font-family:'Fredoka One',cursive; font-size:18px; cursor:pointer; transition:all 0.2s; letter-spacing:0.5px; }
+.btn-primary { background:var(--accent); color:white; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(255,107,107,0.4); }
+.btn-secondary { background:var(--accent4); color:white; }
+.btn-secondary:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(77,150,255,0.4); }
+.btn-green { background:var(--accent3); color:#0f0e17; }
+.btn-green:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(107,203,119,0.4); }
+.btn-yellow { background:var(--accent2); color:#0f0e17; }
+.btn-yellow:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(255,217,61,0.4); }
+.btn:active { transform:translateY(0); }
+.btn:disabled { opacity:0.4; cursor:not-allowed; transform:none !important; }
+.error-msg { color:var(--accent); font-size:13px; font-weight:700; margin-top:8px; display:none; }
+.error-msg.show { display:block; }
+
+/* ── ROOM ───────────────────────────────────────────────── */
+#screen-room { flex-direction:column; padding:0; overflow:hidden; }
+.room-header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
+.room-title { font-family:'Fredoka One',cursive; font-size:22px; }
+.room-code-badge { display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px 14px; cursor:pointer; transition:border-color 0.2s; }
+.room-code-badge:hover { border-color:var(--accent4); }
+.room-code-badge .label { font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase; }
+.room-code-badge .code { font-family:'Fredoka One',cursive; font-size:20px; color:var(--accent2); letter-spacing:3px; }
+.room-body { display:flex; flex:1; overflow:hidden; }
+.player-sidebar { width:220px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; }
+.sidebar-title { padding:16px; font-size:12px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); }
+.player-list { flex:1; overflow-y:auto; padding:8px; }
+.player-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; margin-bottom:4px; }
+.player-item.me { background:rgba(77,150,255,0.12); }
+.player-avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:14px; flex-shrink:0; }
+.player-info { flex:1; min-width:0; }
+.player-name { font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.player-status { font-size:11px; font-weight:600; }
+.status-waiting { color:var(--muted); }
+.status-writing { color:var(--accent2); }
+.status-drawing { color:var(--accent4); }
+.status-guessing { color:var(--accent3); }
+.status-done { color:var(--accent3); }
+.host-badge { font-size:10px; background:var(--accent); color:white; padding:2px 6px; border-radius:6px; font-weight:800; }
+.room-main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+.room-content { flex:1; display:flex; align-items:center; justify-content:center; padding:24px; overflow:auto; }
+.room-footer { padding:16px 24px; background:var(--surface); border-top:1px solid var(--border); flex-shrink:0; }
+
+/* ── Lobby ──────────────────────────────────────────────── */
+.lobby-box { text-align:center; max-width:400px; width:100%; }
+.lobby-icon { font-size:64px; margin-bottom:16px; animation:bounce 2s infinite; }
+@keyframes bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+.lobby-title { font-family:'Fredoka One',cursive; font-size:28px; margin-bottom:8px; }
+.lobby-subtitle { color:var(--muted); font-size:15px; margin-bottom:24px; }
+.player-count-badge { display:inline-flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:6px 16px; font-weight:700; margin-bottom:20px; }
+.min-players-note { font-size:13px; color:var(--muted); margin-top:10px; }
+
+/* ── Task views ─────────────────────────────────────────── */
+.waiting-box { text-align:center; max-width:360px; }
+.waiting-spinner { width:48px; height:48px; border:4px solid var(--border); border-top-color:var(--accent4); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 16px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.task-box { width:100%; max-width:680px; }
+.task-label { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:8px; }
+.task-prompt { background:var(--card); border:2px solid var(--border); border-radius:var(--radius); padding:20px 24px; margin-bottom:16px; }
+.task-prompt .from-label { font-size:11px; color:var(--muted); margin-bottom:6px; font-weight:700; }
+.task-prompt .content { font-family:'Fredoka One',cursive; font-size:22px; color:var(--accent2); }
+.task-prompt img { max-width:100%; border-radius:8px; }
+textarea { width:100%; min-height:80px; padding:14px 16px; background:var(--surface); border:2px solid var(--border); border-radius:12px; color:var(--text); font-size:16px; font-family:'Nunito',sans-serif; font-weight:600; resize:vertical; outline:none; transition:border-color 0.2s; }
+textarea:focus { border-color:var(--accent4); }
+.progress-bar { height:4px; background:var(--border); border-radius:2px; margin-bottom:16px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent4)); border-radius:2px; transition:width 0.5s; }
+.round-badge { display:flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:6px 14px; font-size:13px; font-weight:700; }
+.round-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+/* ── Canvas ─────────────────────────────────────────────── */
+#drawing-canvas { background:white; border-radius:12px; cursor:crosshair; display:block; touch-action:none; box-shadow:0 4px 24px rgba(0,0,0,0.4); }
+.canvas-tools { display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:10px 16px; margin-bottom:12px; flex-wrap:wrap; }
+.tool-group { display:flex; align-items:center; gap:6px; }
+.tool-sep { width:1px; height:28px; background:var(--border); margin:0 4px; }
+.color-btn { width:28px; height:28px; border-radius:50%; border:3px solid transparent; cursor:pointer; transition:transform 0.15s,border-color 0.15s; flex-shrink:0; }
+.color-btn.active { border-color:white; transform:scale(1.2); }
+.brush-slider { -webkit-appearance:none; height:4px; border-radius:2px; background:var(--border); width:80px; accent-color:var(--accent4); }
+.tool-icon-btn { padding:6px 12px; background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; font-family:'Nunito',sans-serif; }
+.tool-icon-btn:hover { background:var(--border); }
+.tool-icon-btn.active { background:var(--accent); border-color:var(--accent); }
+
+/* ── Results ────────────────────────────────────────────── */
+#screen-results { flex-direction:column; overflow:hidden; }
+.results-header { text-align:center; padding:24px 24px 16px; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
+.results-title { font-family:'Fredoka One',cursive; font-size:32px; background:linear-gradient(135deg,#ff6b6b,#ffd93d); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.results-body { flex:1; overflow-y:auto; padding:24px; }
+.chain-block { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:24px; overflow:hidden; }
+.chain-header { display:flex; align-items:center; gap:12px; padding:16px 20px; background:var(--surface); border-bottom:1px solid var(--border); }
+.chain-header .avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:15px; }
+.chain-header .name { font-weight:800; }
+.chain-items { display:flex; overflow-x:auto; padding:20px; gap:0; }
+.chain-item { display:flex; align-items:center; flex-shrink:0; }
+.chain-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; width:180px; flex-shrink:0; }
+.chain-card .step-type { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.step-word .step-type { color:var(--accent2); }
+.step-draw .step-type { color:var(--accent4); }
+.step-guess .step-type { color:var(--accent3); }
+.chain-card .author { font-size:11px; color:var(--muted); margin-bottom:6px; }
+.chain-card .chain-text { font-family:'Fredoka One',cursive; font-size:16px; word-break:break-word; }
+.chain-card img { width:100%; border-radius:8px; }
+.chain-arrow { font-size:24px; color:var(--muted); padding:0 12px; flex-shrink:0; }
+.results-footer { padding:20px 24px; background:var(--surface); border-top:1px solid var(--border); display:flex; justify-content:center; gap:12px; flex-shrink:0; }
+.results-footer .btn { width:auto; padding:14px 32px; }
+
+/* ── Toast & Misc ───────────────────────────────────────── */
+#toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 20px; font-weight:700; font-size:14px; z-index:9998; transition:transform 0.3s; white-space:nowrap; }
+#toast.show { transform:translateX(-50%) translateY(0); }
+.copied { color:var(--accent3) !important; }
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:var(--surface); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+/* ── Config banner ──────────────────────────────────────── */
+#config-banner { position:fixed; top:0; left:0; right:0; background:#ff6b6b; color:white; text-align:center; padding:10px; font-weight:700; font-size:14px; z-index:10000; display:none; }
+#config-banner a { color:white; text-decoration:underline; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<!-- Config warning banner -->
+<div id="config-banner">
+  ⚠️ URL backend belum diatur! Buka <code>index.html</code> dan ubah <code>BACKEND_URL</code>. 
+  <a onclick="document.getElementById('config-banner').style.display='none'">✕</a>
+</div>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+<!-- ══════════════ LANDING ══════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="logo">🎨 Coret-Coret</div>
+  <div class="tagline">Drawing Telephone • Multiplayer</div>
+  <div class="card">
+    <div class="card-tabs">
+      <button class="tab-btn active" onclick="switchTab('create')">Buat Room</button>
+      <button class="tab-btn" onclick="switchTab('join')">Join Room</button>
+    </div>
+    <div id="tab-create" class="tab-pane active">
+      <div class="input-group">
+        <label>Nama Kamu</label>
+        <input type="text" id="create-name" placeholder="Masukkan nama..." maxlength="16">
+      </div>
+      <button class="btn btn-primary" onclick="createRoom()">Buat Room Baru 🏠</button>
+      <div id="create-error" class="error-msg"></div>
+    </div>
+    <div id="tab-join" class="tab-pane">
+      <div class="input-group">
+        <label>Nama Kamu</label>
+        <input type="text" id="join-name" placeholder="Masukkan nama..." maxlength="16">
+      </div>
+      <div class="input-group">
+        <label>Kode Room</label>
+        <input type="text" id="join-code" placeholder="Contoh: AB3X" maxlength="4" style="text-transform:uppercase;letter-spacing:4px;font-size:22px;font-family:'Fredoka One',cursive">
+      </div>
+      <button class="btn btn-secondary" onclick="joinRoom()">Masuk Room 🚪</button>
+      <div id="join-error" class="error-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ROOM ══════════════ -->
+<div id="screen-room" class="screen">
+  <div class="room-header">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="room-title">🎨 Coret-Coret</div>
+      <div id="round-indicator" class="round-badge" style="display:none">
+        <div class="round-dot"></div>
+        <span id="round-text">Ronde 1</span>
+      </div>
+    </div>
+    <div class="room-code-badge" onclick="copyCode()" title="Klik untuk copy">
+      <div>
+        <div class="label">Kode Room</div>
+        <div class="code" id="header-code">----</div>
+      </div>
+      <span style="color:var(--muted);font-size:18px">📋</span>
+    </div>
+  </div>
+  <div class="room-body">
+    <div class="player-sidebar">
+      <div class="sidebar-title">👥 Pemain <span id="player-count-small">0/8</span></div>
+      <div class="player-list" id="player-list"></div>
+    </div>
+    <div class="room-main">
+      <div class="room-content" id="main-content">
+
+        <!-- Lobby -->
+        <div id="view-lobby" class="lobby-box">
+          <div class="lobby-icon">🎲</div>
+          <div class="lobby-title">Menunggu Pemain</div>
+          <div class="lobby-subtitle">Bagikan kode room ke temanmu!</div>
+          <div class="player-count-badge"><span>👥</span><span id="lobby-count">1 pemain</span></div>
+          <button id="start-btn" class="btn btn-green" onclick="startGame()" disabled>Mulai Game 🎮</button>
+          <div class="min-players-note" id="start-hint">Butuh minimal 2 pemain untuk mulai</div>
+        </div>
+
+        <!-- Waiting -->
+        <div id="view-waiting" style="display:none" class="waiting-box">
+          <div class="waiting-spinner"></div>
+          <div class="lobby-title" style="font-size:22px">Menunggu pemain lain...</div>
+          <div class="lobby-subtitle">Semua pemain perlu selesai dulu</div>
+        </div>
+
+        <!-- Write -->
+        <div id="view-write" style="display:none" class="task-box">
+          <div class="progress-bar"><div class="progress-fill" id="write-progress-fill" style="width:0%"></div></div>
+          <div class="task-label">✏️ Tahap Menulis</div>
+          <div class="task-prompt">
+            <div class="from-label">Kata yang harus kamu deskripsikan:</div>
+            <div class="content" id="write-word"></div>
+          </div>
+          <textarea id="write-input" placeholder="Tulis deskripsimu di sini..." rows="3" maxlength="120"></textarea>
+          <div style="text-align:right;color:var(--muted);font-size:12px;margin-top:4px" id="write-count">0/120</div>
+        </div>
+
+        <!-- Draw -->
+        <div id="view-draw" style="display:none" class="task-box">
+          <div class="progress-bar"><div class="progress-fill" id="draw-progress-fill" style="width:0%"></div></div>
+          <div class="task-label">🎨 Tahap Menggambar</div>
+          <div class="task-prompt">
+            <div class="from-label">Gambar ini:</div>
+            <div class="content" id="draw-word"></div>
+          </div>
+          <div class="canvas-tools">
+            <div class="tool-group" id="color-palette"></div>
+            <div class="tool-sep"></div>
+            <div class="tool-group">
+              <span style="font-size:12px;color:var(--muted)">🖌️</span>
+              <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
+            </div>
+            <div class="tool-sep"></div>
+            <div class="tool-group">
+              <button class="tool-icon-btn active" id="btn-pen" onclick="setTool('pen')">✏️ Pen</button>
+              <button class="tool-icon-btn" id="btn-eraser" onclick="setTool('eraser')">🧹 Hapus</button>
+              <button class="tool-icon-btn" onclick="clearCanvas()">🗑️ Bersihkan</button>
+            </div>
+          </div>
+          <canvas id="drawing-canvas"></canvas>
+        </div>
+
+        <!-- Guess -->
+        <div id="view-guess" style="display:none" class="task-box">
+          <div class="progress-bar"><div class="progress-fill" id="guess-progress-fill" style="width:0%"></div></div>
+          <div class="task-label">🔍 Tahap Menebak</div>
+          <div class="task-prompt">
+            <div class="from-label">Tebak apa yang digambar ini:</div>
+            <img id="guess-image" src="" alt="Gambar untuk ditebak">
+          </div>
+          <textarea id="guess-input" placeholder="Menurutmu ini gambar apa?" rows="2" maxlength="80"></textarea>
+          <div style="text-align:right;color:var(--muted);font-size:12px;margin-top:4px" id="guess-count">0/80</div>
+        </div>
+
+      </div>
+      <div class="room-footer" id="room-footer" style="display:none">
+        <button class="btn btn-green" id="submit-btn" onclick="submitTask()">Selesai ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ RESULTS ══════════════ -->
+<div id="screen-results" class="screen">
+  <div class="results-header">
+    <div class="results-title">🎉 Hasil Akhir!</div>
+    <div style="color:var(--muted);margin-top:4px">Lihat perjalanan kata-kata dan gambar...</div>
+  </div>
+  <div class="results-body" id="results-body"></div>
+  <div class="results-footer" id="results-footer" style="display:none">
+    <button class="btn btn-yellow" onclick="playAgain()">🔄 Main Lagi</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// ⚙️  KONFIGURASI — Ganti dengan URL Worker kamu setelah deploy!
+// Contoh: 'https://coret-coret-backend.namakamu.workers.dev'
+// ════════════════════════════════════════════════════════════════
+const BACKEND_URL = 'GANTI_DENGAN_URL_WORKER_KAMU';
+// ════════════════════════════════════════════════════════════════
+
+// Convert https -> wss
+function getWsUrl(roomCode, playerName) {
+  const base = BACKEND_URL.replace(/^https?/, BACKEND_URL.startsWith('https') ? 'wss' : 'ws');
+  return `${base}/ws/${roomCode}?name=${encodeURIComponent(playerName)}`;
+}
+
+// ── State ────────────────────────────────────────────────────────
+let ws = null;
+let myId = null;
+let myName = '';
+let roomCode = '';
+let roomState = null;
+let isHost = false;
+let currentTask = null;
+let currentTool = 'pen';
+let currentColor = '#222222';
+let brushSize = 6;
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+let ctx = null;
+
+const AVATAR_COLORS = ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#ff9f43','#a29bfe','#fd79a8','#00cec9'];
+const PALETTE = ['#222222','#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899','#ffffff','#6b7280'];
+
+// ── Config check ─────────────────────────────────────────────────
+if (!BACKEND_URL || BACKEND_URL === 'GANTI_DENGAN_URL_WORKER_KAMU') {
+  document.getElementById('config-banner').style.display = 'block';
+}
+
+// ── WebSocket connection ─────────────────────────────────────────
+function connectWS(code, name) {
+  if (ws) ws.close();
+  ws = new WebSocket(getWsUrl(code, name));
+
+  ws.onopen = () => console.log('[WS] Connected');
+  ws.onclose = () => {
+    showToast('⚠️ Koneksi terputus');
+    console.log('[WS] Disconnected');
+  };
+  ws.onerror = (e) => {
+    showToast('❌ Gagal konek ke server');
+    showError('create-error', 'Gagal konek ke server. Cek URL backend!');
+    showError('join-error', 'Gagal konek ke server. Cek URL backend!');
+  };
+  ws.onmessage = (event) => {
+    try {
+      const msg = JSON.parse(event.data);
+      handleMessage(msg);
+    } catch(e) { console.error('Parse error:', e); }
+  };
+}
+
+function send(data) {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify(data));
+  }
+}
+
+// ── Message Handler ──────────────────────────────────────────────
+function handleMessage(msg) {
+  switch (msg.type) {
+    case 'welcome':
+      myId = msg.playerId;
+      isHost = msg.isHost;
+      roomState = msg.roomState;
+      showScreen('room');
+      updateRoomUI(msg.roomState);
+      showLobbyView();
+      if (!isHost) document.getElementById('start-btn').style.display = 'none';
+      break;
+
+    case 'room_update':
+      roomState = msg.roomState;
+      isHost = msg.roomState?.hostId === myId;
+      updateRoomUI(msg.roomState);
+      if (isHost && msg.roomState?.gameState === 'lobby') {
+        document.getElementById('start-btn').style.display = '';
+      }
+      break;
+
+    case 'player_joined':
+      showToast(`👋 ${msg.name} bergabung!`);
+      break;
+
+    case 'player_left':
+      showToast(`👋 ${msg.name} keluar`);
+      break;
+
+    case 'game_started':
+      roomState = msg.roomState;
+      showRoundBadge(msg.roomState);
+      break;
+
+    case 'your_task':
+      currentTask = msg;
+      showTask(msg);
+      break;
+
+    case 'game_over':
+      roomState = msg.roomState;
+      showResults(msg.results, msg.roomState);
+      break;
+
+    case 'back_to_lobby':
+      roomState = msg.roomState;
+      isHost = msg.roomState?.hostId === myId;
+      currentTask = null;
+      document.getElementById('round-indicator').style.display = 'none';
+      showScreen('room');
+      updateRoomUI(msg.roomState);
+      showLobbyView();
+      if (isHost) document.getElementById('start-btn').style.display = '';
+      else document.getElementById('start-btn').style.display = 'none';
+      break;
+
+    case 'error':
+      showToast('❌ ' + msg.message);
+      const pane = document.querySelector('.tab-pane.active');
+      if (pane) {
+        const err = pane.querySelector('.error-msg');
+        if (err) { err.textContent = msg.message; err.classList.add('show'); }
+      }
+      break;
+  }
+}
+
+// ── Actions ──────────────────────────────────────────────────────
+function createRoom() {
+  const name = document.getElementById('create-name').value.trim();
+  clearErrors();
+  if (!name) return showError('create-error', 'Masukkan nama dulu!');
+  if (BACKEND_URL === 'GANTI_DENGAN_URL_WORKER_KAMU') return showError('create-error', 'URL backend belum diatur!');
+
+  // Generate a room code client-side, server will use it as DO name
+  roomCode = generateCode();
+  myName = name;
+  document.getElementById('header-code').textContent = roomCode;
+  connectWS(roomCode, name);
+}
+
+function joinRoom() {
+  const name = document.getElementById('join-name').value.trim();
+  const code = document.getElementById('join-code').value.trim().toUpperCase();
+  clearErrors();
+  if (!name) return showError('join-error', 'Masukkan nama dulu!');
+  if (!code || code.length !== 4) return showError('join-error', 'Masukkan kode room 4 karakter!');
+  if (BACKEND_URL === 'GANTI_DENGAN_URL_WORKER_KAMU') return showError('join-error', 'URL backend belum diatur!');
+
+  roomCode = code;
+  myName = name;
+  connectWS(code, name);
+}
+
+function startGame() { send({ type: 'start_game' }); }
+function playAgain() { send({ type: 'play_again' }); }
+
+function submitTask() {
+  if (!currentTask) return;
+  let content = '';
+  const type = currentTask.taskType;
+
+  if (type === 'write') {
+    content = document.getElementById('write-input').value.trim();
+    if (!content) return showToast('⚠️ Tulis sesuatu dulu!');
+  } else if (type === 'draw') {
+    content = document.getElementById('drawing-canvas').toDataURL('image/png');
+  } else if (type === 'guess') {
+    content = document.getElementById('guess-input').value.trim();
+    if (!content) return showToast('⚠️ Tulis tebakanmu dulu!');
+  }
+
+  send({ type: 'submit_task', taskType: type, content });
+  showWaiting();
+}
+
+function copyCode() {
+  navigator.clipboard.writeText(roomCode).then(() => {
+    document.getElementById('header-code').classList.add('copied');
+    showToast('✅ Kode disalin!');
+    setTimeout(() => document.getElementById('header-code').classList.remove('copied'), 1500);
+  });
+}
+
+// ── UI ───────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.tab-btn:nth-child(${tab==='create'?1:2})`).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+function updateRoomUI(rs) {
+  if (!rs) return;
+  document.getElementById('header-code').textContent = rs.code;
+  document.getElementById('player-count-small').textContent = `${rs.players.length}/8`;
+  document.getElementById('lobby-count').textContent = `${rs.players.length} pemain`;
+
+  const list = document.getElementById('player-list');
+  list.innerHTML = '';
+  rs.players.forEach((p, i) => {
+    const color = AVATAR_COLORS[i % AVATAR_COLORS.length];
+    const statusLabel = { waiting:'Menunggu', writing:'Menulis...', drawing:'Menggambar...', guessing:'Menebak...', done:'Selesai ✓' }[p.status] || p.status;
+    list.innerHTML += `
+      <div class="player-item ${p.id === myId ? 'me' : ''}">
+        <div class="player-avatar" style="background:${color}20;color:${color}">${p.name[0].toUpperCase()}</div>
+        <div class="player-info">
+          <div class="player-name">${escHtml(p.name)}${p.id===myId?' (Kamu)':''}</div>
+          <div class="player-status status-${p.status}">${statusLabel}</div>
+        </div>
+        ${p.isHost ? '<span class="host-badge">HOST</span>' : ''}
+      </div>`;
+  });
+
+  const startBtn = document.getElementById('start-btn');
+  if (isHost && rs.gameState === 'lobby') {
+    startBtn.disabled = rs.players.length < 2;
+    document.getElementById('start-hint').textContent =
+      rs.players.length < 2 ? 'Butuh minimal 2 pemain untuk mulai' : 'Semua pemain siap!';
+  }
+
+  if (rs.gameState === 'playing' && rs.totalRounds > 0) {
+    const pct = ((rs.round - 1) / rs.totalRounds) * 100;
+    document.querySelectorAll('.progress-fill').forEach(f => f.style.width = pct + '%');
+    document.getElementById('round-text').textContent = `Ronde ${rs.round}/${rs.totalRounds}`;
+  }
+}
+
+function showRoundBadge(rs) {
+  document.getElementById('round-indicator').style.display = 'flex';
+  document.getElementById('round-text').textContent = `Ronde ${rs.round}/${rs.totalRounds}`;
+}
+
+function showLobbyView() {
+  ['view-lobby','view-waiting','view-write','view-draw','view-guess'].forEach(id =>
+    document.getElementById(id).style.display = id === 'view-lobby' ? '' : 'none');
+  document.getElementById('room-footer').style.display = 'none';
+}
+
+function showWaiting() {
+  ['view-lobby','view-write','view-draw','view-guess'].forEach(id =>
+    document.getElementById(id).style.display = 'none');
+  document.getElementById('view-waiting').style.display = '';
+  document.getElementById('room-footer').style.display = 'none';
+  currentTask = null;
+}
+
+function showTask(task) {
+  ['view-lobby','view-waiting','view-write','view-draw','view-guess'].forEach(id =>
+    document.getElementById(id).style.display = 'none');
+  document.getElementById('room-footer').style.display = 'block';
+  document.getElementById('round-indicator').style.display = 'flex';
+  document.getElementById('round-text').textContent = `Ronde ${task.round}/${task.totalRounds}`;
+
+  if (task.taskType === 'write') {
+    document.getElementById('view-write').style.display = '';
+    document.getElementById('write-word').textContent = task.content;
+    document.getElementById('write-input').value = '';
+    document.getElementById('write-count').textContent = '0/120';
+  } else if (task.taskType === 'draw') {
+    document.getElementById('view-draw').style.display = '';
+    document.getElementById('draw-word').textContent = task.content;
+    initCanvas(); clearCanvas();
+  } else if (task.taskType === 'guess') {
+    document.getElementById('view-guess').style.display = '';
+    document.getElementById('guess-image').src = task.content;
+    document.getElementById('guess-input').value = '';
+    document.getElementById('guess-count').textContent = '0/80';
+  }
+}
+
+// ── Canvas ───────────────────────────────────────────────────────
+function initCanvas() {
+  const canvas = document.getElementById('drawing-canvas');
+  const wrap = canvas.parentElement;
+  canvas.width = Math.min(wrap.offsetWidth - 32, 640);
+  canvas.height = Math.min(window.innerHeight - 400, 320);
+  ctx = canvas.getContext('2d');
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  canvas.onmousedown = startDraw; canvas.onmousemove = draw; canvas.onmouseup = stopDraw; canvas.onmouseleave = stopDraw;
+  canvas.ontouchstart = e => { e.preventDefault(); startDraw(e.touches[0]); };
+  canvas.ontouchmove = e => { e.preventDefault(); draw(e.touches[0]); };
+  canvas.ontouchend = stopDraw; canvas.ontouchcancel = stopDraw;
+}
+
+function getPos(e) {
+  const canvas = document.getElementById('drawing-canvas');
+  const rect = canvas.getBoundingClientRect();
+  return { x: (e.clientX - rect.left) * (canvas.width / rect.width), y: (e.clientY - rect.top) * (canvas.height / rect.height) };
+}
+
+function startDraw(e) {
+  isDrawing = true;
+  const p = getPos(e); lastX = p.x; lastY = p.y;
+  ctx.beginPath();
+  ctx.arc(lastX, lastY, (currentTool==='eraser' ? brushSize*2 : brushSize)/2, 0, Math.PI*2);
+  ctx.fillStyle = currentTool==='eraser' ? 'white' : currentColor;
+  ctx.fill();
+}
+function draw(e) {
+  if (!isDrawing) return;
+  const p = getPos(e);
+  ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y);
+  ctx.strokeStyle = currentTool==='eraser' ? 'white' : currentColor;
+  ctx.lineWidth = currentTool==='eraser' ? brushSize*2.5 : brushSize;
+  ctx.stroke(); lastX = p.x; lastY = p.y;
+}
+function stopDraw() { isDrawing = false; }
+function clearCanvas() { if (!ctx) return; const c = document.getElementById('drawing-canvas'); ctx.fillStyle='white'; ctx.fillRect(0,0,c.width,c.height); }
+function setTool(t) { currentTool=t; document.getElementById('btn-pen').classList.toggle('active',t==='pen'); document.getElementById('btn-eraser').classList.toggle('active',t==='eraser'); }
+
+function buildPalette() {
+  const pal = document.getElementById('color-palette');
+  pal.innerHTML = '';
+  PALETTE.forEach(c => {
+    const btn = document.createElement('div');
+    btn.className = 'color-btn' + (c===currentColor?' active':'');
+    btn.style.background = c;
+    if (c==='#ffffff') btn.style.border='3px solid #444';
+    btn.onclick = () => {
+      currentColor=c; setTool('pen');
+      document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    pal.appendChild(btn);
+  });
+  document.getElementById('brush-size').addEventListener('input', e => brushSize = +e.target.value);
+}
+
+// ── Results ──────────────────────────────────────────────────────
+function showResults(results, rs) {
+  showScreen('results');
+  const body = document.getElementById('results-body');
+  body.innerHTML = '';
+  results.forEach((chain, ci) => {
+    const color = AVATAR_COLORS[ci % AVATAR_COLORS.length];
+    let itemsHtml = '';
+    chain.chain.forEach((item, idx) => {
+      const typeLabel = { word:'📝 Kata Awal', write:'✏️ Deskripsi', draw:'🎨 Gambar', guess:'🔍 Tebakan' }[item.type] || item.type;
+      const typeClass = item.type==='draw' ? 'step-draw' : item.type==='guess' ? 'step-guess' : 'step-word';
+      const contentHtml = item.type==='draw' ? `<img src="${item.content}" alt="Drawing">` : `<div class="chain-text">${escHtml(item.content)}</div>`;
+      itemsHtml += `<div class="chain-item"><div class="chain-card ${typeClass}"><div class="step-type">${typeLabel}</div><div class="author">oleh ${escHtml(item.authorName||'?')}</div>${contentHtml}</div>${idx<chain.chain.length-1?'<div class="chain-arrow">→</div>':''}</div>`;
+    });
+    body.innerHTML += `<div class="chain-block"><div class="chain-header"><div class="avatar" style="background:${color}20;color:${color}">${(chain.ownerName||'?')[0].toUpperCase()}</div><div class="name">Rantai milik ${escHtml(chain.ownerName||'?')}</div></div><div class="chain-items">${itemsHtml}</div></div>`;
+  });
+  document.getElementById('results-footer').style.display = rs?.hostId === myId ? 'flex' : 'none';
+}
+
+// ── Helpers ──────────────────────────────────────────────────────
+function generateCode() {
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('');
+}
+function showError(id, msg) { const el=document.getElementById(id); if(el){el.textContent=msg;el.classList.add('show');} }
+function clearErrors() { document.querySelectorAll('.error-msg').forEach(e=>{e.textContent='';e.classList.remove('show');}); }
+let toastTimer;
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2500); }
+function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── Event listeners ───────────────────────────────────────────────
+document.getElementById('write-input').addEventListener('input', function() { document.getElementById('write-count').textContent=`${this.value.length}/120`; });
+document.getElementById('guess-input').addEventListener('input', function() { document.getElementById('guess-count').textContent=`${this.value.length}/80`; });
+document.getElementById('create-name').addEventListener('keydown', e => { if(e.key==='Enter') createRoom(); });
+document.getElementById('join-name').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('join-code').focus(); });
+document.getElementById('join-code').addEventListener('keydown', e => { if(e.key==='Enter') joinRoom(); });
+document.getElementById('join-code').addEventListener('input', function() { this.value=this.value.toUpperCase(); });
+
+buildPalette();
+</script>
+</body>
+</html>
