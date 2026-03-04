@@ -297,8 +297,21 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
 .tbtn:active{background:rgba(255,255,255,.2)}
 .tbtn.on{background:var(--pink);border-color:var(--pink)}
 
-.cv-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.2);padding:6px;overflow:hidden}
-.cv-wrap{flex-shrink:0;position:relative;line-height:0}
+.cv-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.2);padding:6px;overflow:hidden;position:relative}
+.cv-wrap{flex-shrink:0;position:relative;line-height:0;transition:transform .08s linear;will-change:transform}
+
+/* zoom reset pill */
+#zoom-reset-btn{
+  display:none;
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  align-items:center;gap:5px;
+  padding:5px 13px;border:none;border-radius:20px;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(8px);
+  border:1.5px solid rgba(255,255,255,.2);
+  color:#fff;font-family:'Fredoka One',cursive;font-size:12px;
+  cursor:pointer;z-index:50;white-space:nowrap;
+}
+#zoom-reset-btn:active{background:rgba(0,229,204,.3)}
 #drawing-canvas{display:block;cursor:crosshair;touch-action:none;border-radius:7px;box-shadow:0 5px 24px rgba(0,0,0,.5),0 0 0 2px rgba(0,229,204,.2)}
 
 .wait-box{text-align:center;max-width:260px}
@@ -591,6 +604,7 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
             </div>
             <div class="cv-stage" id="cv-stage">
               <div class="cv-wrap" id="cv-wrap"><canvas id="drawing-canvas"></canvas></div>
+              <button id="zoom-reset-btn" onclick="resetVP()">🔍 Reset Zoom</button>
             </div>
           </div>
           <div id="v-g" style="display:none" class="task-wrap">
@@ -726,22 +740,53 @@ document.addEventListener('fullscreenchange',_ufs);
 document.addEventListener('webkitfullscreenchange',_ufs);
 function _ufs(){ document.getElementById('fs-btn').textContent=(document.fullscreenElement||document.webkitFullscreenElement)?'⊠':'⛶'; }
 
-// ─── CANVAS ──────────────────────────────────────
+// ─── CANVAS + PINCH-ZOOM + PAN ───────────────────
 const CV_AR={'4:3':{w:800,h:600},'16:9':{w:960,h:540}};
 let cvBuffer=null,cvBufCtx=null;
+
+// Viewport transform: scale & pan applied on top of base canvas display
+let vp={scale:1,ox:0,oy:0};   // ox/oy = pan offset in CSS px
+let _baseW=0,_baseH=0;         // base display size (what layoutCanvas sets)
+const VP_MIN=1, VP_MAX=5;
+
+// Pinch state
+let _pinch={active:false,dist:0,midX:0,midY:0,startScale:1,startOx:0,startOy:0};
+// Pan state (single finger when zoomed in)
+let _pan={active:false,lastX:0,lastY:0};
+
+function applyVP(){
+  const wrap=document.getElementById('cv-wrap');
+  if(!wrap)return;
+  // Clamp pan so canvas never drifts too far off-screen
+  const stage=document.getElementById('cv-stage');
+  if(stage){
+    const sW=stage.clientWidth, sH=stage.clientHeight;
+    const scaledW=_baseW*vp.scale, scaledH=_baseH*vp.scale;
+    // max pan = half the extra size
+    const mxX=Math.max(0,(scaledW-sW)/2+40);
+    const mxY=Math.max(0,(scaledH-sH)/2+40);
+    vp.ox=Math.max(-mxX,Math.min(mxX,vp.ox));
+    vp.oy=Math.max(-mxY,Math.min(mxY,vp.oy));
+  }
+  wrap.style.transform=`translate(${vp.ox}px,${vp.oy}px) scale(${vp.scale})`;
+  wrap.style.transformOrigin='center center';
+  // Show/hide reset button
+  const btn=document.getElementById('zoom-reset-btn');
+  if(btn) btn.style.display=vp.scale>1.05?'flex':'none';
+}
+
+function resetVP(){vp={scale:1,ox:0,oy:0};applyVP();}
 
 function initCv(){
   const ar=CV_AR[settings.aspectRatio]||CV_AR['4:3'];
   try{cvBuffer=new OffscreenCanvas(ar.w,ar.h);}catch(e){cvBuffer=document.createElement('canvas');cvBuffer.width=ar.w;cvBuffer.height=ar.h;}
-  cvBufCtx=cvBuffer.getContext('2d'); cvBufCtx.lineCap='round'; cvBufCtx.lineJoin='round';
-  cvBufCtx.fillStyle='#ffffff'; cvBufCtx.fillRect(0,0,ar.w,ar.h);
+  cvBufCtx=cvBuffer.getContext('2d');cvBufCtx.lineCap='round';cvBufCtx.lineJoin='round';
+  cvBufCtx.fillStyle='#ffffff';cvBufCtx.fillRect(0,0,ar.w,ar.h);
+  resetVP();
   layoutCanvas();
-  const cv=document.getElementById('drawing-canvas');
-  cv.onmousedown=sDr;cv.onmousemove=dDr;cv.onmouseup=eDr;cv.onmouseleave=eDr;
-  cv.ontouchstart=e=>{e.preventDefault();sDr(e.touches[0]);};
-  cv.ontouchmove=e=>{e.preventDefault();dDr(e.touches[0]);};
-  cv.ontouchend=eDr;cv.ontouchcancel=eDr;
+  bindCvEvents();
 }
+
 function layoutCanvas(){
   const stage=document.getElementById('cv-stage');const cv=document.getElementById('drawing-canvas');
   if(!stage||!cv||!cvBuffer)return;
@@ -750,12 +795,16 @@ function layoutCanvas(){
   let dW,dH;
   if(aW/aH>ratio){dH=aH;dW=aH*ratio;}else{dW=aW;dH=aW/ratio;}
   dW=Math.max(dW,100);dH=Math.max(dH,75);
+  _baseW=dW;_baseH=dH;
   const dpr=window.devicePixelRatio||1;
   cv.style.width=dW+'px';cv.style.height=dH+'px';
   cv.width=Math.round(dW*dpr);cv.height=Math.round(dH*dpr);
   ctx=cv.getContext('2d');ctx.lineCap='round';ctx.lineJoin='round';
-  ctx.setTransform(dpr,0,0,dpr,0,0);flushBuffer();
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  applyVP();
+  flushBuffer();
 }
+
 function flushBuffer(){
   if(!ctx||!cvBuffer)return;
   const cv=document.getElementById('drawing-canvas');
@@ -763,11 +812,107 @@ function flushBuffer(){
   ctx.drawImage(cvBuffer,0,0,cvBuffer.width,cvBuffer.height,0,0,cv.width,cv.height);
   ctx.setTransform(window.devicePixelRatio||1,0,0,window.devicePixelRatio||1,0,0);
 }
+
+// Convert screen point → buffer logical coords (accounts for vp transform)
 function gpos(e){
-  const cv=document.getElementById('drawing-canvas'),r=cv.getBoundingClientRect();
+  const cv=document.getElementById('drawing-canvas');
+  const r=cv.getBoundingClientRect(); // getBoundingClientRect already accounts for CSS transform
   const ar=CV_AR[settings.aspectRatio]||CV_AR['4:3'];
-  return{x:(e.clientX-r.left)/r.width*ar.w,y:(e.clientY-r.top)/r.height*ar.h};
+  return{x:(e.clientX-r.left)/r.width*ar.w, y:(e.clientY-r.top)/r.height*ar.h};
 }
+
+function bindCvEvents(){
+  const cv=document.getElementById('drawing-canvas');
+  // Mouse (desktop)
+  cv.onmousedown=sDr;cv.onmousemove=dDr;cv.onmouseup=eDr;cv.onmouseleave=eDr;
+  // Touch — handle in stage for pinch/pan, canvas for draw
+  const stage=document.getElementById('cv-stage');
+  stage.ontouchstart  = onTouchStart;
+  stage.ontouchmove   = onTouchMove;
+  stage.ontouchend    = onTouchEnd;
+  stage.ontouchcancel = onTouchEnd;
+}
+
+function pinchDist(t){
+  const dx=t[0].clientX-t[1].clientX, dy=t[0].clientY-t[1].clientY;
+  return Math.hypot(dx,dy);
+}
+function pinchMid(t){
+  return{x:(t[0].clientX+t[1].clientX)/2, y:(t[0].clientY+t[1].clientY)/2};
+}
+
+function onTouchStart(e){
+  e.preventDefault();
+  if(e.touches.length===2){
+    // Start pinch
+    drawing=false;
+    _pinch.active=true;
+    _pinch.dist=pinchDist(e.touches);
+    const m=pinchMid(e.touches);_pinch.midX=m.x;_pinch.midY=m.y;
+    _pinch.startScale=vp.scale;_pinch.startOx=vp.ox;_pinch.startOy=vp.oy;
+    _pan.active=false;
+  } else if(e.touches.length===1){
+    if(vp.scale>1.05){
+      // Pan mode when zoomed in — but also allow drawing if touch starts ON canvas
+      const cv=document.getElementById('drawing-canvas');
+      const r=cv.getBoundingClientRect();
+      const t=e.touches[0];
+      const onCanvas=t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom;
+      if(onCanvas){
+        // Draw
+        _pan.active=false;
+        sDr(e.touches[0]);
+      } else {
+        // Pan (touched outside canvas but inside stage)
+        _pan.active=true;_pan.lastX=t.clientX;_pan.lastY=t.clientY;
+      }
+    } else {
+      // Normal draw
+      _pan.active=false;
+      sDr(e.touches[0]);
+    }
+  }
+}
+
+function onTouchMove(e){
+  e.preventDefault();
+  if(e.touches.length===2&&_pinch.active){
+    const newDist=pinchDist(e.touches);
+    const newMid=pinchMid(e.touches);
+    const ratio=newDist/_pinch.dist;
+    const newScale=Math.max(VP_MIN,Math.min(VP_MAX,_pinch.startScale*ratio));
+
+    // Zoom toward pinch midpoint
+    const stage=document.getElementById('cv-stage');
+    const sr=stage.getBoundingClientRect();
+    // midpoint relative to stage center
+    const mx=_pinch.midX-sr.left-sr.width/2;
+    const my=_pinch.midY-sr.top-sr.height/2;
+    // Adjust offset so zoom centres on pinch midpoint
+    const scaleDelta=newScale/_pinch.startScale;
+    vp.scale=newScale;
+    vp.ox=_pinch.startOx*scaleDelta + mx*(1-scaleDelta);
+    vp.oy=_pinch.startOy*scaleDelta + my*(1-scaleDelta);
+    applyVP();
+  } else if(e.touches.length===1){
+    if(_pan.active){
+      const t=e.touches[0];
+      vp.ox+=t.clientX-_pan.lastX;
+      vp.oy+=t.clientY-_pan.lastY;
+      _pan.lastX=t.clientX;_pan.lastY=t.clientY;
+      applyVP();
+    } else {
+      dDr(e.touches[0]);
+    }
+  }
+}
+
+function onTouchEnd(e){
+  e.preventDefault();
+  if(e.touches.length<2) _pinch.active=false;
+  if(e.touches.length===0){_pan.active=false;eDr();}
+}
+
 function sDr(e){drawing=true;const p=gpos(e);lastX=p.x;lastY=p.y;
   cvBufCtx.beginPath();cvBufCtx.arc(lastX,lastY,(curTool==='eraser'?brushSz*2:brushSz)/2,0,Math.PI*2);
   cvBufCtx.fillStyle=curTool==='eraser'?'#ffffff':curColor;cvBufCtx.fill();flushBuffer();}
@@ -777,6 +922,7 @@ function dDr(e){if(!drawing)return;const p=gpos(e);
   cvBufCtx.lineWidth=curTool==='eraser'?brushSz*2.5:brushSz;cvBufCtx.stroke();
   lastX=p.x;lastY=p.y;flushBuffer();}
 function eDr(){drawing=false;}
+
 function clearCv(){if(!cvBufCtx)return;const ar=CV_AR[settings.aspectRatio]||CV_AR['4:3'];
   cvBufCtx.fillStyle='#ffffff';cvBufCtx.fillRect(0,0,ar.w,ar.h);flushBuffer();}
 function getCanvasDataURL(){
@@ -784,7 +930,7 @@ function getCanvasDataURL(){
   const ar=CV_AR[settings.aspectRatio]||CV_AR['4:3'];
   const tmp=document.createElement('canvas');tmp.width=ar.w;tmp.height=ar.h;
   tmp.getContext('2d').drawImage(cvBuffer,0,0);return tmp.toDataURL('image/png');}
-function resetCvBuffer(){cvBuffer=null;cvBufCtx=null;ctx=null;}
+function resetCvBuffer(){cvBuffer=null;cvBufCtx=null;ctx=null;resetVP();}
 function checkPortrait(){
   const msg=document.getElementById('cv-portrait-msg');if(!msg)return;
   const drawActive=document.getElementById('v-d')?.style.display==='flex';
