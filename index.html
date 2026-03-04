@@ -163,7 +163,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .st-waiting{color:rgba(255,255,255,.4)}.st-writing{color:var(--yellow)}.st-drawing{color:var(--teal)}.st-guessing{color:var(--green)}.st-done{color:var(--green)}
 .host-tag{font-family:'Fredoka One',cursive;font-size:9px;background:var(--pink);color:#fff;padding:2px 6px;border-radius:5px;flex-shrink:0}
 .gmain{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.gcontent{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+/* gcontent: default centering for non-draw views */
+.gcontent{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto;min-height:0;position:relative}
+/* When draw is active, gcontent becomes a passthrough column */
+.gcontent.draw-mode{padding:0;align-items:stretch;justify-content:stretch;overflow:hidden}
 .gfoot{padding:12px 18px;background:rgba(30,0,80,.55);border-top:1px solid rgba(255,255,255,.07);flex-shrink:0;display:none}
 
 /* ═══════════ ALBUM SETTINGS SCREEN ═══════════ */
@@ -241,7 +244,7 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
    letterbox/pillarbox, no stretch, no blur.
 */
 
-/* The drawing view uses a column layout */
+/* The drawing view fills parent completely */
 #v-d{
   display:none;
   flex-direction:column;
@@ -249,23 +252,27 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
   height:100%;
   max-width:none;
   padding:0;
+  position:relative;
 }
 
-/* Top section: header + prompt + toolbar */
+/* Top section: header + prompt + toolbar — compact, fixed height */
 .draw-top{
   flex-shrink:0;
-  padding:0 12px 0;
+  padding:8px 14px 6px;
+  background:rgba(20,0,60,.4);
+  border-bottom:1px solid rgba(255,255,255,.07);
 }
 
-/* Canvas stage: the area that letterboxes the canvas */
+/* Canvas stage: fills ALL remaining height, centers canvas */
 .cv-stage{
   flex:1;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  padding:6px 12px 8px;
-  min-height:0; /* allow flex shrink */
+  padding:10px;
+  min-height:0;
+  background:rgba(0,0,0,.15);
 }
 
 /* The canvas wrapper maintains aspect ratio visually */
@@ -285,20 +292,20 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
   /* Width & height set via JS attributes only. CSS size = display size */
 }
 
-/* Portrait mode overlay */
+/* Portrait mode overlay — covers entire drawing view */
 .cv-portrait-msg{
   display:none;
-  position:absolute;
+  position:fixed;
   inset:0;
-  background:rgba(20,0,60,.92);
-  backdrop-filter:blur(8px);
+  background:rgba(20,0,60,.96);
+  backdrop-filter:blur(12px);
   align-items:center;
   justify-content:center;
-  z-index:10;
+  z-index:100;
   flex-direction:column;
-  gap:14px;
+  gap:16px;
   text-align:center;
-  border-radius:12px;
+  pointer-events:all;
 }
 .cv-portrait-msg.show{display:flex}
 .cv-portrait-icon{font-size:52px;animation:rot90 2s ease-in-out infinite}
@@ -543,18 +550,17 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
 
         <!-- DRAW — full-height layout -->
         <div id="v-d">
-          <!-- Portrait overlay -->
-          <div class="cv-portrait-msg" id="cv-portrait-msg">
-            <div class="cv-portrait-icon">📱</div>
-            <div class="cv-portrait-txt">Putar HP ke landscape</div>
-            <div class="cv-portrait-sub">untuk mulai menggambar</div>
-          </div>
           <div class="draw-top">
             <div class="task-hd">
               <div class="tbadge tb-d">🎨 Gambar Ini!</div>
-              <div class="timer-wrap" id="tw-d"><svg class="timer-svg" viewBox="0 0 54 54"><circle class="t-bg" cx="27" cy="27" r="22"/><circle class="t-arc" id="ta-d" cx="27" cy="27" r="22"/></svg><div class="timer-num" id="tn-d">90</div></div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <button class="tbtn" style="font-size:13px;padding:7px 14px" onclick="submitDrawing()">✅ DONE!</button>
+                <div class="timer-wrap" id="tw-d"><svg class="timer-svg" viewBox="0 0 54 54"><circle class="t-bg" cx="27" cy="27" r="22"/><circle class="t-arc" id="ta-d" cx="27" cy="27" r="22"/></svg><div class="timer-num" id="tn-d">90</div></div>
+              </div>
             </div>
-            <div class="prompt-box"><div class="prompt-lbl">Gambar tanpa teks!</div><div class="prompt-val" id="d-word"></div></div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px">
+              <div class="prompt-box" style="flex:1;margin-bottom:0"><div class="prompt-lbl">Gambar tanpa teks!</div><div class="prompt-val" id="d-word"></div></div>
+            </div>
             <div class="cv-tb">
               <div class="tg" id="colorpal"></div>
               <div class="tsep"></div>
@@ -567,7 +573,7 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
               </div>
             </div>
           </div>
-          <!-- Letterbox stage -->
+          <!-- Letterbox stage — fills remaining height -->
           <div class="cv-stage" id="cv-stage">
             <div class="cv-wrap" id="cv-wrap">
               <canvas id="drawing-canvas"></canvas>
@@ -695,6 +701,13 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
   </div>
 </div>
 
+<!-- Portrait mode overlay (body level, fixed) -->
+<div class="cv-portrait-msg" id="cv-portrait-msg">
+  <div class="cv-portrait-icon">📱</div>
+  <div class="cv-portrait-txt">Putar HP ke landscape</div>
+  <div class="cv-portrait-sub">untuk mulai menggambar</div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -741,9 +754,6 @@ function initCv() {
   const vd   = document.getElementById('v-d');
   const stage = document.getElementById('cv-stage');
   const cv    = document.getElementById('drawing-canvas');
-
-  // Check portrait mode on mobile
-  checkPortrait();
 
   const ar = CV_AR[settings.aspectRatio] || CV_AR['4:3'];
   const arW = ar.w, arH = ar.h;
@@ -895,24 +905,39 @@ function getCanvasDataURL() {
   return tmp.toDataURL('image/png');
 }
 
+// Submit drawing specifically (inline DONE button)
+function submitDrawing(){
+  if(!curTask||curTask.taskType!=='draw')return;
+  stopTimer();
+  const content=getCanvasDataURL();
+  send({type:'submit_task',taskType:'draw',content});
+  // Clear draw-mode
+  document.getElementById('gcontent').classList.remove('draw-mode');
+  const pm=document.getElementById('cv-portrait-msg');if(pm)pm.classList.remove('show');
+  showWait();
+}
+
+// Portrait detection — only relevant when drawing
+function checkPortrait(){
+  const msg=document.getElementById('cv-portrait-msg');
+  if(!msg)return;
+  const drawActive=document.getElementById('v-d')&&document.getElementById('v-d').style.display==='flex';
+  if(!drawActive){msg.classList.remove('show');return;}
+  // Detect portrait on mobile (width < 768 and height > width)
+  const isMobile=window.innerWidth<900;
+  const isPortrait=window.innerHeight>window.innerWidth;
+  if(isMobile&&isPortrait){
+    msg.classList.add('show');
+  }else{
+    msg.classList.remove('show');
+  }
+}
+
 // Reset canvas buffer (new drawing session)
 function resetCvBuffer() {
   cvBuffer    = null;
   cvBufCtx    = null;
   ctx         = null;
-}
-
-// Handle orientation / resize
-function checkPortrait() {
-  const msg = document.getElementById('cv-portrait-msg');
-  if (!msg) return;
-  const isPortrait = window.innerHeight > window.innerWidth;
-  const isMobile   = window.innerWidth < 768;
-  if (isPortrait && isMobile) {
-    msg.classList.add('show');
-  } else {
-    msg.classList.remove('show');
-  }
 }
 
 // Resize handler: re-layout canvas without losing drawing
@@ -923,7 +948,7 @@ function onResize() {
     checkPortrait();
     // Only re-init layout if draw task is active
     const vd = document.getElementById('v-d');
-    if (vd && vd.style.display !== 'none' && cvBuffer) {
+    if (vd && vd.style.display === 'flex' && cvBuffer) {
       initCvLayout();
     }
   }, 100);
@@ -1159,7 +1184,11 @@ function submitTask(){
   let content='',type=curTask.taskType;
   if(type==='write_initial'){content=document.getElementById('wi-in').value.trim();if(!content)return showToast('⚠️ Tulis kalimat dulu!');}
   else if(type==='write'){content=document.getElementById('w-in').value.trim();if(!content)return showToast('⚠️ Tulis deskripsi!');}
-  else if(type==='draw'){content=getCanvasDataURL();}  // ← uses buffer export
+  else if(type==='draw'){
+    content=getCanvasDataURL();
+    document.getElementById('gcontent').classList.remove('draw-mode');
+    const pm=document.getElementById('cv-portrait-msg');if(pm)pm.classList.remove('show');
+  }
   else if(type==='guess'){content=document.getElementById('g-in').value.trim();if(!content)return showToast('⚠️ Tulis tebakan!');}
   send({type:'submit_task',taskType:type,content});showWait();
 }
@@ -1236,13 +1265,18 @@ function hideViews(){VIEWS.forEach(id=>{const el=document.getElementById(id);if(
 
 function showWait(){
   stopTimer();hideViews();
+  document.getElementById('gcontent').classList.remove('draw-mode');
   document.getElementById('v-wait').style.display='';
   document.getElementById('gfoot').style.display='none';
+  // Hide portrait overlay if visible
+  const pm=document.getElementById('cv-portrait-msg');if(pm)pm.classList.remove('show');
   curTask=null;
 }
 
 function showTask(t){
-  hideViews();document.getElementById('gfoot').style.display='block';
+  hideViews();
+  document.getElementById('gcontent').classList.remove('draw-mode');
+  document.getElementById('gfoot').style.display='block';
   document.getElementById('rnd-pill').style.display='flex';
   if(t.totalRounds>0)document.getElementById('rnd-txt').textContent='Ronde '+t.round+'/'+t.totalRounds;
   const secs=settings.time>=999?99999:settings.time||90;
@@ -1262,18 +1296,19 @@ function showTask(t){
     startTimer('w',secs);
 
   } else if(t.taskType==='draw'){
-    // Show draw view — use flex column
-    const vd = document.getElementById('v-d');
-    vd.style.display = 'flex';
-    document.getElementById('d-word').textContent = t.content;
-    document.getElementById('gfoot').style.display = 'none'; // done button is inline
-
-    // Wait one frame for DOM to layout before measuring stage
+    // gcontent becomes a flex column passthrough — no padding, no centering
+    document.getElementById('gcontent').classList.add('draw-mode');
+    document.getElementById('gfoot').style.display='none';
+    const vd=document.getElementById('v-d');
+    vd.style.display='flex';
+    document.getElementById('d-word').textContent=t.content;
     resetCvBuffer();
+    // Double rAF: wait for layout to fully stabilize before measuring stage
     requestAnimationFrame(()=>{
       requestAnimationFrame(()=>{
+        checkPortrait();
         initCv();
-        startTimer('d', secs);
+        startTimer('d',secs);
       });
     });
 
