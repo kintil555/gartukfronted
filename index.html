@@ -8,39 +8,37 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg1:#2d0060;--bg2:#5b1fa8;--bg3:#8b35d6;
+  --pu1:#2d0060;--pu2:#5b1fa8;--pu3:#8b35d6;
   --teal:#00e5cc;--yellow:#ffd600;--pink:#ff4fa3;
   --green:#00e676;--orange:#ff6b35;--red:#ff3d5a;
-  --text:#fff;--muted:rgba(255,255,255,.55);--border:rgba(255,255,255,.13);
+  --card:rgba(60,20,120,0.6);--card2:rgba(40,10,100,0.7);
+  --border:rgba(255,255,255,0.12);--muted:rgba(255,255,255,0.55);
 }
 html,body{height:100%;font-family:'Nunito',sans-serif;overflow:hidden}
 body{background:linear-gradient(135deg,#2d0060 0%,#5b1fa8 45%,#8b35d6 100%);min-height:100vh;position:relative}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse at 15% 25%,rgba(255,79,163,.22) 0%,transparent 55%),
-    radial-gradient(ellipse at 85% 75%,rgba(0,229,204,.18) 0%,transparent 55%),
-    radial-gradient(ellipse at 55% 10%,rgba(255,214,0,.1) 0%,transparent 45%);
-  animation:bgp 7s ease-in-out infinite}
-@keyframes bgp{0%,100%{opacity:1}50%{opacity:.75}}
+  background:radial-gradient(ellipse at 15% 25%,rgba(255,79,163,.2) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 75%,rgba(0,229,204,.15) 0%,transparent 55%);
+  animation:bgp 8s ease-in-out infinite}
+@keyframes bgp{0%,100%{opacity:1}50%{opacity:.7}}
 .stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.star{position:absolute;border-radius:50%;background:rgba(255,255,255,.7);animation:sf linear infinite}
-@keyframes sf{0%{transform:translateY(105vh);opacity:0}10%{opacity:1}90%{opacity:.8}100%{transform:translateY(-10px);opacity:0}}
+.star{position:absolute;border-radius:50%;background:rgba(255,255,255,.6);animation:sf linear infinite}
+@keyframes sf{0%{transform:translateY(105vh);opacity:0}10%{opacity:1}90%{opacity:.7}100%{transform:translateY(-10px);opacity:0}}
 .screen{display:none;width:100%;height:100vh;position:relative;z-index:1}
 .screen.active{display:flex}
 
 /* ═══════════ LANDING ═══════════ */
 #screen-landing{flex-direction:column;align-items:center;padding:0 16px 16px;overflow-y:auto}
-.logo-area{text-align:center;padding:20px 0 18px;flex-shrink:0}
-.logo-txt{font-family:'Fredoka One',cursive;font-size:clamp(38px,6vw,66px);color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.25),0 0 40px rgba(255,79,163,.4);letter-spacing:2px;line-height:1;display:flex;align-items:center;justify-content:center;gap:10px}
+.logo-area{text-align:center;padding:18px 0 16px;flex-shrink:0}
+.logo-txt{font-family:'Fredoka One',cursive;font-size:clamp(36px,6vw,62px);color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.25),0 0 40px rgba(255,79,163,.4);letter-spacing:2px;line-height:1;display:flex;align-items:center;justify-content:center;gap:10px}
 .logo-em{animation:lb 2.2s ease-in-out infinite;display:inline-block}
 @keyframes lb{0%,100%{transform:rotate(-6deg) scale(1)}50%{transform:rotate(6deg) scale(1.1)}}
-.logo-sub{font-size:12px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-top:5px;text-shadow:0 0 16px rgba(0,229,204,.5)}
+.logo-sub{font-size:12px;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-top:5px;text-shadow:0 0 14px rgba(0,229,204,.5)}
 .lcols{display:flex;gap:14px;width:100%;max-width:860px;align-items:flex-start}
 @media(max-width:660px){.lcols{flex-direction:column}}
 .lcard{background:rgba(80,30,160,.5);backdrop-filter:blur(18px);border:1.5px solid rgba(255,255,255,.14);border-radius:22px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1)}
 .lcard-main{flex:1.4}.lcard-how{flex:1}
 .card-ttl{font-family:'Fredoka One',cursive;font-size:15px;letter-spacing:1.5px;color:var(--teal);text-align:center;margin-bottom:18px;text-shadow:0 0 14px rgba(0,229,204,.5)}
-
-/* Avatar */
 .ava-sect{display:flex;align-items:center;gap:18px;margin-bottom:20px}
 .ava-big-w{position:relative;width:92px;height:92px;flex-shrink:0}
 .ava-big{width:92px;height:92px;border-radius:50%;border:3.5px solid rgba(255,255,255,.25);object-fit:cover;display:block;transition:transform .2s;background:rgba(255,255,255,.1)}
@@ -52,8 +50,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .ava-opt{width:100%;aspect-ratio:1;border-radius:50%;border:3px solid transparent;cursor:pointer;background:rgba(255,255,255,.08);object-fit:cover;transition:all .15s}
 .ava-opt:hover{transform:scale(1.12);border-color:rgba(255,255,255,.3)}
 .ava-opt.sel{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,229,204,.35);transform:scale(1.1)}
-
-/* Form */
 .name-sect{margin-bottom:18px}
 .name-lbl{font-family:'Fredoka One',cursive;font-size:14px;color:rgba(255,255,255,.8);text-align:center;margin-bottom:8px;letter-spacing:.5px}
 .name-inp{width:100%;padding:13px 16px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.16);border-radius:13px;color:#fff;font-size:17px;font-family:'Nunito',sans-serif;font-weight:800;outline:none;text-align:center;transition:all .2s}
@@ -85,10 +81,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .snum{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#1a0033;font-family:'Fredoka One',cursive;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .stxt{font-size:13px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.4}
 
-/* ═══════════ ROOM ═══════════ */
-#screen-room{flex-direction:column;overflow:hidden}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 18px;height:60px;flex-shrink:0;background:rgba(45,0,96,.7);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.09)}
-.tb-logo{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;display:flex;align-items:center;gap:8px}
+/* ═══════════ SHARED TOPBAR ═══════════ */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 18px;height:58px;flex-shrink:0;background:rgba(30,0,80,.7);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.09)}
+.tb-logo{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px}
 .rnd-pill{display:none;align-items:center;gap:6px;background:rgba(255,79,163,.18);border:1.5px solid rgba(255,79,163,.35);border-radius:20px;padding:5px 13px;font-size:13px;font-weight:800;color:#ff9ec8}
 .rnd-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:pp 1.5s infinite}
 @keyframes pp{0%,100%{opacity:1}50%{opacity:.3}}
@@ -99,70 +94,88 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .progbar{height:4px;background:rgba(255,255,255,.07);flex-shrink:0}
 .progfill{height:100%;background:linear-gradient(90deg,var(--pink),var(--teal));transition:width .6s ease;width:0%}
 
-/* ═══════════ LOBBY PAGE ═══════════ */
+/* ═══════════ SCREEN-ROOM (lobby + game) ═══════════ */
+#screen-room{flex-direction:column;overflow:hidden}
+
+/* ── LOBBY LAYOUT ── */
 .lobby-page{flex:1;display:flex;overflow:hidden}
-.lob-left{width:270px;flex-shrink:0;padding:18px;border-right:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:10px;overflow-y:auto}
-.lob-sec-title{font-family:'Fredoka One',cursive;font-size:17px;letter-spacing:2px;color:var(--teal);text-align:center;text-shadow:0 0 12px rgba(0,229,204,.4)}
-.lob-pitem{display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;transition:background .15s}
-.lob-pitem.me{background:rgba(0,229,204,.12);border-color:rgba(0,229,204,.25)}
 
-/* *** FIXED: use element directly, no innerHTML with quotes *** */
-.lob-pava{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2.5px solid rgba(255,255,255,.2);flex-shrink:0;background:rgba(255,255,255,.1)}
+/* Left panel: player list */
+.lob-left{
+  width:240px;flex-shrink:0;padding:16px;
+  border-right:1px solid rgba(255,255,255,.08);
+  display:flex;flex-direction:column;gap:10px;overflow-y:auto;
+}
+.lob-players-title{font-family:'Fredoka One',cursive;font-size:16px;letter-spacing:2px;color:var(--teal);text-align:center;text-shadow:0 0 12px rgba(0,229,204,.4)}
+.lob-pitem{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.09);border-radius:13px;padding:9px 12px}
+.lob-pitem.me{background:rgba(0,229,204,.1);border-color:rgba(0,229,204,.22)}
+.lob-pava{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2.5px solid rgba(255,255,255,.2);flex-shrink:0;background:rgba(255,255,255,.1)}
 .lob-pitem.me .lob-pava{border-color:var(--teal)}
-.lob-pname{font-weight:800;font-size:15px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lob-host{font-family:'Fredoka One',cursive;font-size:9px;background:var(--pink);color:#fff;padding:2px 8px;border-radius:6px;flex-shrink:0}
-.lob-you{font-size:11px;color:var(--teal);font-weight:800;flex-shrink:0}
+.lob-pname{font-weight:800;font-size:14px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lob-host{font-family:'Fredoka One',cursive;font-size:9px;background:var(--pink);color:#fff;padding:2px 7px;border-radius:6px;flex-shrink:0}
+.lob-you{font-size:10px;color:var(--teal);font-weight:800;flex-shrink:0}
 
-.lob-right{flex:1;padding:24px 28px;display:flex;flex-direction:column;justify-content:center}
-.lob-right-title{font-family:'Fredoka One',cursive;font-size:20px;letter-spacing:2px;color:var(--teal);text-align:center;margin-bottom:22px;text-shadow:0 0 14px rgba(0,229,204,.4)}
-.settings-list{display:flex;flex-direction:column;gap:13px;margin-bottom:28px}
-.setting-row{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px}
-.setting-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center}
-.setting-info{flex:1}
-.setting-name{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:.5px;margin-bottom:3px}
-.setting-desc{font-size:12px;color:var(--muted);font-weight:700;line-height:1.3}
-.toggle-group{display:flex;background:rgba(0,0,0,.3);border-radius:10px;padding:3px;gap:3px;flex-shrink:0}
-.tog-btn{padding:7px 14px;border:none;background:none;color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
+/* Right panel: presets/settings tabs */
+.lob-right{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.lob-tabs{display:flex;background:rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.08);padding:0 20px;gap:0}
+.lob-tab{padding:14px 24px;border:none;background:none;color:rgba(255,255,255,.45);font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:1px;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;margin-bottom:-1px}
+.lob-tab.active{color:var(--teal);border-bottom-color:var(--teal);text-shadow:0 0 12px rgba(0,229,204,.4)}
+.lob-tab-pane{display:none;flex:1;overflow-y:auto;padding:20px}
+.lob-tab-pane.active{display:block}
+
+/* Presets grid */
+.presets-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.preset-card{
+  background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:18px 12px;text-align:center;cursor:pointer;
+  transition:all .2s;
+}
+.preset-card:hover{background:rgba(255,255,255,.14);transform:translateY(-2px)}
+.preset-card.sel{background:rgba(0,229,204,.15);border-color:var(--teal);box-shadow:0 0 0 1px var(--teal)}
+.preset-em{font-size:38px;display:block;margin-bottom:8px}
+.preset-name{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:.5px;color:#fff}
+
+/* Custom settings tab */
+.cust-rows{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.cust-row{display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.09);border-radius:13px}
+.cust-icon{font-size:20px;flex-shrink:0;width:30px;text-align:center}
+.cust-info{flex:1}
+.cust-name{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:.3px;margin-bottom:2px}
+.cust-desc{font-size:11px;color:var(--muted);font-weight:700;line-height:1.3}
+
+/* select dropdown styled */
+.cust-sel{padding:9px 12px;background:rgba(30,10,90,.8);border:1.5px solid rgba(255,255,255,.18);border-radius:10px;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;outline:none;min-width:140px}
+.cust-sel option{background:#3b1080}
+
+/* toggle pill */
+.tog-grp{display:flex;background:rgba(0,0,0,.3);border-radius:10px;padding:3px;gap:3px;flex-shrink:0}
+.tog-btn{padding:7px 13px;border:none;background:none;color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .tog-btn.active{background:#fff;color:#2d0060;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.settings-list.disabled{opacity:.5;pointer-events:none}
-.lob-start-area{text-align:center}
-.lob-hint{font-size:13px;color:var(--muted);font-weight:700;margin-top:10px}
 
-/* Non-host waiting in lobby */
-.waiting-host-box{text-align:center;padding:28px;background:rgba(0,0,0,.15);border-radius:16px}
-.wh-em{font-size:52px;display:block;margin-bottom:12px;animation:fl 2s ease-in-out infinite}
-.wh-txt{font-family:'Fredoka One',cursive;font-size:18px;color:rgba(255,255,255,.7);margin-bottom:12px}
+/* Bottom action bar inside lobby */
+.lob-bottom{flex-shrink:0;padding:14px 20px;background:rgba(20,0,60,.6);border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:12px}
+.invite-btn{display:flex;align-items:center;gap:8px;padding:12px 20px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;color:#fff;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.invite-btn:hover{background:rgba(255,255,255,.18)}
+.start-big{flex:1;font-size:18px;padding:14px 24px}
+.start-big:disabled{opacity:.35;cursor:not-allowed}
+.lob-hint{font-size:12px;color:var(--muted);font-weight:700;white-space:nowrap}
+
+/* Non-host waiting */
+.lob-wait-wrap{flex:1;display:flex;align-items:center;justify-content:center}
+.lob-wait-box{text-align:center;max-width:340px}
+.lob-wait-em{font-size:64px;display:block;margin-bottom:14px;animation:fl 2.5s ease-in-out infinite}
+.lob-wait-title{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:8px;color:var(--teal)}
+.lob-wait-sub{color:var(--muted);font-weight:700;font-size:14px;margin-bottom:14px}
 .wdots{display:flex;justify-content:center;gap:6px}
 .wdot{width:9px;height:9px;border-radius:50%;background:var(--teal);animation:dp 1.4s ease-in-out infinite}
 .wdot:nth-child(2){animation-delay:.2s}.wdot:nth-child(3){animation-delay:.4s}
 @keyframes dp{0%,80%,100%{transform:scale(.6);opacity:.3}40%{transform:scale(1.1);opacity:1}}
 
-/* ═══════════ ALBUM SETTINGS SCREEN (full page) ═══════════ */
-#screen-album{flex-direction:column;overflow:hidden}
-.album-topbar{display:flex;align-items:center;justify-content:space-between;padding:0 18px;height:60px;flex-shrink:0;background:rgba(45,0,96,.7);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.09)}
-.album-body{flex:1;display:flex;overflow:hidden}
-
-/* album left - player list */
-.alb-left{width:270px;flex-shrink:0;padding:18px;border-right:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:10px;overflow-y:auto}
-
-/* album right - settings */
-.alb-right{flex:1;padding:28px 36px;display:flex;flex-direction:column;justify-content:center}
-.alb-title{font-family:'Fredoka One',cursive;font-size:22px;letter-spacing:2px;color:var(--teal);text-align:center;margin-bottom:26px;text-shadow:0 0 16px rgba(0,229,204,.4)}
-.alb-settings{display:flex;flex-direction:column;gap:14px;margin-bottom:30px}
-.alb-start-wrap{text-align:center}
-
-/* Non-host album waiting */
-#screen-album-wait{flex-direction:column;align-items:center;justify-content:center}
-.albw-box{text-align:center;max-width:380px}
-.albw-em{font-size:72px;display:block;margin-bottom:16px;animation:fl 2.5s ease-in-out infinite}
-.albw-title{font-family:'Fredoka One',cursive;font-size:26px;margin-bottom:8px;color:var(--teal);letter-spacing:1px}
-.albw-sub{color:var(--muted);font-weight:700;font-size:15px;margin-bottom:16px}
-
-/* ═══════════ GAME AREA ═══════════ */
+/* ── GAME AREA ── */
 .game-area{flex:1;display:none;overflow:hidden}
 .game-area.active{display:flex}
-.sidebar{width:190px;flex-shrink:0;background:rgba(45,0,96,.45);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column}
-.sb-hd{padding:12px 14px 9px;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1.5px;color:var(--teal);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between}
+.sidebar{width:185px;flex-shrink:0;background:rgba(30,0,80,.45);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column}
+.sb-hd{padding:12px 14px 9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;color:var(--teal);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between}
 .plist{flex:1;overflow-y:auto;padding:6px}
 .pitem{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:11px;margin-bottom:3px;transition:background .15s}
 .pitem.me{background:rgba(0,229,204,.1)}
@@ -173,10 +186,44 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .pstatus{font-size:10px;font-weight:700;margin-top:1px}
 .st-waiting{color:rgba(255,255,255,.4)}.st-writing{color:var(--yellow)}.st-drawing{color:var(--teal)}.st-guessing{color:var(--green)}.st-done{color:var(--green)}
 .host-tag{font-family:'Fredoka One',cursive;font-size:9px;background:var(--pink);color:#fff;padding:2px 6px;border-radius:5px;flex-shrink:0}
-
 .gmain{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .gcontent{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
-.gfoot{padding:12px 18px;background:rgba(45,0,96,.55);border-top:1px solid rgba(255,255,255,.07);flex-shrink:0;display:none}
+.gfoot{padding:12px 18px;background:rgba(30,0,80,.55);border-top:1px solid rgba(255,255,255,.07);flex-shrink:0;display:none}
+
+/* ═══════════ ALBUM SETTINGS SCREEN ═══════════ */
+#screen-album{flex-direction:column;overflow:hidden}
+.album-body{flex:1;display:flex;overflow:hidden}
+.alb-left{width:240px;flex-shrink:0;padding:16px;border-right:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.alb-right{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:24px 28px}
+.alb-title{font-family:'Fredoka One',cursive;font-size:19px;letter-spacing:2px;color:var(--teal);text-align:center;margin-bottom:20px;text-shadow:0 0 14px rgba(0,229,204,.4)}
+
+/* Album settings rows — larger, styled like screenshot */
+.alb-rows{display:flex;flex-direction:column;gap:12px;flex:1;overflow-y:auto;margin-bottom:18px}
+.alb-row{display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.1);border-radius:14px}
+.alb-icon{font-size:24px;width:36px;text-align:center;flex-shrink:0}
+.alb-info{flex:1}
+.alb-name{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:.5px;margin-bottom:3px}
+.alb-desc{font-size:12px;color:var(--muted);font-weight:700;line-height:1.3}
+.alb-tog{display:flex;background:rgba(0,0,0,.3);border-radius:10px;padding:3px;gap:3px;flex-shrink:0}
+.alb-tog .tog-btn{padding:8px 18px;font-size:13px}
+
+.alb-start-wrap{flex-shrink:0;text-align:center}
+.alb-start-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 48px;border:none;border-radius:14px;cursor:pointer;
+  background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;
+  font-family:'Fredoka One',cursive;font-size:22px;letter-spacing:.5px;
+  box-shadow:0 6px 24px rgba(0,230,118,.45),0 2px 0 rgba(0,130,50,.5);
+  transition:all .2s;
+}
+.alb-start-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,230,118,.6)}
+
+/* Non-host waiting for album settings */
+#screen-album-wait{flex-direction:column;align-items:center;justify-content:center}
+.albw-box{text-align:center;max-width:380px}
+.albw-em{font-size:72px;display:block;margin-bottom:16px;animation:fl 2.5s ease-in-out infinite}
+.albw-title{font-family:'Fredoka One',cursive;font-size:26px;margin-bottom:8px;color:var(--teal)}
+.albw-sub{color:var(--muted);font-weight:700;font-size:15px;margin-bottom:16px}
 
 /* ═══════════ TIMER ═══════════ */
 .timer-wrap{position:relative;width:54px;height:54px;flex-shrink:0}
@@ -198,8 +245,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .wi-inp:focus{border-color:var(--teal);background:rgba(255,255,255,.22);box-shadow:0 0 0 4px rgba(0,229,204,.18)}
 .wi-inp::placeholder{color:rgba(255,255,255,.35)}
 .btn-done{padding:15px 20px;border:none;border-radius:13px;cursor:pointer;background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;font-family:'Fredoka One',cursive;font-size:16px;white-space:nowrap;transition:all .2s;box-shadow:0 5px 18px rgba(0,230,118,.45);display:flex;align-items:center;gap:7px}
-.btn-done:hover{transform:translateY(-2px);box-shadow:0 9px 26px rgba(0,230,118,.6)}
-
+.btn-done:hover{transform:translateY(-2px)}
 .task-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .tbadge{display:inline-flex;align-items:center;gap:5px;padding:6px 15px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:.5px}
 .tb-w{background:rgba(255,214,0,.2);color:var(--yellow);border:1.5px solid rgba(255,214,0,.3)}
@@ -213,8 +259,6 @@ textarea{width:100%;padding:13px 15px;min-height:76px;background:rgba(255,255,25
 textarea:focus{border-color:var(--teal);background:rgba(255,255,255,.16);box-shadow:0 0 0 4px rgba(0,229,204,.13)}
 textarea::placeholder{color:rgba(255,255,255,.28)}
 .char-c{text-align:right;font-size:12px;color:var(--muted);margin-top:5px;font-weight:700}
-
-/* Canvas */
 .cv-tb{display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:rgba(0,0,0,.28);border:1.5px solid rgba(255,255,255,.09);border-radius:12px;padding:8px 12px;margin-bottom:8px}
 .tg{display:flex;align-items:center;gap:4px}
 .tsep{width:1px;height:24px;background:rgba(255,255,255,.1);margin:0 3px;flex-shrink:0}
@@ -226,8 +270,6 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
 .tbtn:hover{background:rgba(255,255,255,.18)}
 .tbtn.on{background:var(--pink);border-color:var(--pink)}
 #drawing-canvas{background:white;border-radius:12px;cursor:crosshair;display:block;touch-action:none;box-shadow:0 8px 36px rgba(0,0,0,.5);max-width:100%}
-
-/* wait in game */
 .wait-box{text-align:center;max-width:320px}
 .wait-em{font-size:60px;display:block;animation:fl 2s ease-in-out infinite;margin-bottom:14px}
 .wait-title{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:8px}
@@ -235,11 +277,11 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
 
 /* ═══════════ RESULTS ═══════════ */
 #screen-results{flex-direction:column;overflow:hidden}
-.res-top{text-align:center;padding:18px 22px 14px;flex-shrink:0;background:rgba(45,0,96,.7);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07)}
+.res-top{text-align:center;padding:18px 22px 14px;flex-shrink:0;background:rgba(30,0,80,.7);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07)}
 .res-title{font-family:'Fredoka One',cursive;font-size:30px;background:linear-gradient(90deg,#ff4fa3,#ffd600,#00e5cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .res-sub{color:var(--muted);font-size:14px;margin-top:3px;font-weight:700}
 .res-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:16px}
-.res-foot{padding:13px 22px;background:rgba(45,0,96,.6);border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:center;gap:12px;flex-shrink:0}
+.res-foot{padding:13px 22px;background:rgba(30,0,80,.6);border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:center;gap:12px;flex-shrink:0}
 .res-foot .btn{width:auto;padding:12px 30px}
 .rchain{background:rgba(80,30,160,.35);border:1.5px solid rgba(255,255,255,.09);border-radius:18px;overflow:hidden}
 .rchain-top{display:flex;align-items:center;gap:11px;padding:13px 18px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.07)}
@@ -258,7 +300,7 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
 .rarrow{font-size:17px;color:rgba(255,255,255,.18);padding:0 5px;flex-shrink:0}
 
 /* Toast */
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(45,0,96,.95);backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,.13);border-radius:13px;padding:11px 20px;font-weight:800;font-size:14px;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(30,0,80,.95);backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,.13);border-radius:13px;padding:11px 20px;font-weight:800;font-size:14px;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5)}
 #toast.show{transform:translateX(-50%) translateY(0)}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px}
 #cfg{position:fixed;top:0;left:0;right:0;background:var(--pink);color:#fff;text-align:center;padding:9px;font-weight:800;font-size:13px;z-index:10000;display:none}
@@ -310,9 +352,9 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
       <div class="card-ttl">CARA BERMAIN</div>
       <div class="how-steps">
         <div class="how-step"><div class="snum">1</div><div class="stxt">Buat atau join room dengan kode 4 huruf</div></div>
-        <div class="how-step"><div class="snum">2</div><div class="stxt">Setiap pemain tulis kata atau kalimat bebas</div></div>
-        <div class="how-step"><div class="snum">3</div><div class="stxt">Host pilih pengaturan lalu klik START</div></div>
-        <div class="how-step"><div class="snum">4</div><div class="stxt">Gambar & tebak secara bergantian</div></div>
+        <div class="how-step"><div class="snum">2</div><div class="stxt">Host pilih preset & klik START</div></div>
+        <div class="how-step"><div class="snum">3</div><div class="stxt">Setiap pemain tulis kata atau kalimat bebas</div></div>
+        <div class="how-step"><div class="snum">4</div><div class="stxt">Gambar &amp; tebak secara bergantian</div></div>
         <div class="how-step"><div class="snum">5</div><div class="stxt">Lihat hasil akhir yang kocak! 😂</div></div>
       </div>
     </div>
@@ -328,52 +370,88 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
     </div>
     <div class="code-chip" onclick="copyCode()">
       <div><div class="chip-lbl">Kode Room</div><div class="chip-val" id="hcode">----</div></div>
-      <span style="font-size:15px;opacity:.55">📋</span>
+      <span style="font-size:14px;opacity:.5">📋</span>
     </div>
   </div>
   <div class="progbar"><div class="progfill" id="progfill"></div></div>
 
   <!-- LOBBY PAGE -->
   <div class="lobby-page" id="lobby-page">
+    <!-- Left: Players -->
     <div class="lob-left">
-      <div class="lob-sec-title">PLAYERS</div>
+      <div class="lob-players-title">PLAYERS <span id="lob-pcnt" style="font-size:12px;color:var(--muted)">1/8</span></div>
       <div id="lob-plist"></div>
     </div>
-    <div class="lob-right">
-      <div class="lob-right-title">PENGATURAN ALBUM</div>
-      <div class="settings-list" id="lobby-settings">
-        <div class="setting-row">
-          <div class="setting-icon">⏱️</div>
-          <div class="setting-info">
-            <div class="setting-name">WAKTU PER RONDE</div>
-            <div class="setting-desc">Batas waktu untuk setiap tugas</div>
+
+    <!-- Right: host sees presets/settings, non-host sees waiting -->
+    <div id="host-right" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+      <!-- Tabs -->
+      <div class="lob-tabs">
+        <button class="lob-tab active" onclick="switchLobbyTab('presets')">PRESETS</button>
+        <button class="lob-tab" onclick="switchLobbyTab('custom')">CUSTOM SETTINGS</button>
+      </div>
+
+      <!-- PRESETS tab -->
+      <div id="lob-presets" class="lob-tab-pane active">
+        <div class="presets-grid" id="presets-grid"></div>
+      </div>
+
+      <!-- CUSTOM SETTINGS tab -->
+      <div id="lob-custom" class="lob-tab-pane">
+        <div class="cust-rows">
+          <div class="cust-row">
+            <div class="cust-icon">⏱️</div>
+            <div class="cust-info">
+              <div class="cust-name">WAKTU</div>
+              <div class="cust-desc">Batas waktu per tugas menulis/gambar/tebak</div>
+            </div>
+            <select class="cust-sel" id="cust-time" onchange="settings.time=+this.value">
+              <option value="60">60 Detik</option>
+              <option value="90" selected>90 Detik</option>
+              <option value="120">120 Detik</option>
+              <option value="999">Tanpa Batas</option>
+            </select>
           </div>
-          <div class="toggle-group">
-            <button class="tog-btn" onclick="setSetting('time',60,this)">60s</button>
-            <button class="tog-btn active" onclick="setSetting('time',90,this)">90s</button>
-            <button class="tog-btn" onclick="setSetting('time',120,this)">120s</button>
+          <div class="cust-row">
+            <div class="cust-icon">🔄</div>
+            <div class="cust-info">
+              <div class="cust-name">TASK FLOW</div>
+              <div class="cust-desc">Urutan tugas dalam setiap ronde</div>
+            </div>
+            <select class="cust-sel" id="cust-flow" onchange="settings.flow=this.value">
+              <option value="normal" selected>Tulis, Gambar</option>
+              <option value="draw_only">Gambar Saja</option>
+            </select>
           </div>
-        </div>
-        <div class="setting-row">
-          <div class="setting-icon">🎨</div>
-          <div class="setting-info">
-            <div class="setting-name">UKURAN CANVAS</div>
-            <div class="setting-desc">Ukuran area menggambar</div>
-          </div>
-          <div class="toggle-group">
-            <button class="tog-btn active" onclick="setSetting('canvas','normal',this)">Normal</button>
-            <button class="tog-btn" onclick="setSetting('canvas','large',this)">Besar</button>
+          <div class="cust-row">
+            <div class="cust-icon">🎨</div>
+            <div class="cust-info">
+              <div class="cust-name">UKURAN CANVAS</div>
+              <div class="cust-desc">Ukuran area menggambar</div>
+            </div>
+            <div class="tog-grp">
+              <button class="tog-btn active" onclick="setSetting('canvas','normal',this)">Normal</button>
+              <button class="tog-btn" onclick="setSetting('canvas','large',this)">Besar</button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="lob-start-area">
-        <button id="start-btn" class="btn btn-green" onclick="startGame()" disabled style="display:none;font-size:20px;padding:16px 24px">▶ MULAI GAME</button>
-        <div id="lob-hint" class="lob-hint"></div>
-        <div id="lob-waiting" class="waiting-host-box" style="display:none">
-          <span class="wh-em">🎮</span>
-          <div style="font-family:'Fredoka One',cursive;font-size:17px;color:rgba(255,255,255,.7);margin-bottom:12px">Menunggu host memulai...</div>
-          <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
-        </div>
+
+      <!-- Bottom bar (host only) -->
+      <div class="lob-bottom" id="lob-bottom">
+        <button class="invite-btn" onclick="copyCode()">🔗 INVITE</button>
+        <div class="lob-hint" id="lob-hint">Butuh minimal 2 pemain</div>
+        <button id="start-btn" class="btn btn-green start-big" onclick="startGame()" disabled>▶ START</button>
+      </div>
+    </div>
+
+    <!-- Non-host waiting panel (hidden by default) -->
+    <div id="guest-right" class="lob-wait-wrap" style="display:none">
+      <div class="lob-wait-box">
+        <span class="lob-wait-em">🎮</span>
+        <div class="lob-wait-title">Menunggu host...</div>
+        <div class="lob-wait-sub">Host sedang memilih pengaturan game</div>
+        <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
       </div>
     </div>
   </div>
@@ -386,14 +464,12 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
     </div>
     <div class="gmain">
       <div class="gcontent" id="gcontent">
-        <!-- WAIT -->
         <div id="v-wait" style="display:none" class="wait-box">
           <span class="wait-em">⏳</span>
           <div class="wait-title">Menunggu yang lain...</div>
           <div class="wait-sub">Pemain lain sedang mengerjakan</div>
           <div class="wdots" style="margin-top:14px"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
         </div>
-        <!-- WRITE INITIAL -->
         <div id="v-wi" style="display:none" class="wi-full">
           <span class="wi-mascot">🐦</span>
           <div class="wi-title">TULIS SEBUAH KALIMAT</div>
@@ -403,7 +479,6 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
           </div>
           <div class="char-c" id="wi-c" style="max-width:600px;margin:6px auto 0">0/80</div>
         </div>
-        <!-- WRITE describe -->
         <div id="v-w" style="display:none" class="task-wrap">
           <div class="task-hd">
             <div class="tbadge tb-w">✏️ Deskripsikan</div>
@@ -413,7 +488,6 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
           <textarea id="w-in" placeholder="Tulis deskripsimu..." rows="3" maxlength="120"></textarea>
           <div class="char-c" id="w-c">0/120</div>
         </div>
-        <!-- DRAW -->
         <div id="v-d" style="display:none" class="task-wrap">
           <div class="task-hd">
             <div class="tbadge tb-d">🎨 Gambar Ini!</div>
@@ -433,7 +507,6 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
           </div>
           <canvas id="drawing-canvas"></canvas>
         </div>
-        <!-- GUESS -->
         <div id="v-g" style="display:none" class="task-wrap">
           <div class="task-hd">
             <div class="tbadge tb-g">🔍 Tebak!</div>
@@ -444,71 +517,89 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
           <div class="char-c" id="g-c">0/80</div>
         </div>
       </div>
-      <div class="gfoot" id="gfoot">
-        <button class="btn btn-teal" onclick="submitTask()">✓ Selesai!</button>
-      </div>
+      <div class="gfoot" id="gfoot"><button class="btn btn-teal" onclick="submitTask()">✓ Selesai!</button></div>
     </div>
   </div>
 </div>
 
-<!-- ══════ ALBUM SETTINGS (host only, after writing phase) ══════ -->
+<!-- ══════ ALBUM SETTINGS (host, after writing) ══════ -->
 <div id="screen-album" class="screen">
-  <div class="album-topbar">
+  <div class="topbar">
     <div class="tb-logo">🎨 Coret-Coret</div>
     <div class="code-chip" onclick="copyCode()">
-      <div><div class="chip-lbl">Kode Room</div><div class="chip-val" id="alb-hcode">----</div></div>
-      <span style="font-size:15px;opacity:.55">📋</span>
+      <div><div class="chip-lbl">Kode Room</div><div class="chip-val" id="alb-code">----</div></div>
+      <span style="font-size:14px;opacity:.5">📋</span>
     </div>
   </div>
   <div class="album-body">
+    <!-- Left: players -->
     <div class="alb-left">
-      <div class="lob-sec-title">PLAYERS</div>
+      <div class="lob-players-title">PLAYERS</div>
       <div id="alb-plist"></div>
     </div>
+    <!-- Right: settings -->
     <div class="alb-right">
-      <div class="alb-title">PENGATURAN ALBUM</div>
-      <div class="alb-settings">
-        <div class="setting-row">
-          <div class="setting-icon">⏱️</div>
-          <div class="setting-info">
-            <div class="setting-name">WAKTU PER RONDE</div>
-            <div class="setting-desc">Batas waktu untuk setiap tugas</div>
+      <div class="alb-title">ALBUM'S SETTINGS</div>
+      <div class="alb-rows">
+        <div class="alb-row">
+          <div class="alb-icon">🖼️</div>
+          <div class="alb-info">
+            <div class="alb-name">DISPLAY MODE</div>
+            <div class="alb-desc">Pilih bagaimana gambar & kalimat ditampilkan ke pemain</div>
           </div>
-          <div class="toggle-group">
-            <button class="tog-btn" onclick="setAlbSetting('time',60,this)">60s</button>
-            <button class="tog-btn active" id="alb-time-90" onclick="setAlbSetting('time',90,this)">90s</button>
-            <button class="tog-btn" onclick="setAlbSetting('time',120,this)">120s</button>
+          <div class="alb-tog">
+            <button class="tog-btn active" onclick="setAlb('display','auto',this)">AUTO</button>
+            <button class="tog-btn" onclick="setAlb('display','manual',this)">MANUAL</button>
           </div>
         </div>
-        <div class="setting-row">
-          <div class="setting-icon">🎨</div>
-          <div class="setting-info">
-            <div class="setting-name">UKURAN CANVAS</div>
-            <div class="setting-desc">Ukuran area menggambar</div>
+        <div class="alb-row">
+          <div class="alb-icon">🎙️</div>
+          <div class="alb-info">
+            <div class="alb-name">VOICE-OVER</div>
+            <div class="alb-desc">Pembacaan otomatis kalimat saat menampilkan hasil</div>
           </div>
-          <div class="toggle-group">
-            <button class="tog-btn active" onclick="setAlbSetting('canvas','normal',this)">Normal</button>
-            <button class="tog-btn" onclick="setAlbSetting('canvas','large',this)">Besar</button>
+          <div class="alb-tog">
+            <button class="tog-btn active" onclick="setAlb('voice','off',this)">OFF</button>
+            <button class="tog-btn" onclick="setAlb('voice','on',this)">ON</button>
+          </div>
+        </div>
+        <div class="alb-row">
+          <div class="alb-icon">↕️</div>
+          <div class="alb-info">
+            <div class="alb-name">EXHIBITION FLOW</div>
+            <div class="alb-desc">Tampilkan album mulai dari awal atau akhir rantai</div>
+          </div>
+          <div class="alb-tog">
+            <button class="tog-btn active" onclick="setAlb('flow','beginning',this)">BEGINNING</button>
+            <button class="tog-btn" onclick="setAlb('flow','end',this)">END</button>
           </div>
         </div>
       </div>
       <div class="alb-start-wrap">
-        <button class="btn btn-green" onclick="startRounds()" style="font-size:22px;padding:18px 32px;max-width:360px;margin:0 auto">
-          <span style="font-size:24px">▶</span> START
+        <button class="alb-start-btn" onclick="startRounds()">
+          <span style="font-size:26px">▶</span> START
         </button>
-        <div style="font-size:13px;color:var(--muted);margin-top:10px;font-weight:700">Klik START untuk memulai ronde menggambar!</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════ ALBUM WAIT (non-host after writing phase) ══════ -->
+<!-- ══════ ALBUM WAIT (non-host, after writing) ══════ -->
 <div id="screen-album-wait" class="screen">
-  <div class="albw-box">
-    <span class="albw-em">⚙️</span>
-    <div class="albw-title">Semua sudah menulis!</div>
-    <div class="albw-sub">Menunggu host memilih pengaturan dan memulai ronde...</div>
-    <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
+  <div class="topbar">
+    <div class="tb-logo">🎨 Coret-Coret</div>
+    <div class="code-chip" onclick="copyCode()">
+      <div><div class="chip-lbl">Kode Room</div><div class="chip-val" id="albw-code">----</div></div>
+      <span style="font-size:14px;opacity:.5">📋</span>
+    </div>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center">
+    <div class="albw-box">
+      <span class="albw-em">⚙️</span>
+      <div class="albw-title">Semua sudah menulis!</div>
+      <div class="albw-sub">Menunggu host memilih pengaturan album dan memulai ronde...</div>
+      <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
+    </div>
   </div>
 </div>
 
@@ -522,45 +613,50 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
 <div id="toast"></div>
 
 <script>
-// ════════════════════════════════════
+// ═══════════════════════════
 // ⚙️ CONFIG
-const BACKEND_URL = 'https://gartukbackend.secret5.workers.dev';
-// ════════════════════════════════════
+const BACKEND_URL = 'GANTI_DENGAN_URL_WORKER_KAMU';
+// ═══════════════════════════
 
 const AVATARS=[49,30,26,1,45,38,37,44,31,18,5,12,17,22,28,33,41,50,3,7];
 const PALETTE=['#222222','#e74c3c','#e67e22','#f1c40f','#2ecc71','#3498db','#9b59b6','#e91e8c','#ffffff','#95a5a6'];
 const CIRC=2*Math.PI*22;
 
+const PRESETS=[
+  {id:'normal',   em:'📝', name:'NORMAL',         time:90,  desc:'Tulis & Gambar standar'},
+  {id:'knockoff', em:'💨', name:'KNOCK-OFF',       time:45,  desc:'Waktu lebih singkat'},
+  {id:'animation',em:'🎬', name:'ANIMATION',       time:120, desc:'Lebih banyak ronde'},
+  {id:'icebreaker',em:'🧊',name:'ICEBREAKER',      time:60,  desc:'Cocok untuk kenalan baru'},
+  {id:'corpse',   em:'💀', name:'EXQUISITE CORPSE',time:90,  desc:'Tanpa melihat sebelumnya'},
+  {id:'complement',em:'🤝',name:'COMPLEMENT',      time:90,  desc:'Lanjutkan gambar orang lain'},
+];
+
 let ws=null,myId=null,myName='',selAvatar=AVATARS[0],roomCode='';
 let roomState=null,isHost=false,curTask=null;
 let curTool='pen',curColor='#222222',brushSz=6,drawing=false,lastX=0,lastY=0,ctx=null;
-let timerInt=null,settings={time:90,canvas:'normal'},albSettings={time:90,canvas:'normal'};
+let timerInt=null;
+let settings={time:90,canvas:'normal',preset:'normal'};
+let albSettings={display:'auto',voice:'off',flow:'beginning'};
 
 if(!BACKEND_URL||BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')document.getElementById('cfg').style.display='block';
 
-// ── Stars ──────────────────────────
+// ── Stars ───────────────────────────
 (()=>{const c=document.getElementById('stars');for(let i=0;i<20;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;width:${2+Math.random()*3}px;height:${2+Math.random()*3}px;animation-duration:${7+Math.random()*9}s;animation-delay:${Math.random()*8}s`;c.appendChild(s)}})();
 
-// ── Avatar helpers ─────────────────
-// FIXED: Build DOM elements directly, never inject src via innerHTML
+// ── Avatar ───────────────────────────
 function avaUrl(id){return'https://garticphone.com/images/avatar/'+id+'.svg'}
-function setImgSafe(el,id){
-  el.src=avaUrl(id);
-  el.onerror=function(){this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23a855f7%22/%3E%3Ctext x=%2250%22 y=%2265%22 font-size=%2240%22 text-anchor=%22middle%22%3E%F0%9F%98%8A%3C/text%3E%3C/svg%3E'};
-}
+function setImgSafe(el,id){el.src=avaUrl(id);el.onerror=function(){this.onerror=null;this.src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23a855f7'/%3E%3Ctext x='50' y='65' font-size='40' text-anchor='middle'%3E%F0%9F%98%8A%3C/text%3E%3C/svg%3E"}}
 
 function buildAvaGrid(){
   const g=document.getElementById('ava-grid');g.innerHTML='';
   AVATARS.slice(0,10).forEach((id,i)=>{
-    const img=document.createElement('img');
-    img.className='ava-opt'+(i===0?' sel':'');img.alt='';
+    const img=document.createElement('img');img.className='ava-opt'+(i===0?' sel':'');img.alt='';
     setImgSafe(img,id);
     img.onclick=()=>{selAvatar=id;document.querySelectorAll('.ava-opt').forEach(x=>x.classList.remove('sel'));img.classList.add('sel');setImgSafe(document.getElementById('ava-big'),id)};
     g.appendChild(img);
   });
   setImgSafe(document.getElementById('ava-big'),AVATARS[0]);
 }
-
 function randomAva(){
   const btn=document.querySelector('.ava-rfsh');btn.style.transform='rotate(360deg)';setTimeout(()=>btn.style.transform='',400);
   selAvatar=AVATARS[Math.floor(Math.random()*AVATARS.length)];
@@ -568,31 +664,45 @@ function randomAva(){
   setImgSafe(document.getElementById('ava-big'),selAvatar);
 }
 
-// ── Settings ────────────────────────
-function setSetting(key,val,btn){
-  settings[key]=val;
-  btn.closest('.toggle-group').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
-function setAlbSetting(key,val,btn){
-  albSettings[key]=val;
-  btn.closest('.toggle-group').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+// ── Presets ───────────────────────────
+function buildPresets(){
+  const g=document.getElementById('presets-grid');
+  PRESETS.forEach((p,i)=>{
+    const card=document.createElement('div');card.className='preset-card'+(i===0?' sel':'');
+    card.innerHTML='<span class="preset-em">'+p.em+'</span><div class="preset-name">'+p.name+'</div>';
+    card.onclick=()=>{
+      document.querySelectorAll('.preset-card').forEach(c=>c.classList.remove('sel'));
+      card.classList.add('sel');
+      settings.preset=p.id;settings.time=p.time;
+      document.getElementById('cust-time').value=p.time;
+    };
+    g.appendChild(card);
+  });
 }
 
-// ── WS ──────────────────────────────
+function switchLobbyTab(t){
+  document.querySelectorAll('.lob-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.lob-tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.lob-tab:nth-child('+(t==='presets'?1:2)+')').classList.add('active');
+  document.getElementById('lob-'+t).classList.add('active');
+}
+
+function setSetting(key,val,btn){settings[key]=val;btn.closest('.tog-grp').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function setAlb(key,val,btn){albSettings[key]=val;btn.closest('.alb-tog').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+
+// ── WS ───────────────────────────────
 function wsUrl(code,name,ava){return BACKEND_URL.replace(/^http/,'ws')+'/ws/'+code+'?name='+encodeURIComponent(name)+'&avatar='+ava}
 function connectWS(code,name,ava){
   if(ws)ws.close();
   ws=new WebSocket(wsUrl(code,name,ava));
   ws.onopen=()=>{};
   ws.onclose=()=>showToast('⚠️ Koneksi terputus');
-  ws.onerror=()=>{showToast('❌ Gagal konek');showErr('ce','Gagal konek. Cek URL!');showErr('je','Gagal konek. Cek URL!')};
+  ws.onerror=()=>{showToast('❌ Gagal konek');showErr('ce','Gagal konek!');showErr('je','Gagal konek!')};
   ws.onmessage=e=>{try{handle(JSON.parse(e.data))}catch(err){}};
 }
 function send(d){if(ws&&ws.readyState===1)ws.send(JSON.stringify(d))}
 
-// ── Message handler ──────────────────
+// ── Message handler ───────────────────
 function handle(m){
   switch(m.type){
     case 'welcome':
@@ -601,48 +711,40 @@ function handle(m){
       break;
     case 'room_update':
       roomState=m.roomState;isHost=m.roomState?.hostId===myId;
-      const gs=m.roomState?.gameState;
-      if(gs==='lobby')renderLobby(m.roomState);
-      else if(gs==='album_settings'){renderAlbumPlayerList(m.roomState);}
-      else if(gs==='playing'){renderSidebar(m.roomState);updateProg(m.roomState);}
+      if(['lobby'].includes(m.roomState?.gameState)) renderLobby(m.roomState);
+      else if(m.roomState?.gameState==='album_settings') renderAlbPlist(m.roomState);
+      else if(m.roomState?.gameState==='playing'){renderSidebar(m.roomState);updateProg(m.roomState);}
       break;
     case 'player_joined': showToast('👋 '+m.name+' bergabung!');break;
     case 'player_left':   showToast('😢 '+m.name+' keluar');break;
-    case 'game_started':  // writing phase started
+    case 'game_started':
       roomState=m.roomState;
-      document.getElementById('game-area').classList.add('active');
+      showScreen('room');
       document.getElementById('lobby-page').style.display='none';
+      document.getElementById('game-area').classList.add('active');
       document.getElementById('rnd-pill').style.display='none';
       break;
-    case 'your_task':     curTask=m;showTask(m);break;
-
-    // After all write → host sees album settings, others wait
+    case 'your_task': curTask=m;showTask(m);break;
     case 'show_album_settings':
       roomState=m.roomState;
+      document.getElementById('alb-code').textContent=m.roomState.code;
+      renderAlbPlist(m.roomState);
       showScreen('album');
-      renderAlbumPlayerList(m.roomState);
-      document.getElementById('alb-hcode').textContent=m.roomState.code;
       break;
     case 'waiting_host_settings':
       roomState=m.roomState;
+      document.getElementById('albw-code').textContent=m.roomState.code;
       showScreen('album-wait');
       break;
-
-    // Host clicked START on album settings
     case 'rounds_starting':
-      roomState=m.roomState;
-      albSettings={...albSettings,...m.settings};
-      settings={...settings,...m.settings};
+      roomState=m.roomState;settings={...settings,...m.settings};
       showScreen('room');
       document.getElementById('lobby-page').style.display='none';
       document.getElementById('game-area').classList.add('active');
       document.getElementById('rnd-pill').style.display='flex';
-      renderSidebar(m.roomState);
-      showWait();
+      renderSidebar(m.roomState);showWait();
       break;
-
-    case 'game_over':
-      roomState=m.roomState;stopTimer();showResults(m.results,m.roomState);break;
+    case 'game_over': roomState=m.roomState;stopTimer();showResults(m.results,m.roomState);break;
     case 'back_to_lobby':
       roomState=m.roomState;isHost=m.roomState?.hostId===myId;curTask=null;
       stopTimer();
@@ -658,98 +760,66 @@ function handle(m){
   }
 }
 
-// ── Actions ──────────────────────────
-function createRoom(){
-  const n=document.getElementById('nname').value.trim();clearErr();
-  if(!n)return showErr('ce','Masukkan nama dulu!');
-  if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('ce','URL backend belum diatur!');
-  roomCode=genCode();myName=n;document.getElementById('hcode').textContent=roomCode;
-  connectWS(roomCode,n,selAvatar);
-}
-function joinRoom(){
-  const n=document.getElementById('nname').value.trim();
-  const c=document.getElementById('jc').value.trim().toUpperCase();clearErr();
-  if(!n)return showErr('je','Masukkan nama dulu!');
-  if(!c||c.length!==4)return showErr('je','Kode room 4 karakter!');
-  if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('je','URL backend belum diatur!');
-  roomCode=c;myName=n;connectWS(c,n,selAvatar);
-}
+// ── Actions ───────────────────────────
+function createRoom(){const n=document.getElementById('nname').value.trim();clearErr();if(!n)return showErr('ce','Masukkan nama!');if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('ce','URL backend belum diatur!');roomCode=genCode();myName=n;document.getElementById('hcode').textContent=roomCode;connectWS(roomCode,n,selAvatar)}
+function joinRoom(){const n=document.getElementById('nname').value.trim();const c=document.getElementById('jc').value.trim().toUpperCase();clearErr();if(!n)return showErr('je','Masukkan nama!');if(!c||c.length!==4)return showErr('je','Kode 4 karakter!');if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('je','URL backend belum diatur!');roomCode=c;myName=n;connectWS(c,n,selAvatar)}
 function startGame(){send({type:'start_game',settings})}
-function startRounds(){send({type:'start_rounds',settings:albSettings})}
+function startRounds(){send({type:'start_rounds',settings:{...settings,...albSettings}})}
 function playAgain(){send({type:'play_again'})}
-
 function submitTask(){
-  if(!curTask)return;
-  stopTimer();
+  if(!curTask)return;stopTimer();
   let content='',type=curTask.taskType;
   if(type==='write_initial'){content=document.getElementById('wi-in').value.trim();if(!content)return showToast('⚠️ Tulis kalimat dulu!');}
-  else if(type==='write'){content=document.getElementById('w-in').value.trim();if(!content)return showToast('⚠️ Tulis deskripsi dulu!');}
+  else if(type==='write'){content=document.getElementById('w-in').value.trim();if(!content)return showToast('⚠️ Tulis deskripsi!');}
   else if(type==='draw'){content=document.getElementById('drawing-canvas').toDataURL('image/png');}
-  else if(type==='guess'){content=document.getElementById('g-in').value.trim();if(!content)return showToast('⚠️ Tulis tebakan dulu!');}
-  send({type:'submit_task',taskType:type,content});
-  showWait();
+  else if(type==='guess'){content=document.getElementById('g-in').value.trim();if(!content)return showToast('⚠️ Tulis tebakan!');}
+  send({type:'submit_task',taskType:type,content});showWait();
 }
-function copyCode(){navigator.clipboard.writeText(roomCode).then(()=>{showToast('✅ Kode disalin: '+roomCode)})}
+function copyCode(){navigator.clipboard.writeText(roomCode).then(()=>showToast('✅ Kode disalin: '+roomCode))}
 
-// ── Screens ───────────────────────────
+// ── UI ─────────────────────────────────
 function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active')}
 function switchTab(t){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));document.querySelector('.tab-btn:nth-child('+(t==='create'?1:2)+')').classList.add('active');document.getElementById('tab-'+t).classList.add('active')}
-
 function showLobbyPage(){
   document.getElementById('lobby-page').style.display='flex';
   document.getElementById('game-area').classList.remove('active');
   document.getElementById('rnd-pill').style.display='none';
 }
 
-// ── Render lobby player list using DOM (FIXED - no innerHTML with avatar src) ──
-function makeAvaEl(cls, id){
-  const img=document.createElement('img');img.className=cls;
-  setImgSafe(img,id);return img;
-}
+function makeAvaEl(cls,id){const img=document.createElement('img');img.className=cls;img.alt='';setImgSafe(img,id);return img}
 
 function renderLobby(rs){
   if(!rs)return;
   document.getElementById('hcode').textContent=rs.code;
+  document.getElementById('lob-pcnt').textContent=rs.players.length+'/8';
   const pl=document.getElementById('lob-plist');pl.innerHTML='';
   rs.players.forEach(p=>{
-    const div=document.createElement('div');
-    div.className='lob-pitem'+(p.id===myId?' me':'');
-    const ava=makeAvaEl('lob-pava',p.avatar||1);
-    div.appendChild(ava);
-    const nameSpan=document.createElement('span');nameSpan.className='lob-pname';nameSpan.textContent=p.name;div.appendChild(nameSpan);
+    const div=document.createElement('div');div.className='lob-pitem'+(p.id===myId?' me':'');
+    div.appendChild(makeAvaEl('lob-pava',p.avatar||1));
+    const nm=document.createElement('span');nm.className='lob-pname';nm.textContent=p.name;div.appendChild(nm);
     if(p.id===myId){const y=document.createElement('span');y.className='lob-you';y.textContent='YOU';div.appendChild(y)}
     if(p.isHost){const h=document.createElement('span');h.className='lob-host';h.textContent='HOST';div.appendChild(h)}
     pl.appendChild(div);
   });
-
-  const sb=document.getElementById('start-btn');
-  const hint=document.getElementById('lob-hint');
-  const wbox=document.getElementById('lob-waiting');
-  if(rs.hostId===myId){
-    sb.style.display='flex';sb.disabled=rs.players.length<2;
-    hint.style.display='block';hint.textContent=rs.players.length<2?'Butuh minimal 2 pemain':'Semua siap! 🎉';
-    wbox.style.display='none';
-    document.getElementById('lobby-settings').style.opacity='1';
-    document.getElementById('lobby-settings').style.pointerEvents='auto';
-  } else {
-    sb.style.display='none';hint.style.display='none';wbox.style.display='block';
-    document.getElementById('lobby-settings').style.opacity='.5';
-    document.getElementById('lobby-settings').style.pointerEvents='none';
+  const isH=rs.hostId===myId;
+  document.getElementById('host-right').style.display=isH?'flex':'none';
+  document.getElementById('guest-right').style.display=isH?'none':'flex';
+  if(isH){
+    const sb=document.getElementById('start-btn');sb.disabled=rs.players.length<2;
+    document.getElementById('lob-hint').textContent=rs.players.length<2?'Butuh minimal 2 pemain':'Siap bermain! 🎉';
   }
 }
 
-function renderAlbumPlayerList(rs){
+function renderAlbPlist(rs){
   const pl=document.getElementById('alb-plist');pl.innerHTML='';
   rs.players.forEach(p=>{
-    const div=document.createElement('div');
-    div.className='lob-pitem'+(p.id===myId?' me':'');
-    const ava=makeAvaEl('lob-pava',p.avatar||1);div.appendChild(ava);
-    const nameSpan=document.createElement('span');nameSpan.className='lob-pname';nameSpan.textContent=p.name;div.appendChild(nameSpan);
+    const div=document.createElement('div');div.className='lob-pitem'+(p.id===myId?' me':'');
+    div.appendChild(makeAvaEl('lob-pava',p.avatar||1));
+    const nm=document.createElement('span');nm.className='lob-pname';nm.textContent=p.name;div.appendChild(nm);
     if(p.id===myId){const y=document.createElement('span');y.className='lob-you';y.textContent='YOU';div.appendChild(y)}
     if(p.isHost){const h=document.createElement('span');h.className='lob-host';h.textContent='HOST';div.appendChild(h)}
     pl.appendChild(div);
   });
-  document.getElementById('alb-hcode').textContent=rs.code;
 }
 
 function renderSidebar(rs){
@@ -758,7 +828,7 @@ function renderSidebar(rs){
   const list=document.getElementById('plist');list.innerHTML='';
   rs.players.forEach(p=>{
     const div=document.createElement('div');div.className='pitem'+(p.id===myId?' me':'');
-    const ava=makeAvaEl('pava',p.avatar||1);div.appendChild(ava);
+    div.appendChild(makeAvaEl('pava',p.avatar||1));
     const info=document.createElement('div');info.className='pinfo';
     const nm=document.createElement('div');nm.className='pname';nm.textContent=p.name+(p.id===myId?' 👈':'');info.appendChild(nm);
     const stlbl={waiting:'Menunggu',writing:'Menulis...',drawing:'Menggambar...',guessing:'Menebak...',done:'Selesai ✓'}[p.status]||p.status;
@@ -769,26 +839,19 @@ function renderSidebar(rs){
   });
 }
 
-function updateProg(rs){
-  if(!rs||!rs.totalRounds)return;
-  document.getElementById('progfill').style.width=((rs.round-1)/rs.totalRounds*100)+'%';
-  document.getElementById('rnd-txt').textContent='Ronde '+rs.round+'/'+rs.totalRounds;
-}
+function updateProg(rs){if(!rs||!rs.totalRounds)return;document.getElementById('progfill').style.width=((rs.round-1)/rs.totalRounds*100)+'%';document.getElementById('rnd-txt').textContent='Ronde '+rs.round+'/'+rs.totalRounds}
 
 const VIEWS=['v-wait','v-wi','v-w','v-d','v-g'];
 function hideViews(){VIEWS.forEach(id=>document.getElementById(id).style.display='none')}
 function showWait(){stopTimer();hideViews();document.getElementById('v-wait').style.display='';document.getElementById('gfoot').style.display='none';curTask=null}
 
 function showTask(t){
-  hideViews();
-  document.getElementById('gfoot').style.display='block';
+  hideViews();document.getElementById('gfoot').style.display='block';
   document.getElementById('rnd-pill').style.display='flex';
   if(t.totalRounds>0)document.getElementById('rnd-txt').textContent='Ronde '+t.round+'/'+t.totalRounds;
-  const secs=settings.time||90;
-
+  const secs=settings.time>=999?99999:settings.time||90;
   if(t.taskType==='write_initial'){
-    document.getElementById('v-wi').style.display='';
-    document.getElementById('gfoot').style.display='none';
+    document.getElementById('v-wi').style.display='';document.getElementById('gfoot').style.display='none';
     document.getElementById('wi-in').value='';document.getElementById('wi-c').textContent='0/80';
     document.getElementById('wi-in').focus();
   } else if(t.taskType==='write'){
@@ -811,45 +874,36 @@ function showTask(t){
 
 // ── Timer ──────────────────────────────
 function startTimer(v,secs){
-  stopTimer();
+  stopTimer();if(secs>=99999)return; // no limit mode
   let rem=secs;
-  const arc=document.getElementById('ta-'+v);
-  const num=document.getElementById('tn-'+v);
-  const wrap=document.getElementById('tw-'+v);
+  const arc=document.getElementById('ta-'+v),num=document.getElementById('tn-'+v),wrap=document.getElementById('tw-'+v);
   if(!arc)return;
-  arc.style.strokeDasharray=CIRC;arc.style.strokeDashoffset=0;
-  num.textContent=rem;wrap.classList.remove('warn','urgent');
+  arc.style.strokeDasharray=CIRC;arc.style.strokeDashoffset=0;num.textContent=rem;wrap.classList.remove('warn','urgent');
   timerInt=setInterval(()=>{
-    rem--;
-    if(rem<=0){stopTimer();submitTask();return}
-    arc.style.strokeDashoffset=CIRC*(1-rem/secs);
-    num.textContent=rem;
-    wrap.classList.toggle('warn',rem<=30&&rem>10);
-    wrap.classList.toggle('urgent',rem<=10);
+    rem--;if(rem<=0){stopTimer();submitTask();return}
+    arc.style.strokeDashoffset=CIRC*(1-rem/secs);num.textContent=rem;
+    wrap.classList.toggle('warn',rem<=30&&rem>10);wrap.classList.toggle('urgent',rem<=10);
   },1000);
 }
 function stopTimer(){clearInterval(timerInt);timerInt=null}
 
 // ── Canvas ──────────────────────────────
 function initCv(){
-  const cv=document.getElementById('drawing-canvas');
-  const wrap=cv.parentElement;
+  const cv=document.getElementById('drawing-canvas'),wrap=cv.parentElement;
   const large=settings.canvas==='large';
-  cv.width=Math.min(wrap.offsetWidth-4,large?760:640);
-  cv.height=Math.min(window.innerHeight-(large?370:410),large?360:280);
+  cv.width=Math.min(wrap.offsetWidth-4,large?760:640);cv.height=Math.min(window.innerHeight-(large?370:410),large?360:280);
   ctx=cv.getContext('2d');ctx.lineCap='round';ctx.lineJoin='round';
   cv.onmousedown=sDr;cv.onmousemove=dDr;cv.onmouseup=eDr;cv.onmouseleave=eDr;
   cv.ontouchstart=e=>{e.preventDefault();sDr(e.touches[0])};
   cv.ontouchmove=e=>{e.preventDefault();dDr(e.touches[0])};
   cv.ontouchend=eDr;cv.ontouchcancel=eDr;
 }
-function gpos(e){const cv=document.getElementById('drawing-canvas');const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*(cv.width/r.width),y:(e.clientY-r.top)*(cv.height/r.height)}}
+function gpos(e){const cv=document.getElementById('drawing-canvas'),r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*(cv.width/r.width),y:(e.clientY-r.top)*(cv.height/r.height)}}
 function sDr(e){drawing=true;const p=gpos(e);lastX=p.x;lastY=p.y;ctx.beginPath();ctx.arc(lastX,lastY,(curTool==='eraser'?brushSz*2:brushSz)/2,0,Math.PI*2);ctx.fillStyle=curTool==='eraser'?'white':curColor;ctx.fill()}
 function dDr(e){if(!drawing)return;const p=gpos(e);ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);ctx.strokeStyle=curTool==='eraser'?'white':curColor;ctx.lineWidth=curTool==='eraser'?brushSz*2.5:brushSz;ctx.stroke();lastX=p.x;lastY=p.y}
 function eDr(){drawing=false}
 function clearCv(){if(!ctx)return;const cv=document.getElementById('drawing-canvas');ctx.fillStyle='white';ctx.fillRect(0,0,cv.width,cv.height)}
 function setTool(t){curTool=t;document.getElementById('btn-pen').classList.toggle('on',t==='pen');document.getElementById('btn-er').classList.toggle('on',t==='eraser')}
-
 function buildPal(){
   const pal=document.getElementById('colorpal');pal.innerHTML='';
   PALETTE.forEach(c=>{
@@ -867,12 +921,10 @@ function showResults(results,rs){
   const body=document.getElementById('res-body');body.innerHTML='';
   results.forEach(chain=>{
     const block=document.createElement('div');block.className='rchain';
-    // header
     const top=document.createElement('div');top.className='rchain-top';
-    const ava=makeAvaEl('rchain-ava',chain.ownerAvatar||1);top.appendChild(ava);
+    top.appendChild(makeAvaEl('rchain-ava',chain.ownerAvatar||1));
     const nm=document.createElement('div');nm.className='rchain-name';nm.textContent='Rantai milik '+chain.ownerName;top.appendChild(nm);
     block.appendChild(top);
-    // scroll
     const scroll=document.createElement('div');scroll.className='rchain-scroll';
     chain.chain.forEach((item,idx)=>{
       const tl={word:'📝 Kata Awal',write:'✏️ Deskripsi',draw:'🎨 Gambar',guess:'🔍 Tebakan'}[item.type]||item.type;
@@ -880,7 +932,7 @@ function showResults(results,rs){
       const card=document.createElement('div');card.className='rcitem t-'+item.type;
       const tp=document.createElement('div');tp.className='rci-type';tp.textContent=tl;card.appendChild(tp);
       const au=document.createElement('div');au.className='rci-auth';au.textContent='oleh '+(item.authorName||'?');card.appendChild(au);
-      if(item.type==='draw'){const img=document.createElement('img');img.className='rci-img';img.src=item.content;img.alt='drawing';card.appendChild(img)}
+      if(item.type==='draw'){const img=document.createElement('img');img.className='rci-img';img.src=item.content;img.alt='draw';card.appendChild(img)}
       else{const txt=document.createElement('div');txt.className='rci-txt';txt.textContent=item.content;card.appendChild(txt)}
       wrap.appendChild(card);
       if(idx<chain.chain.length-1){const arr=document.createElement('div');arr.className='rarrow';arr.textContent='→';wrap.appendChild(arr)}
@@ -897,7 +949,6 @@ function showErr(id,msg){const e=document.getElementById(id);if(e){e.textContent
 function clearErr(){document.querySelectorAll('.errmsg').forEach(e=>{e.textContent='';e.classList.remove('show')})}
 let tt;function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2500)}
 
-// ── Listeners ─────────────────────────────
 document.getElementById('wi-in').addEventListener('input',function(){document.getElementById('wi-c').textContent=this.value.length+'/80'});
 document.getElementById('wi-in').addEventListener('keydown',e=>{if(e.key==='Enter')submitTask()});
 document.getElementById('w-in').addEventListener('input',function(){document.getElementById('w-c').textContent=this.value.length+'/120'});
@@ -906,7 +957,7 @@ document.getElementById('jc').addEventListener('input',function(){this.value=thi
 document.getElementById('jc').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom()});
 document.getElementById('nname').addEventListener('keydown',e=>{if(e.key==='Enter'){const t=document.querySelector('.tab-pane.active');if(t.id==='tab-join')joinRoom();else createRoom()}});
 
-buildPal();buildAvaGrid();
+buildPal();buildAvaGrid();buildPresets();
 </script>
 </body>
 </html>
