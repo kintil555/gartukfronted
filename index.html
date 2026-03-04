@@ -275,29 +275,70 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
 .wait-title{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:8px}
 .wait-sub{color:var(--muted);font-size:14px;font-weight:700}
 
-/* ═══════════ RESULTS ═══════════ */
-#screen-results{flex-direction:column;overflow:hidden}
-.res-top{text-align:center;padding:18px 22px 14px;flex-shrink:0;background:rgba(30,0,80,.7);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07)}
-.res-title{font-family:'Fredoka One',cursive;font-size:30px;background:linear-gradient(90deg,#ff4fa3,#ffd600,#00e5cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.res-sub{color:var(--muted);font-size:14px;margin-top:3px;font-weight:700}
-.res-body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:16px}
-.res-foot{padding:13px 22px;background:rgba(30,0,80,.6);border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:center;gap:12px;flex-shrink:0}
-.res-foot .btn{width:auto;padding:12px 30px}
-.rchain{background:rgba(80,30,160,.35);border:1.5px solid rgba(255,255,255,.09);border-radius:18px;overflow:hidden}
-.rchain-top{display:flex;align-items:center;gap:11px;padding:13px 18px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.07)}
-.rchain-ava{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1)}
-.rchain-name{font-family:'Fredoka One',cursive;font-size:14px}
-.rchain-scroll{display:flex;overflow-x:auto;padding:14px 18px;gap:9px;align-items:flex-start}
-.rchain-scroll::-webkit-scrollbar{height:4px}
-.rchain-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.13);border-radius:2px}
-.rcitem-wrap{display:flex;align-items:center;flex-shrink:0}
-.rcitem{background:rgba(0,0,0,.22);border:1.5px solid rgba(255,255,255,.09);border-radius:12px;padding:12px;width:155px;flex-shrink:0}
-.rci-type{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px}
-.rci-auth{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700}
-.rci-txt{font-family:'Fredoka One',cursive;font-size:14px;word-break:break-word;line-height:1.3}
-.rci-img{width:100%;border-radius:8px;display:block}
-.t-word .rci-type{color:#d8b4fe}.t-draw .rci-type{color:var(--teal)}.t-guess .rci-type,.t-write .rci-type{color:var(--green)}
-.rarrow{font-size:17px;color:rgba(255,255,255,.18);padding:0 5px;flex-shrink:0}
+/* ═══════════ RESULTS — Gartic Reveal ═══════════ */
+#screen-results{flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#1a0040 0%,#2d0060 100%)}
+
+/* Top navigation bar */
+.rv-topbar{display:flex;align-items:center;justify-content:space-between;padding:0 18px;height:56px;flex-shrink:0;background:rgba(20,0,60,.8);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.09)}
+.rv-chain-nav{display:flex;gap:7px;align-items:center}
+.rv-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .2s;border:2px solid transparent}
+.rv-dot.active{background:var(--teal);border-color:rgba(0,229,204,.4);transform:scale(1.3)}
+.rv-dot.done{background:rgba(0,229,204,.4)}
+.rv-chain-lbl{font-family:'Fredoka One',cursive;font-size:14px;color:rgba(255,255,255,.7);letter-spacing:.5px;min-width:80px;text-align:center}
+.rv-nav-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:13px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.rv-nav-btn:hover{background:rgba(255,255,255,.18);border-color:var(--teal)}
+.rv-nav-btn:disabled{opacity:.25;cursor:not-allowed}
+
+/* Chain header: whose chain is this */
+.rv-chain-header{flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 20px;background:rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.07)}
+.rv-chain-ava{width:48px;height:48px;border-radius:50%;border:3px solid var(--teal);object-fit:cover;background:rgba(255,255,255,.1)}
+.rv-chain-title{text-align:left}
+.rv-chain-who{font-size:11px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:1.5px}
+.rv-chain-name{font-family:'Fredoka One',cursive;font-size:20px;color:#fff}
+
+/* Chat feed */
+.rv-feed{flex:1;overflow-y:auto;padding:16px 0;display:flex;flex-direction:column;gap:0}
+.rv-feed::-webkit-scrollbar{width:4px}
+.rv-feed::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+
+/* Each step as a chat-like row */
+.rv-step{display:flex;flex-direction:column;padding:8px 20px;animation:rvIn .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes rvIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+
+/* Author label above each bubble */
+.rv-author{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.rv-author-ava{width:26px;height:26px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);flex-shrink:0}
+.rv-author-name{font-size:12px;font-weight:800;color:rgba(255,255,255,.6)}
+.rv-step-type{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:2px 8px;border-radius:6px;margin-left:6px}
+.st-word{background:rgba(214,180,254,.15);color:#d8b4fe}
+.st-draw{background:rgba(0,229,204,.12);color:var(--teal)}
+.st-guess{background:rgba(0,230,118,.12);color:var(--green)}
+
+/* Text bubble */
+.rv-bubble{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.1);border-radius:18px 18px 18px 4px;padding:14px 18px;max-width:520px;position:relative}
+.rv-bubble-txt{font-family:'Fredoka One',cursive;font-size:22px;color:#fff;line-height:1.3;word-break:break-word}
+.rv-bubble.word{background:rgba(214,180,254,.12);border-color:rgba(214,180,254,.25)}
+.rv-bubble.word .rv-bubble-txt{color:#e9d5ff;font-size:26px}
+.rv-bubble.guess{background:rgba(0,230,118,.08);border-color:rgba(0,230,118,.2)}
+.rv-bubble.guess .rv-bubble-txt{color:#a7f3d0}
+
+/* Drawing card */
+.rv-drawing{background:rgba(0,0,0,.3);border:1.5px solid rgba(0,229,204,.2);border-radius:18px;overflow:hidden;max-width:480px}
+.rv-drawing-img{width:100%;display:block;border-radius:16px}
+.rv-drawing-cap{padding:8px 14px;font-size:11px;font-weight:800;color:var(--teal);letter-spacing:1px;text-transform:uppercase;text-align:center;background:rgba(0,229,204,.06)}
+
+/* Connector arrow between steps */
+.rv-connector{display:flex;align-items:center;padding:2px 20px 2px 56px;gap:8px}
+.rv-conn-line{flex:1;max-width:40px;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent)}
+.rv-conn-arrow{font-size:18px;color:rgba(255,255,255,.15)}
+
+/* Bottom action bar */
+.rv-bottom{flex-shrink:0;padding:12px 20px;background:rgba(20,0,60,.8);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.09);display:flex;align-items:center;gap:12px}
+.rv-reveal-btn{display:flex;align-items:center;gap:10px;padding:13px 32px;border:none;border-radius:14px;cursor:pointer;background:linear-gradient(135deg,var(--pink),#d4006c);color:#fff;font-family:'Fredoka One',cursive;font-size:17px;letter-spacing:.5px;box-shadow:0 5px 20px rgba(255,79,163,.4);transition:all .2s;text-shadow:0 1px 3px rgba(0,0,0,.3)}
+.rv-reveal-btn:hover{transform:translateY(-2px);box-shadow:0 9px 28px rgba(255,79,163,.55)}
+.rv-reveal-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.rv-progress{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.rv-progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--teal));border-radius:3px;transition:width .4s ease}
 
 /* Toast */
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(30,0,80,.95);backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,.13);border-radius:13px;padding:11px 20px;font-weight:800;font-size:14px;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5)}
@@ -603,11 +644,29 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
   </div>
 </div>
 
-<!-- ══════ RESULTS ══════ -->
+<!-- ══════ RESULTS (Gartic-style reveal) ══════ -->
 <div id="screen-results" class="screen">
-  <div class="res-top"><div class="res-title">🎉 Hasil Akhir!</div><div class="res-sub">Lihat betapa lucunya perjalanan ini 😂</div></div>
-  <div class="res-body" id="res-body"></div>
-  <div class="res-foot" id="res-foot"><button class="btn btn-yellow" onclick="playAgain()">🔄 Main Lagi</button></div>
+  <div class="rv-topbar">
+    <div class="tb-logo">🎨 Coret-Coret</div>
+    <div class="rv-chain-nav" id="rv-chain-nav"></div>
+    <div style="display:flex;gap:9px;align-items:center">
+      <button class="rv-nav-btn" id="rv-prev" onclick="rvPrev()">◀</button>
+      <span id="rv-chain-lbl" class="rv-chain-lbl">Chain 1/1</span>
+      <button class="rv-nav-btn" id="rv-next-chain" onclick="rvNextChain()">▶</button>
+    </div>
+  </div>
+  <div class="rv-chain-header" id="rv-chain-header"></div>
+  <div class="rv-feed" id="rv-feed"></div>
+  <div class="rv-bottom">
+    <div id="rv-foot-left" style="flex:1"></div>
+    <button id="rv-reveal-btn" class="rv-reveal-btn" onclick="rvRevealNext()">
+      <span id="rv-reveal-icon">▶</span>
+      <span id="rv-reveal-label">Reveal Selanjutnya</span>
+    </button>
+    <div id="rv-foot-right" style="flex:1;display:flex;justify-content:flex-end">
+      <button id="rv-again-btn" class="btn btn-yellow" onclick="playAgain()" style="display:none;width:auto;padding:12px 26px;font-size:15px">🔄 Main Lagi</button>
+    </div>
+  </div>
 </div>
 
 <div id="toast"></div>
@@ -615,7 +674,7 @@ textarea::placeholder{color:rgba(255,255,255,.28)}
 <script>
 // ═══════════════════════════
 // ⚙️ CONFIG
-const BACKEND_URL = 'https://gartukbackend.secret5.workers.dev';
+const BACKEND_URL = 'GANTI_DENGAN_URL_WORKER_KAMU';
 // ═══════════════════════════
 
 const AVATARS=[49,30,26,1,45,38,37,44,31,18,5,12,17,22,28,33,41,50,3,7];
@@ -932,33 +991,249 @@ function buildPal(){
 }
 
 // ── Results ─────────────────────────────
-function showResults(results,rs){
+// ═══════════════════════════════════════════════════
+// GARTIC REVEAL SYSTEM
+// ═══════════════════════════════════════════════════
+
+let rvResults = [];      // all chains
+let rvChainIdx = 0;      // which chain we're on
+let rvStepIdx = -1;      // how many steps revealed (-1 = none yet)
+let rvHostMode = false;
+
+function showResults(results, rs) {
+  rvResults = results;
+  rvChainIdx = 0;
+  rvStepIdx = -1;
+  rvHostMode = rs?.hostId === myId;
+
   showScreen('results');
-  const body=document.getElementById('res-body');body.innerHTML='';
-  results.forEach(chain=>{
-    const block=document.createElement('div');block.className='rchain';
-    const top=document.createElement('div');top.className='rchain-top';
-    top.appendChild(makeAvaEl('rchain-ava',chain.ownerAvatar||1));
-    const nm=document.createElement('div');nm.className='rchain-name';nm.textContent='Rantai milik '+chain.ownerName;top.appendChild(nm);
-    block.appendChild(top);
-    const scroll=document.createElement('div');scroll.className='rchain-scroll';
-    chain.chain.forEach((item,idx)=>{
-      const tl={word:'📝 Kata Awal',write:'✏️ Deskripsi',draw:'🎨 Gambar',guess:'🔍 Tebakan'}[item.type]||item.type;
-      const wrap=document.createElement('div');wrap.className='rcitem-wrap';
-      const card=document.createElement('div');card.className='rcitem t-'+item.type;
-      const tp=document.createElement('div');tp.className='rci-type';tp.textContent=tl;card.appendChild(tp);
-      const au=document.createElement('div');au.className='rci-auth';au.textContent='oleh '+(item.authorName||'?');card.appendChild(au);
-      if(item.type==='draw'){const img=document.createElement('img');img.className='rci-img';img.src=item.content;img.alt='draw';card.appendChild(img)}
-      else{const txt=document.createElement('div');txt.className='rci-txt';txt.textContent=item.content;card.appendChild(txt)}
-      wrap.appendChild(card);
-      if(idx<chain.chain.length-1){const arr=document.createElement('div');arr.className='rarrow';arr.textContent='→';wrap.appendChild(arr)}
-      scroll.appendChild(wrap);
-    });
-    block.appendChild(scroll);body.appendChild(block);
-  });
-  document.getElementById('res-foot').style.display=rs?.hostId===myId?'flex':'none';
+  buildChainNav();
+  loadChain(0);
 }
 
+// Build dot navigation
+function buildChainNav() {
+  const nav = document.getElementById('rv-chain-nav');
+  nav.innerHTML = '';
+  rvResults.forEach((chain, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'rv-dot' + (i === 0 ? ' active' : '');
+    dot.title = 'Chain ' + chain.ownerName;
+    dot.onclick = () => jumpToChain(i);
+    dot.id = 'rv-dot-' + i;
+    nav.appendChild(dot);
+  });
+}
+
+// Load a chain (reset reveal)
+function loadChain(idx) {
+  rvChainIdx = idx;
+  rvStepIdx = -1;
+
+  const chain = rvResults[idx];
+  const feed = document.getElementById('rv-feed');
+  feed.innerHTML = '';
+
+  // Update chain header
+  const header = document.getElementById('rv-chain-header');
+  header.innerHTML = '';
+  const ava = makeAvaEl('rv-chain-ava', chain.ownerAvatar || 1);
+  const info = document.createElement('div');
+  info.className = 'rv-chain-title';
+  info.innerHTML = '<div class="rv-chain-who">Rantai milik</div><div class="rv-chain-name">' +
+    escHtml(chain.ownerName) + '</div>';
+  header.appendChild(ava);
+  header.appendChild(info);
+
+  // Update label & dots
+  document.getElementById('rv-chain-lbl').textContent =
+    'Chain ' + (idx + 1) + '/' + rvResults.length;
+  document.querySelectorAll('.rv-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+
+  // Nav buttons
+  document.getElementById('rv-prev').disabled = idx === 0;
+  document.getElementById('rv-next-chain').disabled = idx >= rvResults.length - 1;
+
+  // Reset reveal button
+  updateRevealBtn();
+  document.getElementById('rv-again-btn').style.display = 'none';
+  updateProgress();
+}
+
+// Reveal next step in current chain
+function rvRevealNext() {
+  const chain = rvResults[rvChainIdx];
+  if (!chain) return;
+  rvStepIdx++;
+
+  if (rvStepIdx >= chain.chain.length) {
+    // This chain is fully revealed
+    // Mark dot as done
+    const dot = document.getElementById('rv-dot-' + rvChainIdx);
+    if (dot) { dot.classList.remove('active'); dot.classList.add('done'); }
+
+    if (rvChainIdx < rvResults.length - 1) {
+      // Auto-advance to next chain after short delay
+      updateRevealBtn(true);
+      setTimeout(() => {
+        loadChain(rvChainIdx + 1);
+        // Auto-reveal the first step of next chain
+        rvRevealNext();
+      }, 600);
+      return;
+    } else {
+      // ALL chains done!
+      showAllDone();
+      return;
+    }
+  }
+
+  appendStep(rvStepIdx);
+  updateRevealBtn();
+  updateProgress();
+}
+
+// Render one step into the feed
+function appendStep(stepIdx) {
+  const chain = rvResults[rvChainIdx];
+  const step = chain.chain[stepIdx];
+  const feed = document.getElementById('rv-feed');
+
+  // Connector (not for first step)
+  if (stepIdx > 0) {
+    const conn = document.createElement('div');
+    conn.className = 'rv-connector';
+    conn.innerHTML = '<div class="rv-conn-line"></div><div class="rv-conn-arrow">↓</div><div class="rv-conn-line"></div>';
+    feed.appendChild(conn);
+  }
+
+  const row = document.createElement('div');
+  row.className = 'rv-step';
+
+  // Author row
+  const author = document.createElement('div');
+  author.className = 'rv-author';
+  author.appendChild(makeAvaEl('rv-author-ava', getPlayerAvatar(step.authorId)));
+  const nameEl = document.createElement('span');
+  nameEl.className = 'rv-author-name';
+  nameEl.textContent = step.authorName || '?';
+  author.appendChild(nameEl);
+  const typeTag = document.createElement('span');
+  typeTag.className = 'rv-step-type st-' + (step.type === 'word' ? 'word' : step.type === 'draw' ? 'draw' : 'guess');
+  typeTag.textContent = {word:'✏️ Kata Awal', draw:'🎨 Gambar', guess:'🔍 Tebakan'}[step.type] || step.type;
+  author.appendChild(typeTag);
+  row.appendChild(author);
+
+  // Content
+  if (step.type === 'draw' && step.content) {
+    const card = document.createElement('div');
+    card.className = 'rv-drawing';
+    const img = document.createElement('img');
+    img.className = 'rv-drawing-img';
+    img.src = step.content;
+    img.alt = 'drawing';
+    const cap = document.createElement('div');
+    cap.className = 'rv-drawing-cap';
+    cap.textContent = 'Digambar oleh ' + (step.authorName || '?');
+    card.appendChild(img);
+    card.appendChild(cap);
+    row.appendChild(card);
+  } else {
+    const bubble = document.createElement('div');
+    bubble.className = 'rv-bubble ' + (step.type === 'word' ? 'word' : 'guess');
+    const txt = document.createElement('div');
+    txt.className = 'rv-bubble-txt';
+    txt.textContent = step.content || '(kosong)';
+    bubble.appendChild(txt);
+    row.appendChild(bubble);
+  }
+
+  feed.appendChild(row);
+
+  // Scroll to bottom smoothly
+  requestAnimationFrame(() => {
+    feed.scrollTo({ top: feed.scrollHeight, behavior: 'smooth' });
+  });
+}
+
+function updateRevealBtn(transitioning = false) {
+  const btn = document.getElementById('rv-reveal-btn');
+  const icon = document.getElementById('rv-reveal-icon');
+  const label = document.getElementById('rv-reveal-label');
+  const chain = rvResults[rvChainIdx];
+  if (!chain) return;
+
+  const nextStep = rvStepIdx + 1;
+  btn.disabled = transitioning;
+
+  if (nextStep >= chain.chain.length) {
+    if (rvChainIdx < rvResults.length - 1) {
+      icon.textContent = '⏭';
+      label.textContent = 'Chain Berikutnya';
+    } else {
+      icon.textContent = '🏁';
+      label.textContent = 'Selesai!';
+    }
+  } else {
+    const nextType = chain.chain[nextStep]?.type;
+    const typeLabel = {word:'Kata Awal',draw:'Gambar',guess:'Tebakan'}[nextType] || 'Berikutnya';
+    icon.textContent = {word:'✏️',draw:'🎨',guess:'🔍'}[nextType] || '▶';
+    label.textContent = 'Reveal ' + typeLabel;
+  }
+}
+
+function updateProgress() {
+  const chain = rvResults[rvChainIdx];
+  if (!chain || chain.chain.length === 0) return;
+  const pct = Math.min(100, ((rvStepIdx + 1) / chain.chain.length) * 100);
+  // Update topbar progress via chain nav (visual feedback)
+}
+
+function showAllDone() {
+  const btn = document.getElementById('rv-reveal-btn');
+  btn.disabled = true;
+  document.getElementById('rv-reveal-icon').textContent = '🎉';
+  document.getElementById('rv-reveal-label').textContent = 'Game Selesai!';
+  if (rvHostMode) {
+    document.getElementById('rv-again-btn').style.display = 'inline-flex';
+  }
+  // Party effect: mark all dots done
+  document.querySelectorAll('.rv-dot').forEach(d => {
+    d.classList.remove('active');
+    d.classList.add('done');
+  });
+}
+
+function jumpToChain(idx) {
+  if (idx === rvChainIdx) return;
+  loadChain(idx);
+  // Auto-reveal first step
+  rvRevealNext();
+}
+
+function rvPrev() {
+  if (rvChainIdx > 0) loadChain(rvChainIdx - 1);
+}
+
+function rvNextChain() {
+  if (rvChainIdx < rvResults.length - 1) {
+    loadChain(rvChainIdx + 1);
+    rvRevealNext();
+  }
+}
+
+// Get avatar for a player by id from current roomState
+function getPlayerAvatar(playerId) {
+  if (!roomState?.players) return 1;
+  const p = roomState.players.find(x => x.id === playerId);
+  return p?.avatar || 1;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 // ── Helpers ──────────────────────────────
 function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('')}
 function showErr(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show')}}
