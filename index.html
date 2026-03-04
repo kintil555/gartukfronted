@@ -57,20 +57,20 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .name-inp::placeholder{color:rgba(255,255,255,.3)}
 .tabs{display:flex;background:rgba(0,0,0,.25);border-radius:11px;padding:3px;gap:3px;margin-bottom:14px}
 .tab-btn{flex:1;padding:10px;border:none;background:none;color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;border-radius:9px;cursor:pointer;transition:all .2s}
-.tab-btn.active{background:var(--teal);color:#1a0033;box-shadow:0 3px 10px rgba(0,229,204,.4)}
+.tab-btn.active{background:var(--teal);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);box-shadow:0 3px 10px rgba(0,229,204,.4)}
 .tab-pane{display:none}.tab-pane.active{display:block}
 .code-inp{width:100%;padding:13px 16px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.16);border-radius:13px;color:#fff;font-size:26px;font-family:'Fredoka One',cursive;outline:none;text-align:center;letter-spacing:7px;text-transform:uppercase;margin-bottom:12px;transition:all .2s}
 .code-inp:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(0,229,204,.15)}
 .code-inp::placeholder{font-size:14px;letter-spacing:1px;color:rgba(255,255,255,.3)}
 .btn{width:100%;padding:14px 18px;border:none;border-radius:13px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:.5px}
 .btn:active{transform:scale(.97)!important}.btn:disabled{opacity:.35;cursor:not-allowed}
-.btn-teal{background:linear-gradient(135deg,#00e5cc,#00bfa5);color:#1a0033;box-shadow:0 5px 18px rgba(0,229,204,.4)}
+.btn-teal{background:linear-gradient(135deg,#00e5cc,#00bfa5);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.25);box-shadow:0 5px 18px rgba(0,229,204,.4)}
 .btn-teal:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 9px 26px rgba(0,229,204,.55)}
 .btn-pink{background:linear-gradient(135deg,#ff4fa3,#d4006c);color:#fff;box-shadow:0 5px 18px rgba(255,79,163,.4)}
 .btn-pink:hover:not(:disabled){transform:translateY(-2px)}
-.btn-green{background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;box-shadow:0 6px 22px rgba(0,230,118,.45),0 2px 0 rgba(0,130,50,.5)}
+.btn-green{background:linear-gradient(135deg,#00e676,#00c853);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.25);box-shadow:0 6px 22px rgba(0,230,118,.45),0 2px 0 rgba(0,130,50,.5)}
 .btn-green:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,230,118,.6)}
-.btn-yellow{background:linear-gradient(135deg,#ffd600,#ffab00);color:#1a0033;box-shadow:0 5px 18px rgba(255,214,0,.4)}
+.btn-yellow{background:linear-gradient(135deg,#ffd600,#ffab00);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);box-shadow:0 5px 18px rgba(255,214,0,.4)}
 .btn-yellow:hover:not(:disabled){transform:translateY(-2px)}
 .errmsg{color:#ffb3c6;font-size:13px;font-weight:800;margin-top:9px;display:none;padding:9px 13px;background:rgba(255,79,163,.15);border-radius:9px;border-left:3px solid var(--pink);text-align:center}
 .errmsg.show{display:block}
@@ -78,7 +78,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .how-steps{display:flex;flex-direction:column;gap:8px}
 .how-step{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(0,0,0,.18);border-radius:11px}
-.snum{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#1a0033;font-family:'Fredoka One',cursive;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.snum{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3);font-family:'Fredoka One',cursive;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .stxt{font-size:13px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.4}
 
 /* ═══════════ SHARED TOPBAR ═══════════ */
@@ -150,7 +150,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 /* toggle pill */
 .tog-grp{display:flex;background:rgba(0,0,0,.3);border-radius:10px;padding:3px;gap:3px;flex-shrink:0}
 .tog-btn{padding:7px 13px;border:none;background:none;color:rgba(255,255,255,.45);font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.tog-btn.active{background:#fff;color:#2d0060;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.tog-btn.active{background:rgba(255,255,255,.25);color:#fff;border:1.5px solid rgba(255,255,255,.4);box-shadow:0 2px 8px rgba(0,0,0,.2)}
 
 /* Bottom action bar inside lobby */
 .lob-bottom{flex-shrink:0;padding:14px 20px;background:rgba(20,0,60,.6);border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:12px}
@@ -211,7 +211,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .alb-start-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
   padding:16px 48px;border:none;border-radius:14px;cursor:pointer;
-  background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;
+  background:linear-gradient(135deg,#00e676,#00c853);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.25);
   font-family:'Fredoka One',cursive;font-size:22px;letter-spacing:.5px;
   box-shadow:0 6px 24px rgba(0,230,118,.45),0 2px 0 rgba(0,130,50,.5);
   transition:all .2s;
@@ -244,7 +244,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .wi-inp{flex:1;padding:15px 18px;background:rgba(255,255,255,.15);border:2.5px solid rgba(255,255,255,.2);border-radius:14px;color:#fff;font-size:18px;font-family:'Nunito',sans-serif;font-weight:800;outline:none;transition:all .2s}
 .wi-inp:focus{border-color:var(--teal);background:rgba(255,255,255,.22);box-shadow:0 0 0 4px rgba(0,229,204,.18)}
 .wi-inp::placeholder{color:rgba(255,255,255,.35)}
-.btn-done{padding:15px 20px;border:none;border-radius:13px;cursor:pointer;background:linear-gradient(135deg,#00e676,#00c853);color:#1a0033;font-family:'Fredoka One',cursive;font-size:16px;white-space:nowrap;transition:all .2s;box-shadow:0 5px 18px rgba(0,230,118,.45);display:flex;align-items:center;gap:7px}
+.btn-done{padding:15px 20px;border:none;border-radius:13px;cursor:pointer;background:linear-gradient(135deg,#00e676,#00c853);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.25);font-family:'Fredoka One',cursive;font-size:16px;white-space:nowrap;transition:all .2s;box-shadow:0 5px 18px rgba(0,230,118,.45);display:flex;align-items:center;gap:7px}
 .btn-done:hover{transform:translateY(-2px)}
 .task-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .tbadge{display:inline-flex;align-items:center;gap:5px;padding:6px 15px;border-radius:20px;font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:.5px}
@@ -691,10 +691,10 @@ function setSetting(key,val,btn){settings[key]=val;btn.closest('.tog-grp').query
 function setAlb(key,val,btn){albSettings[key]=val;btn.closest('.alb-tog').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
 
 // ── WS ───────────────────────────────
-function wsUrl(code,name,ava){return BACKEND_URL.replace(/^http/,'ws')+'/ws/'+code+'?name='+encodeURIComponent(name)+'&avatar='+ava}
-function connectWS(code,name,ava){
+function wsUrl(code,name,ava,isCreate){return BACKEND_URL.replace(/^http/,'ws')+'/ws/'+code+'?name='+encodeURIComponent(name)+'&avatar='+ava+(isCreate?'&create=1':'')}
+function connectWS(code,name,ava,isCreate=false){
   if(ws)ws.close();
-  ws=new WebSocket(wsUrl(code,name,ava));
+  ws=new WebSocket(wsUrl(code,name,ava,isCreate));
   ws.onopen=()=>{};
   ws.onclose=()=>showToast('⚠️ Koneksi terputus');
   ws.onerror=()=>{showToast('❌ Gagal konek');showErr('ce','Gagal konek!');showErr('je','Gagal konek!')};
@@ -761,7 +761,23 @@ function handle(m){
 }
 
 // ── Actions ───────────────────────────
-function createRoom(){const n=document.getElementById('nname').value.trim();clearErr();if(!n)return showErr('ce','Masukkan nama!');if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('ce','URL backend belum diatur!');roomCode=genCode();myName=n;document.getElementById('hcode').textContent=roomCode;connectWS(roomCode,n,selAvatar)}
+async function createRoom(){
+  const n=document.getElementById('nname').value.trim();clearErr();
+  if(!n)return showErr('ce','Masukkan nama!');
+  if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('ce','URL backend belum diatur!');
+  const btn=document.querySelector('#tab-create .btn-pink');
+  if(btn){btn.textContent='⏳ Membuat room...';btn.disabled=true}
+  try{
+    const res=await fetch(BACKEND_URL+'/create-room',{method:'POST'});
+    const data=await res.json();
+    roomCode=data.code;myName=n;
+    document.getElementById('hcode').textContent=roomCode;
+    connectWS(roomCode,n,selAvatar,true);
+  }catch(e){
+    showErr('ce','Gagal membuat room. Cek URL backend!');
+    if(btn){btn.textContent='🎮 Buat Room Baru';btn.disabled=false}
+  }
+}
 function joinRoom(){const n=document.getElementById('nname').value.trim();const c=document.getElementById('jc').value.trim().toUpperCase();clearErr();if(!n)return showErr('je','Masukkan nama!');if(!c||c.length!==4)return showErr('je','Kode 4 karakter!');if(BACKEND_URL==='GANTI_DENGAN_URL_WORKER_KAMU')return showErr('je','URL backend belum diatur!');roomCode=c;myName=n;connectWS(c,n,selAvatar)}
 function startGame(){send({type:'start_game',settings})}
 function startRounds(){send({type:'start_rounds',settings:{...settings,...albSettings}})}
